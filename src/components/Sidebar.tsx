@@ -2,7 +2,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { Home, Chart, Tasks, FileText } from "lucide-react";
+import { Home, BarChart, CheckSquare, FileText } from "lucide-react";
 
 const sidebarItems = [
   {
@@ -11,12 +11,12 @@ const sidebarItems = [
     href: "/",
   },
   {
-    icon: Chart,
+    icon: BarChart,
     label: "Voortgang",
     href: "/progress",
   },
   {
-    icon: Tasks,
+    icon: CheckSquare,
     label: "Taken",
     href: "/tasks",
   },

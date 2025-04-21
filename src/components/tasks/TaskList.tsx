@@ -1,8 +1,7 @@
-
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Calendar, File, Tasks } from "lucide-react";
+import { Calendar, File, CheckSquare } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -65,9 +64,9 @@ const TaskList: React.FC = () => {
       case "document":
         return <File className="h-4 w-4" />;
       case "report":
-        return <Tasks className="h-4 w-4" />;
+        return <CheckSquare className="h-4 w-4" />;
       default:
-        return <Tasks className="h-4 w-4" />;
+        return <CheckSquare className="h-4 w-4" />;
     }
   };
 

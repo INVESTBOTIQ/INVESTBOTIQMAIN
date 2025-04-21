@@ -1,10 +1,9 @@
-
 import React from "react";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Calendar, File, Tasks as TasksIcon } from "lucide-react";
+import { Calendar, File, CheckSquare } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -115,9 +114,9 @@ const TasksPage = () => {
       case "document":
         return <File className="h-4 w-4" />;
       case "report":
-        return <TasksIcon className="h-4 w-4" />;
+        return <CheckSquare className="h-4 w-4" />;
       default:
-        return <TasksIcon className="h-4 w-4" />;
+        return <CheckSquare className="h-4 w-4" />;
     }
   };
 
