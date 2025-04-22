@@ -2,6 +2,10 @@
 import React from "react";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
+import CashflowSummary from "@/components/dashboard/CashflowSummary";
+import SpiritsCount from "@/components/dashboard/SpiritsCount";
+import OpenTasks from "@/components/dashboard/OpenTasks";
+import ReferralInfo from "@/components/dashboard/ReferralInfo";
 import DashboardSummary from "@/components/dashboard/DashboardSummary";
 import TaskList from "@/components/tasks/TaskList";
 import ReportsList from "@/components/reports/ReportsList";
@@ -19,6 +23,12 @@ const Index = () => {
               <p className="text-muted-foreground">
                 Welkom bij uw Investbotiq dashboard
               </p>
+            </div>
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+              <CashflowSummary />
+              <SpiritsCount />
+              <OpenTasks />
+              <ReferralInfo />
             </div>
             <DashboardSummary />
             <div className="grid gap-6 md:grid-cols-2">
