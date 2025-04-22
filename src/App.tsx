@@ -5,20 +5,23 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/components/AuthProvider";
-import Index from "./pages/Index";
 import Auth from "./pages/Auth";
-import Progress from "./pages/Progress";
-import Tasks from "./pages/Tasks";
-import Reports from "./pages/Reports";
 import NotFound from "./pages/NotFound";
+
+// Admin pages
 import AdminDashboard from "./pages/AdminDashboard";
-import Profile from "./pages/Profile";
-import AIRunning from "./pages/AIRunning";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminTasks from "./pages/admin/AdminTasks";
 import AdminCashflows from "./pages/admin/AdminCashflows";
 import AdminSpirits from "./pages/admin/AdminSpirits";
 import AdminNotifications from "./pages/admin/AdminNotifications";
+
+// Member pages
+import MemberDashboard from "./pages/member/MemberDashboard";
+import MemberProgress from "./pages/member/MemberProgress";
+import MemberTasks from "./pages/member/MemberTasks";
+import MemberProfile from "./pages/member/MemberProfile";
+import MemberAIRunning from "./pages/member/MemberAIRunning";
 
 const queryClient = new QueryClient();
 
@@ -31,17 +34,22 @@ const App = () => (
           <Sonner />
           <Routes>
             <Route path="/auth" element={<Auth />} />
-            <Route path="/" element={<Index />} />
-            <Route path="/dashboard" element={<Navigate to="/" replace />} />
-            <Route path="/dashboard/profile" element={<Profile />} />
-            <Route path="/dashboard/ai-running" element={<AIRunning />} />
-            <Route path="/dashboard/taken" element={<Tasks />} />
-            <Route path="/dashboard/voortgang" element={<Progress />} />
-            <Route path="/progress" element={<Progress />} />
-            <Route path="/tasks" element={<Tasks />} />
-            <Route path="/reports" element={<Reports />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/ai-running" element={<AIRunning />} />
+            
+            {/* MEMBER ROUTES */}
+            <Route path="/member" element={<MemberDashboard />} />
+            <Route path="/member/dashboard" element={<MemberDashboard />} />
+            <Route path="/member/dashboard/progress" element={<MemberProgress />} />
+            <Route path="/member/dashboard/tasks" element={<MemberTasks />} />
+            <Route path="/member/profile" element={<MemberProfile />} />
+            <Route path="/member/ai-running" element={<MemberAIRunning />} />
+            
+            {/* Root redirects to /member for member users */}
+            <Route path="/" element={<Navigate to="/member" replace />} />
+            <Route path="/dashboard" element={<Navigate to="/member" replace />} />
+            <Route path="/progress" element={<Navigate to="/member/dashboard/progress" replace />} />
+            <Route path="/tasks" element={<Navigate to="/member/dashboard/tasks" replace />} />
+            <Route path="/profile" element={<Navigate to="/member/profile" replace />} />
+            <Route path="/ai-running" element={<Navigate to="/member/ai-running" replace />} />
             
             {/* ADMIN ROUTES */}
             <Route path="/admin" element={<AdminDashboard />}>

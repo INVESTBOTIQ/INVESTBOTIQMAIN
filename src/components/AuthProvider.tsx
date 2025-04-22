@@ -48,9 +48,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     
     const currentPath = window.location.pathname;
     
-    // Don't redirect if already on appropriate dashboard
+    // Don't redirect if already on appropriate dashboard or auth page
     if ((role === 'admin' && currentPath === '/admin') || 
-        (role === 'member' && currentPath === '/') ||
+        (role === 'member' && currentPath === '/member') ||
         currentPath === '/auth') {
       return;
     }
@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (role === 'admin') {
       navigate('/admin');
     } else {
-      navigate('/');
+      navigate('/member');
     }
   };
 

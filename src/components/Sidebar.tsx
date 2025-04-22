@@ -83,27 +83,27 @@ const Sidebar: React.FC<SidebarProps> = ({ className }) => {
     {
       icon: Home,
       label: "Dashboard",
-      href: "/",
+      href: "/member",
     },
     {
       icon: BarChart,
       label: "Voortgang",
-      href: "/progress",
+      href: "/member/dashboard/progress",
     },
     {
       icon: CheckSquare,
       label: "Taken",
-      href: "/tasks",
+      href: "/member/dashboard/tasks",
     },
     {
       icon: User,
       label: "Mijn Profiel",
-      href: "/profile",
+      href: "/member/profile",
     },
     {
       icon: Sparkles,
       label: "AI Running",
-      href: "/ai-running",
+      href: "/member/ai-running",
     },
     {
       icon: LinkIcon,

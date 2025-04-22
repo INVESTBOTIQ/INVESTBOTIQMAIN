@@ -16,7 +16,7 @@ const NotFound = () => {
   }, [location.pathname]);
 
   // Determine the correct home path based on user role
-  const homePath = userRole === "admin" ? "/admin" : "/";
+  const homePath = userRole === "admin" ? "/admin" : "/member";
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
