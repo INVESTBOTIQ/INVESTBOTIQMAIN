@@ -11,6 +11,7 @@ import Progress from "./pages/Progress";
 import Tasks from "./pages/Tasks";
 import Reports from "./pages/Reports";
 import NotFound from "./pages/NotFound";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => (
             <Route path="/progress" element={<Progress />} />
             <Route path="/tasks" element={<Tasks />} />
             <Route path="/reports" element={<Reports />} />
+            <Route path="/admin" element={<AdminDashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
