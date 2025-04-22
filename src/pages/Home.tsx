@@ -3,6 +3,7 @@ import React, { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { motion, useAnimation, useInView, useScroll, useTransform } from "framer-motion";
+import PublicHeader from "@/components/PublicHeader";
 
 const FAQ = [
   {
@@ -33,8 +34,8 @@ function OrbVisual() {
       }}
       className="relative z-10"
     >
-      <div className="w-48 h-48 md:w-64 md:h-64 rounded-full bg-gradient-to-br from-indigo-400 via-pink-300 to-sky-300 shadow-xl blur-[1px] flex items-center justify-center">
-        <div className="w-32 h-32 rounded-full bg-white/20 backdrop-blur-sm shadow-inner border-4 border-white/40" />
+      <div className="w-40 h-40 md:w-52 md:h-52 rounded-full bg-gradient-to-br from-indigo-400 via-pink-300 to-sky-300 shadow-xl blur-[1px] flex items-center justify-center">
+        <div className="w-24 h-24 rounded-full bg-white/20 backdrop-blur-sm shadow-inner border-4 border-white/40" />
       </div>
     </motion.div>
   );
@@ -68,17 +69,21 @@ export default function Home() {
   }
 
   return (
-    <motion.div style={{ backgroundPositionY: yBG }}>
-      <div className="min-h-screen flex flex-col md:flex-row bg-gradient-to-br from-white via-[#eef2ff] to-indigo-100 font-playfair">
-        {/* LEFT: HERO */}
-        <div className="basis-1/2 flex flex-col items-center md:items-start justify-center px-8 py-20 md:py-0 bg-white/90 backdrop-blur-lg">
+    <motion.div style={{ backgroundPositionY: yBG }} className="bg-gradient-to-br from-white via-[#eef2ff] to-indigo-100 min-h-screen w-full relative">
+      {/* HEADER (LOGO + HAMBURGER) */}
+      <PublicHeader />
+
+      {/* HERO SECTION - responsive splitscreen */}
+      <div className="pt-24 md:pt-32 flex flex-col md:flex-row min-h-[80vh] w-full">
+        {/* LEFT: Tekst */}
+        <div className="flex-1 flex flex-col items-center md:items-start justify-center px-6 sm:px-10 lg:pl-20">
           <FadeIn delay={0.03}>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 leading-tight drop-shadow-sm text-left md:text-left">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 leading-tight drop-shadow-sm text-left md:text-left text-balance">
               Automatische <span className="text-indigo-500">cashflow</span> opbouwen <br className="hidden md:block"/> met Investbotiq.
             </h1>
           </FadeIn>
           <FadeIn delay={0.16}>
-            <p className="mb-10 text-lg md:text-xl text-gray-700  max-w-lg text-left md:text-left">
+            <p className="mb-10 text-lg md:text-xl text-gray-700 max-w-xl text-left">
               De slimme manier om je maandelijkse inkomsten te laten groeien – automatisering, transparantie en resultaat, zonder gedoe.
             </p>
           </FadeIn>
@@ -101,37 +106,24 @@ export default function Home() {
             </FadeIn>
           </div>
         </div>
-
-        {/* RIGHT: COLOR + ORB ANIMATION */}
-        <div className="basis-1/2 relative flex flex-col justify-center items-center overflow-hidden bg-gradient-to-tr from-indigo-200 via-fuchsia-200 to-pink-100 md:min-h-screen min-h-[350px] py-12 px-4">
-          <OrbVisual />
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 0.75, x: 0 }}
-            transition={{ duration: 1.4, delay: 0.7 }}
-            className="absolute -bottom-6 right-12 z-0 hidden md:block"
-          >
-            <svg width="150" height="40">
-              <rect width="135" height="20" rx="12" fill="#9b87f533" />
-              <rect x="110" y="9" width="22" height="12" rx="6" fill="#9b87f5" />
-              <rect x="60" y="2" width="65" height="10" rx="5" fill="#1EAEDB44" />
-            </svg>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 0.95, y: 0 }}
-            transition={{ duration: 2.1, delay: 1.2 }}
-            className="mt-14 md:mt-28 text-indigo-800 font-semibold text-xl max-w-xs text-center z-10"
-          >
-            Nooit meer handmatig investeren.
-          </motion.div>
+        {/* RIGHT: Visual */}
+        <div className="flex-1 flex flex-col justify-center items-center relative">
+          <FadeIn delay={0.25} className="mt-4 md:mt-0">
+            <OrbVisual />
+          </FadeIn>
+          <FadeIn delay={0.42}>
+            <div className="mt-8 md:mt-14 text-indigo-800 font-semibold text-xl max-w-xs text-center z-10">
+              Nooit meer handmatig investeren.
+            </div>
+          </FadeIn>
         </div>
       </div>
 
       {/* INFO SECTION (parallax fade-in) */}
       <div
         ref={infoRef}
-        className="mx-auto max-w-3xl w-full rounded-2xl shadow-xl bg-white/95 backdrop-blur-lg p-10 mt-[-55px] md:-mt-32 z-30 relative animate-fade-in"
+        id="wat-is-investbotiq"
+        className="mx-auto max-w-3xl w-full rounded-2xl shadow-xl bg-white/95 backdrop-blur-lg p-6 md:p-10 -mt-16 z-30 relative animate-fade-in"
         style={{ position: "relative" }}
       >
         <FadeIn delay={0.13}>
@@ -143,8 +135,9 @@ export default function Home() {
           </p>
         </FadeIn>
 
+        {/* Waarom Investbotiq */}
         <FadeIn delay={0.30}>
-          <h3 className="text-2xl font-semibold mb-1 text-indigo-800">Waarom Investbotiq?</h3>
+          <h3 id="waarom-investbotiq" className="text-2xl font-semibold mb-1 text-indigo-800">Waarom Investbotiq?</h3>
         </FadeIn>
         <FadeIn delay={0.36}>
           <ul className="mb-8 list-disc list-inside space-y-1 text-gray-700 pl-2">
@@ -156,8 +149,9 @@ export default function Home() {
           </ul>
         </FadeIn>
 
+        {/* Hoe werkt het? */}
         <FadeIn delay={0.42}>
-          <h3 className="text-2xl font-semibold mb-1 text-indigo-800">Hoe werkt het?</h3>
+          <h3 id="hoe-werkt-het" className="text-2xl font-semibold mb-1 text-indigo-800">Hoe werkt het?</h3>
         </FadeIn>
         <FadeIn delay={0.48}>
           <ol className="mb-8 list-decimal list-inside space-y-1 text-gray-700 pl-2">
@@ -167,6 +161,7 @@ export default function Home() {
           </ol>
         </FadeIn>
 
+        {/* Voordelen */}
         <FadeIn delay={0.54}>
           <h3 className="text-2xl font-semibold mb-1 text-indigo-800">Voordelen:</h3>
         </FadeIn>
@@ -179,7 +174,8 @@ export default function Home() {
           </ul>
         </FadeIn>
 
-        <div className="mt-12">
+        {/* FAQ */}
+        <div className="mt-8 md:mt-12" id="faq">
           <FadeIn delay={0.666}>
             <h3 className="text-2xl font-semibold mb-3 text-indigo-800">
               Mini FAQ
@@ -198,7 +194,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* FOOTER */}
+      {/* FOOTER (blijft responsive) */}
       <footer className="py-8 mt-24 bg-[#1A1F2C] text-center text-white font-medium border-t border-indigo-900 shadow-inner">
         <div className="flex flex-wrap items-center justify-center gap-6">
           <a href="#" className="underline hover:text-pink-200 transition">Algemene Voorwaarden</a>
@@ -210,3 +206,5 @@ export default function Home() {
     </motion.div>
   );
 }
+
+// Na deze wijziging is Home.tsx > 200 regels; graag refactoren in kleinere componenten voor onderhoudbaarheid!
