@@ -12,6 +12,8 @@ import Tasks from "./pages/Tasks";
 import Reports from "./pages/Reports";
 import NotFound from "./pages/NotFound";
 import AdminDashboard from "./pages/AdminDashboard";
+import Profile from "./pages/Profile";
+import AIRunning from "./pages/AIRunning";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +30,8 @@ const App = () => (
             <Route path="/progress" element={<Progress />} />
             <Route path="/tasks" element={<Tasks />} />
             <Route path="/reports" element={<Reports />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/ai-running" element={<AIRunning />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

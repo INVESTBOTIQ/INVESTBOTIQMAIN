@@ -10,7 +10,10 @@ import {
   LogOut, 
   Users, 
   Bell, 
-  Settings 
+  Settings,
+  User,
+  CircleDollarSign,
+  Sparkles
 } from "lucide-react";
 import { useAuth } from "@/components/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
@@ -93,6 +96,16 @@ const Sidebar: React.FC<SidebarProps> = ({ className }) => {
       href: "/tasks",
     },
     {
+      icon: User,
+      label: "Mijn Profiel",
+      href: "/profile",
+    },
+    {
+      icon: Sparkles,
+      label: "AI Running",
+      href: "/ai-running",
+    },
+    {
       icon: LinkIcon,
       label: "Homepage",
       href: "https://investbotiq.nl",
@@ -115,6 +128,16 @@ const Sidebar: React.FC<SidebarProps> = ({ className }) => {
       icon: CheckSquare,
       label: "Taken Beheer",
       href: "/admin/tasks",
+    },
+    {
+      icon: CircleDollarSign,
+      label: "Cashflow Beheer",
+      href: "/admin/cashflows",
+    },
+    {
+      icon: Sparkles,
+      label: "Spirits Beheer",
+      href: "/admin/spirits",
     },
     {
       icon: Bell,
