@@ -7,7 +7,17 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 
-const taskItems = [
+// Define the task type to ensure type safety
+interface Task {
+  id: number;
+  title: string;
+  dueDate: string;
+  priority: string;
+  completed: boolean;
+  type: string;
+}
+
+const taskItems: Task[] = [
   {
     id: 1,
     title: "Onderteken contract voor nieuwe spirit",
@@ -35,7 +45,7 @@ const taskItems = [
 ];
 
 const TaskList: React.FC = () => {
-  const [tasks, setTasks] = React.useState(taskItems);
+  const [tasks, setTasks] = React.useState<Task[]>(taskItems);
 
   const handleTaskToggle = (id: number) => {
     setTasks(
@@ -102,7 +112,13 @@ const TaskList: React.FC = () => {
                   task.priority
                 )}`}
               >
-                <File className="h-4 w-4" />
+                {task.type === "contract" ? (
+                  <File className="h-4 w-4" />
+                ) : task.type === "document" ? (
+                  <File className="h-4 w-4" />
+                ) : (
+                  <CheckSquare className="h-4 w-4" />
+                )}
                 <span>{task.type}</span>
               </Badge>
             </div>
