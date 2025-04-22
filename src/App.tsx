@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/components/AuthProvider";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
@@ -32,11 +32,17 @@ const App = () => (
           <Routes>
             <Route path="/auth" element={<Auth />} />
             <Route path="/" element={<Index />} />
+            <Route path="/dashboard" element={<Navigate to="/" replace />} />
+            <Route path="/dashboard/profile" element={<Profile />} />
+            <Route path="/dashboard/ai-running" element={<AIRunning />} />
+            <Route path="/dashboard/taken" element={<Tasks />} />
+            <Route path="/dashboard/voortgang" element={<Progress />} />
             <Route path="/progress" element={<Progress />} />
             <Route path="/tasks" element={<Tasks />} />
             <Route path="/reports" element={<Reports />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/ai-running" element={<AIRunning />} />
+            
             {/* ADMIN ROUTES */}
             <Route path="/admin" element={<AdminDashboard />}>
               <Route path="users" element={<AdminUsers />} />
@@ -47,6 +53,8 @@ const App = () => (
               {/* Redirect base /admin to /admin/users */}
               <Route index element={<AdminUsers />} />
             </Route>
+            
+            {/* Catch-all route for 404s */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
