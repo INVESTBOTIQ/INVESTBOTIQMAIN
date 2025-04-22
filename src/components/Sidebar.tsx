@@ -2,7 +2,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { Home, BarChart, CheckSquare, FileText } from "lucide-react";
+import { Home, BarChart, CheckSquare, Link as LinkIcon } from "lucide-react";
 
 const sidebarItems = [
   {
@@ -21,9 +21,10 @@ const sidebarItems = [
     href: "/tasks",
   },
   {
-    icon: FileText,
-    label: "Rapporten",
-    href: "/reports",
+    icon: LinkIcon,
+    label: "Homepage",
+    href: "https://investbotiq.nl",
+    external: true,
   },
 ];
 
@@ -39,17 +40,30 @@ const Sidebar: React.FC<SidebarProps> = ({ className }) => {
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-1">
           {sidebarItems.map((item) => (
-            <Link
-              key={item.href}
-              to={item.href}
-              className={cn(
-                "sidebar-item",
-                location.pathname === item.href && "sidebar-item-active"
-              )}
-            >
-              <item.icon className="h-5 w-5" />
-              <span>{item.label}</span>
-            </Link>
+            item.external ? (
+              <a
+                key={item.href}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="sidebar-item"
+              >
+                <item.icon className="h-5 w-5" />
+                <span>{item.label}</span>
+              </a>
+            ) : (
+              <Link
+                key={item.href}
+                to={item.href}
+                className={cn(
+                  "sidebar-item",
+                  location.pathname === item.href && "sidebar-item-active"
+                )}
+              >
+                <item.icon className="h-5 w-5" />
+                <span>{item.label}</span>
+              </Link>
+            )
           ))}
         </div>
       </div>

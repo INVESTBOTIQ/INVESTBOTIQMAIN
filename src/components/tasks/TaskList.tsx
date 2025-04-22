@@ -5,6 +5,7 @@ import { Calendar, File, CheckSquare } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
 
 const taskItems = [
   {
@@ -42,6 +43,7 @@ const TaskList: React.FC = () => {
         task.id === id ? { ...task, completed: !task.completed } : task
       )
     );
+    toast.success("Taakstatus bijgewerkt");
   };
 
   const getPriorityColor = (priority: string) => {
@@ -57,33 +59,19 @@ const TaskList: React.FC = () => {
     }
   };
 
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case "contract":
-        return <File className="h-4 w-4" />;
-      case "document":
-        return <File className="h-4 w-4" />;
-      case "report":
-        return <CheckSquare className="h-4 w-4" />;
-      default:
-        return <CheckSquare className="h-4 w-4" />;
-    }
-  };
-
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between pb-2">
+    <Card className="col-span-2">
+      <CardHeader>
         <CardTitle>Openstaande Taken</CardTitle>
-        <Button variant="outline" size="sm">
-          Alle Taken
-        </Button>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
           {tasks.map((task) => (
             <div
               key={task.id}
-              className="flex items-start justify-between space-x-4 rounded-lg border p-4"
+              className="group flex items-start justify-between space-x-4 rounded-lg border p-4 transition-colors hover:bg-accent hover:text-accent-foreground"
+              role="button"
+              onClick={() => handleTaskToggle(task.id)}
             >
               <div className="flex space-x-4">
                 <div>
@@ -102,29 +90,24 @@ const TaskList: React.FC = () => {
                   >
                     {task.title}
                   </Label>
+                  <p className="text-sm text-muted-foreground">
+                    {task.description}
+                  </p>
                   <div className="flex items-center text-sm text-muted-foreground">
                     <Calendar className="mr-1 h-3 w-3" />
                     <span>Uiterste datum: {task.dueDate}</span>
                   </div>
                 </div>
               </div>
-              <div className="flex items-center space-x-2">
-                <Badge
-                  variant="outline"
-                  className={`flex items-center space-x-1 ${getPriorityColor(
-                    task.priority
-                  )}`}
-                >
-                  {getTypeIcon(task.type)}
-                  <span className="capitalize">
-                    {task.type === "contract"
-                      ? "Contract"
-                      : task.type === "document"
-                      ? "Document"
-                      : "Rapport"}
-                  </span>
-                </Badge>
-              </div>
+              <Badge
+                variant="outline"
+                className={`flex items-center space-x-1 ${getPriorityColor(
+                  task.priority
+                )}`}
+              >
+                <File className="h-4 w-4" />
+                <span>{task.type}</span>
+              </Badge>
             </div>
           ))}
         </div>
