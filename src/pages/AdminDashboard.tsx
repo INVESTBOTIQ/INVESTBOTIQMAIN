@@ -1,4 +1,3 @@
-
 import React from "react";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
@@ -6,6 +5,7 @@ import { useAuth } from "@/components/AuthProvider";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 import { Navigate } from "react-router-dom";
+import { withRoleGuard } from "@/utils/withRoleGuard";
 
 const AdminDashboard = () => {
   const { userRole, isLoading } = useAuth();
@@ -94,4 +94,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default withRoleGuard(AdminDashboard, ["admin"]);

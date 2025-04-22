@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
@@ -12,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { withRoleGuard } from "@/utils/withRoleGuard";
 
 const Profile = () => {
   const { user, isLoading } = useAuth();
@@ -227,4 +227,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default withRoleGuard(Profile, ["member"]);

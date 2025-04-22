@@ -1,4 +1,3 @@
-
 import React from "react";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
@@ -6,6 +5,7 @@ import { useAuth } from "@/components/AuthProvider";
 import { Navigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { withRoleGuard } from "@/utils/withRoleGuard";
 
 const AIRunning = () => {
   const { user, isLoading } = useAuth();
@@ -53,4 +53,4 @@ const AIRunning = () => {
   );
 };
 
-export default AIRunning;
+export default withRoleGuard(AIRunning, ["member"]);

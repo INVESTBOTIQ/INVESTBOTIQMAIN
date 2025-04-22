@@ -14,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { withRoleGuard } from "@/utils/withRoleGuard";
 
 const taskItems = [
   {
@@ -232,4 +233,4 @@ const TasksPage = () => {
   );
 };
 
-export default TasksPage;
+export default withRoleGuard(TasksPage, ["member"]);
