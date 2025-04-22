@@ -1,6 +1,6 @@
+
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Calendar, File, CheckSquare } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -69,7 +69,7 @@ const TaskList: React.FC = () => {
           {tasks.map((task) => (
             <div
               key={task.id}
-              className="group flex items-start justify-between space-x-4 rounded-lg border p-4 transition-colors hover:bg-accent hover:text-accent-foreground"
+              className="group flex items-start justify-between space-x-4 rounded-lg border p-4 transition-colors hover:bg-accent hover:text-accent-foreground cursor-pointer"
               role="button"
               onClick={() => handleTaskToggle(task.id)}
             >
@@ -90,9 +90,6 @@ const TaskList: React.FC = () => {
                   >
                     {task.title}
                   </Label>
-                  <p className="text-sm text-muted-foreground">
-                    {task.description}
-                  </p>
                   <div className="flex items-center text-sm text-muted-foreground">
                     <Calendar className="mr-1 h-3 w-3" />
                     <span>Uiterste datum: {task.dueDate}</span>
@@ -110,6 +107,13 @@ const TaskList: React.FC = () => {
               </Badge>
             </div>
           ))}
+          {tasks.length === 0 && (
+            <div className="flex h-32 flex-col items-center justify-center rounded-lg border border-dashed">
+              <p className="text-center text-muted-foreground">
+                Geen openstaande taken
+              </p>
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>
