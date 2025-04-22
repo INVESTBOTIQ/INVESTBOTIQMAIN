@@ -1,7 +1,8 @@
 
 import React from "react";
-import { Bell, Settings, User } from "lucide-react";
+import { Bell, LogOut, Settings, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,6 +13,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const Header: React.FC = () => {
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+  };
+
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b bg-background px-4 md:px-6">
       <div className="flex items-center gap-2">
@@ -39,7 +44,10 @@ const Header: React.FC = () => {
               <Settings className="mr-2 h-4 w-4" />
               <span>Instellingen</span>
             </DropdownMenuItem>
-            <DropdownMenuItem>Uitloggen</DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Uitloggen</span>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

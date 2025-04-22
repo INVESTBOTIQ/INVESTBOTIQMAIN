@@ -9,16 +9,248 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      bel_loans: {
+        Row: {
+          created_at: string
+          id: string
+          maandelijkse_aflossing: number
+          openstaand_bedrag: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          maandelijkse_aflossing?: number
+          openstaand_bedrag?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          maandelijkse_aflossing?: number
+          openstaand_bedrag?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      cashflows: {
+        Row: {
+          cashflow_bedrag: number
+          created_at: string
+          id: string
+          maand: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          cashflow_bedrag?: number
+          created_at?: string
+          id?: string
+          maand: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          cashflow_bedrag?: number
+          created_at?: string
+          id?: string
+          maand?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          bericht: string
+          created_at: string
+          gelezen: boolean
+          id: string
+          type: Database["public"]["Enums"]["notification_type"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          bericht: string
+          created_at?: string
+          gelezen?: boolean
+          id?: string
+          type?: Database["public"]["Enums"]["notification_type"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          bericht?: string
+          created_at?: string
+          gelezen?: boolean
+          id?: string
+          type?: Database["public"]["Enums"]["notification_type"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          achternaam: string | null
+          created_at: string
+          id: string
+          telefoonnummer: string | null
+          updated_at: string
+          voornaam: string | null
+        }
+        Insert: {
+          achternaam?: string | null
+          created_at?: string
+          id: string
+          telefoonnummer?: string | null
+          updated_at?: string
+          voornaam?: string | null
+        }
+        Update: {
+          achternaam?: string | null
+          created_at?: string
+          id?: string
+          telefoonnummer?: string | null
+          updated_at?: string
+          voornaam?: string | null
+        }
+        Relationships: []
+      }
+      referrals: {
+        Row: {
+          created_at: string
+          id: string
+          referral_code: string
+          referred_user_id: string | null
+          status: Database["public"]["Enums"]["referral_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          referral_code: string
+          referred_user_id?: string | null
+          status?: Database["public"]["Enums"]["referral_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          referral_code?: string
+          referred_user_id?: string | null
+          status?: Database["public"]["Enums"]["referral_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      spirits: {
+        Row: {
+          activated_at: string
+          created_at: string
+          id: string
+          monthly_cashflow: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          activated_at?: string
+          created_at?: string
+          id?: string
+          monthly_cashflow?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          activated_at?: string
+          created_at?: string
+          id?: string
+          monthly_cashflow?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      tasks: {
+        Row: {
+          created_at: string
+          id: string
+          status: Database["public"]["Enums"]["task_status"]
+          taak_omschrijving: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          status?: Database["public"]["Enums"]["task_status"]
+          taak_omschrijving: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          status?: Database["public"]["Enums"]["task_status"]
+          taak_omschrijving?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["user_role"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["user_role"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["user_role"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      create_admin_user: {
+        Args: { email: string; password: string }
+        Returns: string
+      }
+      get_user_role: {
+        Args: { user_id: string }
+        Returns: Database["public"]["Enums"]["user_role"]
+      }
+      is_admin: {
+        Args: { user_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      notification_type: "taak" | "spirit" | "system"
+      referral_status: "pending" | "successful"
+      task_status: "open" | "in_progress" | "completed"
+      user_role: "guest" | "member" | "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -133,6 +365,11 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      notification_type: ["taak", "spirit", "system"],
+      referral_status: ["pending", "successful"],
+      task_status: ["open", "in_progress", "completed"],
+      user_role: ["guest", "member", "admin"],
+    },
   },
 } as const
