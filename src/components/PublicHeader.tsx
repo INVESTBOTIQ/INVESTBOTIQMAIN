@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, LogIn } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/components/AuthProvider";
 
@@ -34,15 +34,19 @@ const PublicHeader: React.FC = () => {
   const navigate = useNavigate();
   const isMember = !!user && userRole === "member";
 
-  // Logo (gebruik <img> indien je het bestand hebt) - klikbaar naar /
+  // Logo met nieuwe afbeelding
   const Logo = (
     <Link
       to="/"
       className="flex items-center gap-2 cursor-pointer select-none"
       aria-label="Homepage"
     >
+      <img 
+        src="/lovable-uploads/11ad8cab-507c-4b7a-8060-45ab227cd3e6.png" 
+        alt="Investbotiq Logo" 
+        className="h-10 w-10 mr-2" 
+      />
       <span className="font-extrabold text-2xl md:text-3xl text-indigo-600 tracking-tight">
-        {/* Hier je <img src={...}/> voor het logo */}
         INVESTBOTIQ
       </span>
     </Link>
@@ -113,25 +117,24 @@ const PublicHeader: React.FC = () => {
           {item.title}
         </button>
       ))}
-      {/* Spacer */}
-      <span className="hidden xl:inline-block w-[2.5rem]"></span>
+      {/* Login button added here */}
+      <Link
+        to="/auth"
+        className="flex items-center px-4 py-2 rounded-md bg-indigo-500 text-white hover:bg-indigo-600 font-semibold transition-all ml-2"
+      >
+        <LogIn className="mr-2 h-4 w-4" /> Log-in
+      </Link>
+      
       {/* Reg/Mem logica */}
       {!user && (
-        <>
-          <Link
-            to="/auth"
-            className="px-5 py-2 rounded-md bg-indigo-500 text-white shadow hover:bg-indigo-600 font-semibold transition-all ml-3"
-          >
-            Register
-          </Link>
-          <Link
-            to="/auth"
-            className="px-5 py-2 rounded-md bg-gray-100 text-indigo-700 hover:bg-indigo-200 font-semibold transition-all"
-          >
-            Log-in
-          </Link>
-        </>
+        <Link
+          to="/auth"
+          className="px-5 py-2 rounded-md bg-gray-100 text-indigo-700 hover:bg-indigo-200 font-semibold transition-all"
+        >
+          Register
+        </Link>
       )}
+      
       {isMember && (
         <Link
           to="/member/dashboard"
@@ -233,6 +236,16 @@ const PublicHeader: React.FC = () => {
                 {item.title}
               </button>
             ))}
+            {/* Login toevoegen in mobiel menu */}
+            <button
+              className="font-semibold py-2 px-2 rounded hover:bg-indigo-50 text-left transition flex items-center"
+              onClick={() => {
+                setMenuOpen(false);
+                navigate("/auth");
+              }}
+            >
+              <LogIn className="mr-2 h-4 w-4" /> Log-in
+            </button>
             {/* Spacer */}
             <div className="flex-1" />
           </nav>
@@ -273,7 +286,7 @@ const PublicHeader: React.FC = () => {
   );
 
   return (
-    <header className="fixed top-0 left-0 w-full z-40 bg-white/80 backdrop-blur-md shadow">
+    <header className="fixed top-0 left-0 w-full z-40 bg-white shadow">
       <div className="container flex items-center justify-between h-16 md:h-20 px-2">
         {Logo}
         {renderDesktopMenu()}
