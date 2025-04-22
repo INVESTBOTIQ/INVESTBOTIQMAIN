@@ -237,6 +237,10 @@ export type Database = {
         Args: { email: string; password: string }
         Returns: string
       }
+      get_total_value: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
       get_user_role: {
         Args: { user_id: string }
         Returns: Database["public"]["Enums"]["user_role"]
