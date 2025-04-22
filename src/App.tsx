@@ -14,6 +14,11 @@ import NotFound from "./pages/NotFound";
 import AdminDashboard from "./pages/AdminDashboard";
 import Profile from "./pages/Profile";
 import AIRunning from "./pages/AIRunning";
+import AdminUsers from "./pages/admin/AdminUsers";
+import AdminTasks from "./pages/admin/AdminTasks";
+import AdminCashflows from "./pages/admin/AdminCashflows";
+import AdminSpirits from "./pages/admin/AdminSpirits";
+import AdminNotifications from "./pages/admin/AdminNotifications";
 
 const queryClient = new QueryClient();
 
@@ -32,7 +37,16 @@ const App = () => (
             <Route path="/reports" element={<Reports />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/ai-running" element={<AIRunning />} />
-            <Route path="/admin" element={<AdminDashboard />} />
+            {/* ADMIN ROUTES */}
+            <Route path="/admin" element={<AdminDashboard />}>
+              <Route path="users" element={<AdminUsers />} />
+              <Route path="tasks" element={<AdminTasks />} />
+              <Route path="cashflows" element={<AdminCashflows />} />
+              <Route path="spirits" element={<AdminSpirits />} />
+              <Route path="notifications" element={<AdminNotifications />} />
+              {/* Redirect base /admin to /admin/users */}
+              <Route index element={<AdminUsers />} />
+            </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
