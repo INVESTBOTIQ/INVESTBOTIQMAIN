@@ -1,15 +1,18 @@
 import React from "react";
+import { FadeIn } from "../info/FadeInAnimation";
 
 export default function TierTableSection() {
   return (
     <section className="py-16 px-4 bg-white/80">
       <div className="container mx-auto max-w-6xl">
-        <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-12">
-          TIER OVERZICHT
-        </h2>
+        <FadeIn delay={0.2}>
+          <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-12">
+            TIER OVERZICHT
+          </h2>
+        </FadeIn>
         
         {/* Desktop Table */}
-        <div className="hidden md:block overflow-hidden rounded-lg shadow-md mb-10">
+        <FadeIn delay={0.3} className="hidden md:block overflow-hidden rounded-lg shadow-md mb-10">
           <table className="w-full bg-white">
             <thead>
               <tr className="bg-indigo-50 border-b border-indigo-100">
@@ -79,7 +82,7 @@ export default function TierTableSection() {
               </tr>
             </tbody>
           </table>
-        </div>
+        </FadeIn>
         
         {/* Mobile Cards */}
         <div className="md:hidden space-y-6">
@@ -130,7 +133,7 @@ export default function TierTableSection() {
               status: "Schuldvrij"
             }
           ].map((item, index) => (
-            <div key={index} className="bg-white rounded-lg shadow-md p-4 border border-gray-100">
+            <FadeIn key={index} delay={0.3 + index * 0.1} className="bg-white rounded-lg shadow-md p-4 border border-gray-100">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="font-bold text-lg">{item.tier}</h3>
                 <span className={`px-2 py-1 ${item.status === "Actief" ? "bg-green-100 text-green-700" : "bg-blue-100 text-blue-700"} rounded-full text-xs`}>
@@ -156,7 +159,7 @@ export default function TierTableSection() {
                   <span className="font-bold text-indigo-600">{item.cashflow}</span>
                 </div>
               </div>
-            </div>
+            </FadeIn>
           ))}
         </div>
       </div>
