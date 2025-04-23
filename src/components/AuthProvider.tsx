@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate, useLocation } from "react-router-dom";
+import { toast } from "sonner";
 
 interface AuthContextType {
   user: User | null;
@@ -30,6 +31,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const fetchUserRole = async (userId: string) => {
     try {
+      // For now, let's hardcode roles for testing until the DB function is fixed
+      // In production, this should be replaced with a proper DB query
+      if (userId === "ac2f8180-d56e-4fed-86a5-4a1b4b05f070") {
+        return "admin";
+      }
+      return "member";
+      
+      // Uncomment this when the DB function is fixed
+      /*
       const { data, error } = await supabase.rpc('get_user_role', { user_id: userId });
       
       if (error) {
@@ -38,6 +48,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
       
       return data;
+      */
     } catch (error) {
       console.error("Error in fetchUserRole:", error);
       return null;
@@ -50,18 +61,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     
     const currentPath = location.pathname;
     
-    // Don't redirect if already on the correct page or at login
-    if ((role === 'admin' && currentPath.startsWith('/admin')) || 
-        (role === 'member' && currentPath.startsWith('/member')) ||
-        currentPath === '/auth') {
-      return;
-    }
-    
-    // Redirect to the appropriate dashboard
-    if (role === 'admin') {
-      navigate('/admin');
-    } else if (role === 'member') {
-      navigate('/member/dashboard');
+    if (currentPath === '/auth') {
+      // Only redirect from auth page
+      if (role === 'admin') {
+        navigate('/admin');
+      } else if (role === 'member') {
+        navigate('/member/dashboard');
+      }
     }
   };
 
@@ -80,8 +86,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           const role = await fetchUserRole(currentSession.user.id);
           setUserRole(role);
           
-          // Only redirect if we have a role and aren't on the correct page already
-          if (role) {
+          // Only redirect if on auth page
+          if (role && location.pathname === '/auth') {
             redirectBasedOnRole(role);
           }
         }
@@ -102,7 +108,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             }
           } else {
             setUserRole(null);
-            if (event === 'SIGNED_OUT') {
+            if (event === 'SIGNED_OUT' && location.pathname !== '/auth' && 
+                location.pathname !== '/' && !location.pathname.startsWith('/faq')) {
               navigate('/auth');
             }
           }
@@ -119,7 +126,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     initializeAuth();
-  }, [navigate, location.pathname]);
+  }, [navigate]);
 
   return (
     <AuthContext.Provider value={{ user, session, userRole, isLoading }}>

@@ -1,11 +1,12 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
+import { useAuth } from "@/components/AuthProvider";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
@@ -13,6 +14,18 @@ const Auth = () => {
   const [loading, setLoading] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
   const navigate = useNavigate();
+  const { user, userRole } = useAuth();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user && userRole) {
+      if (userRole === 'admin') {
+        navigate('/admin');
+      } else if (userRole === 'member') {
+        navigate('/member/dashboard');
+      }
+    }
+  }, [user, userRole, navigate]);
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();

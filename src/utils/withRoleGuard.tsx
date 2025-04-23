@@ -25,14 +25,15 @@ export function withRoleGuard<P>(
     }
 
     if (!user) {
-      return <Navigate to="/auth" />;
+      return <Navigate to="/auth" replace />;
     }
 
+    // Handle the case where role might be hardcoded for testing
     if (!userRole || !allowedRoles.includes(userRole)) {
       // For admins, redirect to /admin. For members, to /member/dashboard.
-      if (userRole === "admin") return <Navigate to="/admin" />;
-      if (userRole === "member") return <Navigate to="/member/dashboard" />;
-      return <Navigate to="/auth" />;
+      if (userRole === "admin") return <Navigate to="/admin" replace />;
+      if (userRole === "member") return <Navigate to="/member/dashboard" replace />;
+      return <Navigate to="/auth" replace />;
     }
 
     return <WrappedComponent {...props} />;
