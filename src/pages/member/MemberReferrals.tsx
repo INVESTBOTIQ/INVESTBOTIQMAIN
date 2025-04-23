@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
@@ -145,7 +146,7 @@ const MemberReferrals = () => {
                           return (
                             <TableRow key={referral.id}>
                               <TableCell>
-                                {referral.referred_user?.email || 'Onbekend'}
+                                {referral.referred_user_email || 'Onbekend'}
                               </TableCell>
                               <TableCell>
                                 {referral.status === 'successful' ? (

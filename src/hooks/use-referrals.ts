@@ -59,7 +59,7 @@ export function useAdminReferrals() {
   return useQuery({
     queryKey: ["adminReferrals"],
     queryFn: async (): Promise<ReferralWithDetails[]> => {
-      // Use a join to get both the referrer and referred user emails
+      // Use a direct approach to get both the referrer and referred user emails
       const { data, error } = await supabase
         .from("referrals")
         .select(`
@@ -80,21 +80,29 @@ export function useAdminReferrals() {
       for (const ref of data) {
         // Get referrer email
         let referrerEmail = 'Unknown';
-        const { data: referrerData } = await supabase
-          .auth.admin.getUserById(ref.user_id);
-        
-        if (referrerData?.user) {
-          referrerEmail = referrerData.user.email || 'Unknown';
+        try {
+          const { data: referrerData } = await supabase
+            .auth.admin.getUserById(ref.user_id);
+          
+          if (referrerData?.user) {
+            referrerEmail = referrerData.user.email || 'Unknown';
+          }
+        } catch (error) {
+          console.error("Error fetching referrer email:", error);
         }
         
         // Get referred email if available
         let referredEmail = null;
         if (ref.referred_user_id) {
-          const { data: referredData } = await supabase
-            .auth.admin.getUserById(ref.referred_user_id);
-          
-          if (referredData?.user) {
-            referredEmail = referredData.user.email || null;
+          try {
+            const { data: referredData } = await supabase
+              .auth.admin.getUserById(ref.referred_user_id);
+            
+            if (referredData?.user) {
+              referredEmail = referredData.user.email || null;
+            }
+          } catch (error) {
+            console.error("Error fetching referred email:", error);
           }
         }
         

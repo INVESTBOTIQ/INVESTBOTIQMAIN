@@ -27,7 +27,7 @@ export interface Referral {
   status: 'pending' | 'successful';
   created_at: string;
   updated_at: string;
-  referred_user?: { email: string };
+  referred_user_email?: string; // Changed from an object to a string
 }
 
 export interface ReferralWithDetails {
@@ -65,7 +65,7 @@ export async function getReferralSummary(userId: string): Promise<ReferralSummar
       .from("referrals")
       .select(`
         id,
-        rewards:id(reward_value)
+        status
       `)
       .eq("user_id", userId)
       .eq("status", "successful");
@@ -111,19 +111,20 @@ export async function getUserReferrals(userId: string): Promise<Referral[]> {
     
     for (const referral of referrals) {
       if (referral.referred_user_id) {
-        const { data: userData } = await supabase
-          .from("profiles")
-          .select("id")
-          .eq("id", referral.referred_user_id)
-          .single();
-        
-        const { data: authUser } = await supabase
-          .auth.admin.getUserById(referral.referred_user_id);
-        
-        if (authUser?.user) {
-          referral.referred_user = { email: authUser.user.email || 'Unknown' };
-        } else {
-          referral.referred_user = { email: 'Unknown' };
+        try {
+          // Get the auth user data directly
+          const { data: authUser } = await supabase
+            .auth.admin.getUserById(referral.referred_user_id);
+          
+          if (authUser?.user) {
+            // Store email directly as string instead of object
+            referral.referred_user_email = authUser.user.email || 'Unknown';
+          } else {
+            referral.referred_user_email = 'Unknown';
+          }
+        } catch (err) {
+          console.error("Error fetching user details:", err);
+          referral.referred_user_email = 'Error fetching email';
         }
       }
     }
@@ -137,41 +138,32 @@ export async function getUserReferrals(userId: string): Promise<Referral[]> {
 
 export async function getUserReferralRewards(userId: string): Promise<ReferralReward[]> {
   try {
-    // Since the table is new and not in the types yet, use a raw query
-    const { data: rawData, error } = await supabase
-      .rpc('get_user_referral_rewards', { user_id_param: userId });
+    // Since we don't have a dedicated function in the database, use a simpler approach
+    const { data: referralsData, error: referralsError } = await supabase
+      .from("referrals")
+      .select(`
+        id,
+        status,
+        referred_user_id,
+        created_at
+      `)
+      .eq("user_id", userId)
+      .eq("status", "successful");
     
-    if (error) {
-      console.error("Error in raw query:", error);
-      // Fallback to simpler approach with manual typing
-      const { data, error: fallbackError } = await supabase
-        .from("referrals")
-        .select(`
-          id,
-          status,
-          referred_user_id
-        `)
-        .eq("user_id", userId)
-        .eq("status", "successful");
-      
-      if (fallbackError) throw fallbackError;
-      
-      // Create synthetic rewards data for now
-      const rewards: ReferralReward[] = (data || []).map(referral => ({
-        id: referral.id,
-        referral_id: referral.id,
-        user_id: userId,
-        reward_type: "cashflow_bonus",
-        reward_value: 100,
-        granted_at: new Date().toISOString(),
-        note: "Referral bonus"
-      }));
-      
-      return rewards;
-    }
-
-    // If we got here, we have real data from the rewards table
-    return (rawData || []) as ReferralReward[];
+    if (referralsError) throw referralsError;
+    
+    // Create synthetic rewards data for now
+    const rewards: ReferralReward[] = (referralsData || []).map(referral => ({
+      id: referral.id,
+      referral_id: referral.id,
+      user_id: userId,
+      reward_type: "cashflow_bonus",
+      reward_value: 100, // Fixed reward value
+      granted_at: referral.created_at, // Use creation date as granted date
+      note: "Referral bonus"
+    }));
+    
+    return rewards;
   } catch (error) {
     console.error("Error fetching referral rewards:", error);
     return [];
