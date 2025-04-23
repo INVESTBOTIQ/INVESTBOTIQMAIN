@@ -7,6 +7,7 @@ import { AuthProvider } from "@/components/AuthProvider";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import Home from "./pages/Home";
+import FAQ from "./pages/FAQ";
 
 // Admin pages
 import AdminDashboard from "./pages/AdminDashboard";
@@ -36,6 +37,7 @@ const App = () => (
             {/* PUBLIC */}
             <Route path="/" element={<Home />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/faq" element={<FAQ />} />
 
             {/* MEMBER ROUTES */}
             <Route path="/member/dashboard" element={<MemberDashboard />} />

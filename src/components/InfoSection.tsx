@@ -1,6 +1,19 @@
-
 import React from "react";
 import { motion } from "framer-motion";
+
+function FadeIn({ children, className = "", delay = 0 }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 36 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.7 }}
+      transition={{ duration: 0.88, delay }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 const FAQ = [
   {
@@ -17,25 +30,11 @@ const FAQ = [
   },
 ];
 
-function FadeIn({ children, className = "", delay = 0 }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 36 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.7 }}
-      transition={{ duration: 0.88, delay }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-}
 const InfoSection = React.forwardRef<HTMLDivElement>((props, ref) => (
   <section
     ref={ref}
     id="wat-is-investbotiq"
     className="mx-auto w-full max-w-3xl rounded-2xl shadow-xl bg-white/95 backdrop-blur-lg px-5 xs:px-7 sm:px-9 md:px-12 py-10 xs:py-12 md:py-16 mt-12 md:mt-20 mb-14 md:mb-24 z-30 relative"
-    style={{ position: "relative" }}
   >
     <FadeIn delay={0.13}>
       <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 text-center md:text-left">Wat is Investbotiq?</h2>
@@ -48,40 +47,41 @@ const InfoSection = React.forwardRef<HTMLDivElement>((props, ref) => (
 
     {/* Waarom Investbotiq */}
     <FadeIn delay={0.30}>
-      <h3 id="waarom-investbotiq" className="text-2xl font-semibold mb-1 text-indigo-800">Waarom Investbotiq?</h3>
+      <h3 id="waarom-investbotiq" className="text-2xl font-semibold mb-4 text-indigo-800">Waarom Investbotiq?</h3>
     </FadeIn>
     <FadeIn delay={0.36}>
-      <ul className="mb-8 list-disc list-inside space-y-1 text-gray-700 pl-2">
-        <li>Automatische cashflowgroei, maand na maand</li>
+      <ul className="mb-8 list-disc list-inside space-y-2 text-gray-700 pl-2">
+        <li>Automatische groei</li>
         <li>Geen technische kennis nodig</li>
-        <li>Transparante maandelijkse opbouw zichtbaar via je dashboard</li>
-        <li>Gestructureerde opbouw via spirits en cashflows</li>
+        <li>Transparante maandelijkse opbouw</li>
+        <li>Gestructureerde opbouw</li>
         <li>Geen externe tussenpartijen: alles in eigen beheer via de IQ Bot</li>
       </ul>
     </FadeIn>
 
     {/* Hoe werkt het? */}
     <FadeIn delay={0.42}>
-      <h3 id="hoe-werkt-het" className="text-2xl font-semibold mb-1 text-indigo-800">Hoe werkt het?</h3>
+      <h3 id="hoe-werkt-het" className="text-2xl font-semibold mb-4 text-indigo-800">Hoe werkt het?</h3>
     </FadeIn>
     <FadeIn delay={0.48}>
-      <ol className="mb-8 list-decimal list-inside space-y-1 text-gray-700 pl-2">
+      <ol className="mb-8 list-decimal list-inside space-y-2 text-gray-700 pl-2">
         <li>Aanmelden</li>
-        <li>De IQ Bot activeert automatisch spirits en cashflows</li>
-        <li>Jouw cashflow groeit elke maand zichtbaar op je dashboard</li>
+        <li>Activeer de Bot</li>
+        <li>Groei elke maand automatisch</li>
       </ol>
     </FadeIn>
 
     {/* Voordelen */}
     <FadeIn delay={0.54}>
-      <h3 className="text-2xl font-semibold mb-1 text-indigo-800">Voordelen:</h3>
+      <h3 className="text-2xl font-semibold mb-4 text-indigo-800">Voordelen:</h3>
     </FadeIn>
     <FadeIn delay={0.60}>
-      <ul className="mb-8 list-none space-y-1 text-gray-700 pl-2">
+      <ul className="mb-8 list-none space-y-2 text-gray-700 pl-2">
         <li>✔️ Geen minimale investering vereist</li>
-        <li>✔️ Transparante maandrapportage in dashboard</li>
-        <li>✔️ Non-technical: gebruikers hoeven niets te doen</li>
-        <li>✔️ Maandelijkse automatische groei</li>
+        <li>✔️ Transparantie en maandelijkse rapportage</li>
+        <li>✔️ Non-technical: merendeels passief</li>
+        <li>✔️ Passief inkomen</li>
+        <li>✔�� Maandelijkse groei</li>
       </ul>
     </FadeIn>
 
@@ -105,4 +105,5 @@ const InfoSection = React.forwardRef<HTMLDivElement>((props, ref) => (
     </div>
   </section>
 ));
+
 export default InfoSection;

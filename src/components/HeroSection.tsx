@@ -54,7 +54,7 @@ const HeroSection: React.FC<Props> = ({ onScrollToInfo }) => {
       <div className="flex-1 flex flex-col items-center md:items-start justify-center px-5 sm:px-10 lg:pl-20">
         <FadeIn delay={0.05}>
           <h1 className="text-4xl xs:text-5xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 leading-snug md:leading-tight drop-shadow-sm text-center md:text-left text-balance max-w-2xl">
-            Automatische <span className="text-indigo-500">cashflow</span> opbouwen
+            Automatische <span className="text-indigo-500">cashflow</span> op bouwen
             <br className="hidden md:block"/>
             met Investbotiq.
           </h1>
