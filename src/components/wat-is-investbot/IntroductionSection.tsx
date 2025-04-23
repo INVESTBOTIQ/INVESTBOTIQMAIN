@@ -16,9 +16,7 @@ export default function IntroductionSection() {
           duration: 0.6
         }} className="flex-1">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Jouw persoonlijke IQ BOT</h2>
-            <p className="text-lg text-gray-700 mb-6">
-              InvestbotIQ is jouw persoonlijke AI-financieringspartner. Het platform bouwt automatisch maandelijkse cashflow op via ons unieke Tier-systeem. Geen investeringskeuzes, geen moeilijke formulieren – de IQ Bot regelt alles voor je.
-            </p>
+            <p className="text-lg text-gray-700 mb-6">De IQ Bot is jouw persoonlijke Invest Agent. Wij zijn er alleen om je de toegang te geven tot deze krachtige tool! De IQ Bot bouwt automatisch maandelijkse cashflow op via ons unieke Tier-systeem. Geen investeringskeuzes de IQ Bot regelt alles voor je.</p>
           </motion.div>
           
           <motion.div initial={{
