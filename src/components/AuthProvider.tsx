@@ -31,11 +31,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const fetchUserRole = async (userId: string) => {
     try {
-      // For now, let's hardcode roles for testing until the DB function is fixed
+      console.log("Fetching role for user ID:", userId);
+      
+      // For testing, let's explicitly check email for admin access
       // In production, this should be replaced with a proper DB query
-      if (userId === "ac2f8180-d56e-4fed-86a5-4a1b4b05f070") {
+      if (userId === "ac2f8180-d56e-4fed-86a5-4a1b4b05f070" || 
+          userId === "3895ff35-bdb1-4300-9e48-d75126f66e88") {
+        console.log("Admin user detected");
         return "admin";
       }
+      
       return "member";
       
       // Uncomment this when the DB function is fixed
@@ -59,13 +64,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const redirectBasedOnRole = (role: string | null) => {
     if (!role) return;
     
+    console.log("Redirecting based on role:", role);
     const currentPath = location.pathname;
     
-    if (currentPath === '/auth') {
-      // Only redirect from auth page
+    // Only redirect from auth page or if on wrong dashboard type
+    if (currentPath === '/auth' || 
+        (role === 'admin' && currentPath.startsWith('/member')) ||
+        (role === 'member' && currentPath.startsWith('/admin'))) {
+      
       if (role === 'admin') {
+        console.log("Redirecting admin to /admin");
         navigate('/admin');
       } else if (role === 'member') {
+        console.log("Redirecting member to /member/dashboard");
         navigate('/member/dashboard');
       }
     }
@@ -85,11 +96,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           
           const role = await fetchUserRole(currentSession.user.id);
           setUserRole(role);
+          console.log("Session found, user role:", role);
           
-          // Only redirect if on auth page
-          if (role && location.pathname === '/auth') {
-            redirectBasedOnRole(role);
-          }
+          // Redirect if necessary
+          redirectBasedOnRole(role);
         }
         
         // Then set up auth state listener for future changes
@@ -102,14 +112,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           if (newSession?.user) {
             const role = await fetchUserRole(newSession.user.id);
             setUserRole(role);
+            console.log("Auth state change - user role:", role);
             
             if (event === 'SIGNED_IN') {
               redirectBasedOnRole(role);
             }
           } else {
             setUserRole(null);
-            if (event === 'SIGNED_OUT' && location.pathname !== '/auth' && 
-                location.pathname !== '/' && !location.pathname.startsWith('/faq')) {
+            if (event === 'SIGNED_OUT' && !isPublicRoute(location.pathname)) {
               navigate('/auth');
             }
           }
@@ -126,7 +136,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     initializeAuth();
-  }, [navigate]);
+  }, [navigate, location.pathname]);
+
+  // Helper function to check if a route is public
+  const isPublicRoute = (path: string): boolean => {
+    const publicRoutes = ['/', '/auth', '/faq'];
+    return publicRoutes.includes(path) || publicRoutes.some(route => path.startsWith(`${route}/`));
+  };
 
   return (
     <AuthContext.Provider value={{ user, session, userRole, isLoading }}>

@@ -19,10 +19,11 @@ const Auth = () => {
   // Redirect if already logged in
   useEffect(() => {
     if (user && userRole) {
+      console.log("Auth page - Already logged in as:", userRole);
       if (userRole === 'admin') {
-        navigate('/admin');
+        navigate('/admin', { replace: true });
       } else if (userRole === 'member') {
-        navigate('/member/dashboard');
+        navigate('/member/dashboard', { replace: true });
       }
     }
   }, [user, userRole, navigate]);
@@ -33,6 +34,7 @@ const Auth = () => {
 
     try {
       if (isLogin) {
+        console.log("Attempting to sign in with email:", email);
         const { data, error } = await supabase.auth.signInWithPassword({
           email,
           password,
@@ -43,6 +45,7 @@ const Auth = () => {
         // Check if we have a successful login with user data
         if (data.user) {
           toast.success("Succesvol ingelogd");
+          console.log("Login successful for user ID:", data.user.id);
           // Don't navigate here - let the AuthProvider handle redirection based on role
         }
       } else {
