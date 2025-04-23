@@ -199,7 +199,7 @@ export default function HoeWerktHet() {
             <motion.div variants={itemVariants} className="bg-white rounded-xl p-6 shadow-md">
               <p className="text-2xl mb-4">💼</p>
               <h3 className="text-xl font-semibold mb-3">Geen minimale investering vereist</h3>
-              <p className="text-gray-600">Begin zonder grote startkosten. Het systeem bouwt geleidelijk op en gebruikt alleen de middelen die nodig zijn.</p>
+              <p className="text-gray-600">Begin gratis. Het systeem bouwt geleidelijk op.</p>
             </motion.div>
             
             {/* Benefit 2 */}
