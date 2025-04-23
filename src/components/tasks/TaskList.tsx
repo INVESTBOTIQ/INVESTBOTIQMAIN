@@ -1,6 +1,7 @@
 
 import React from "react";
 import { TaskItem } from "./TaskItem";
+import { useTaskFilters } from "@/hooks/useTaskFilters";
 
 interface Task {
   id: string;
@@ -13,12 +14,32 @@ interface Task {
 
 interface TaskListProps {
   tasks: Task[];
+  statusFilter: string;
+  typeFilter: string;
+  priorityFilter: string;
+  sortBy: "deadline" | "priority";
   onStatusChange: (taskId: string) => void;
   onUpload: (taskId: string) => void;
 }
 
-export const TaskList: React.FC<TaskListProps> = ({ tasks, onStatusChange, onUpload }) => {
-  if (tasks.length === 0) {
+export const TaskList: React.FC<TaskListProps> = ({
+  tasks,
+  statusFilter,
+  typeFilter,
+  priorityFilter,
+  sortBy,
+  onStatusChange,
+  onUpload,
+}) => {
+  const { filteredAndSortedTasks } = useTaskFilters({
+    tasks,
+    statusFilter,
+    typeFilter,
+    priorityFilter,
+    sortBy,
+  });
+
+  if (filteredAndSortedTasks.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-8 text-center">
         <p className="text-muted-foreground">
@@ -30,7 +51,7 @@ export const TaskList: React.FC<TaskListProps> = ({ tasks, onStatusChange, onUpl
 
   return (
     <div className="space-y-4">
-      {tasks.map((task) => (
+      {filteredAndSortedTasks.map((task) => (
         <TaskItem
           key={task.id}
           task={task}
