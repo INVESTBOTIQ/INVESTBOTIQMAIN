@@ -1,31 +1,36 @@
 
+import React from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CheckSquare } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { type Task } from "@/types/task";
 
 const OpenTasks = () => {
-  const { data: tasksCount } = useQuery({
-    queryKey: ["openTasks"],
+  // Fetch the open tasks count
+  const { data: openTasksCount = 0 } = useQuery({
+    queryKey: ["openTasksCount"],
     queryFn: async () => {
       const { count, error } = await supabase
         .from("tasks")
-        .select("*", { count: "exact" })
+        .select("*", { count: 'exact', head: true })
         .eq("status", "open");
-      
+
       if (error) throw error;
       return count || 0;
     },
   });
 
   return (
-    <Card className="card-hover">
+    <Card>
       <CardHeader className="pb-2">
-        <CardTitle className="text-sm font-medium text-muted-foreground">
-          Open Taken
-        </CardTitle>
+        <CardTitle className="text-sm font-medium">Open Taken</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">{tasksCount || 0}</div>
+        <div className="flex items-center">
+          <CheckSquare className="h-5 w-5 text-blue-500 mr-2" />
+          <span className="text-2xl font-bold">{openTasksCount}</span>
+        </div>
       </CardContent>
     </Card>
   );

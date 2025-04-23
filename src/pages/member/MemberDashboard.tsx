@@ -7,7 +7,7 @@ import TotalValueCard from "@/components/dashboard/TotalValueCard";
 import SpiritsCount from "@/components/dashboard/SpiritsCount";
 import OpenTasks from "@/components/dashboard/OpenTasks";
 import DashboardSummary from "@/components/dashboard/DashboardSummary";
-import TaskList from "@/components/tasks/TaskList";
+import { TaskList } from "@/components/tasks/TaskList";
 import ReferralBox from "@/components/dashboard/ReferralBox";
 import { withRoleGuard } from "@/utils/withRoleGuard";
 
@@ -19,12 +19,10 @@ const MemberDashboard = () => (
       <Sidebar />
       <main className="flex-1 p-4 md:p-6 overflow-auto">
         <div className="flex flex-col gap-6">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Member Dashboard</h1>
-            <p className="text-muted-foreground">
-              Welkom bij uw Investbotiq dashboard
-            </p>
-          </div>
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Member Dashboard</h1>
+          <p className="text-muted-foreground">
+            Welkom bij uw Investbotiq dashboard
+          </p>
           {/* Four statistic cards - responsive grid */}
           <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             <CashflowSummary />
