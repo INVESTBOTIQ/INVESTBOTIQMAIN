@@ -5,6 +5,7 @@ import { useAuth } from "@/components/AuthProvider";
 import { ArrowLeft, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { motion } from "framer-motion";
 
 const NotFound = () => {
   const navigate = useNavigate();
@@ -26,21 +27,38 @@ const NotFound = () => {
     <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4">
       <Card className="max-w-md w-full">
         <CardContent className="pt-6 pb-0 text-center">
-          <div className="rounded-full bg-primary/10 w-16 h-16 flex items-center justify-center mx-auto mb-4">
+          <motion.div 
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="rounded-full bg-primary/10 w-16 h-16 flex items-center justify-center mx-auto mb-4"
+          >
             <span className="text-3xl">404</span>
-          </div>
-          <h1 className="text-xl md:text-2xl font-bold mb-2">Pagina niet gevonden</h1>
-          <p className="text-muted-foreground">
-            Deze pagina is momenteel niet beschikbaar of bestaat niet.
-            {userRole && " De IQ Bot is eraan aan het werken."}
-          </p>
+          </motion.div>
           
-          <div className="h-32 md:h-48 relative my-8 opacity-50">
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <h1 className="text-xl md:text-2xl font-bold mb-2">Pagina niet gevonden</h1>
+            <p className="text-muted-foreground">
+              Deze pagina is momenteel niet beschikbaar of bestaat niet.
+              {userRole && " De IQ Bot is eraan aan het werken."}
+            </p>
+          </motion.div>
+          
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="h-32 md:h-48 relative my-8 opacity-50"
+          >
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="w-24 h-24 rounded-full bg-gradient-to-r from-primary/20 via-purple-500/20 to-secondary/20 animate-pulse"></div>
               <div className="w-16 h-16 rounded-full absolute bg-gradient-to-r from-primary/30 via-purple-500/30 to-secondary/30 animate-pulse" style={{ animationDelay: "0.5s" }}></div>
             </div>
-          </div>
+          </motion.div>
         </CardContent>
         
         <CardFooter className="flex flex-col sm:flex-row gap-4 justify-center">
