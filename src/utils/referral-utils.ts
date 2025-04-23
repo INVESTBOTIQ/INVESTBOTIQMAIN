@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -27,7 +26,7 @@ export interface Referral {
   status: 'pending' | 'successful';
   created_at: string;
   updated_at: string;
-  referred_user_email?: string; // Added this property as optional
+  referred_user_email?: string; // Added this optional property
 }
 
 export interface ReferralWithDetails {
