@@ -1,3 +1,4 @@
+
 import React from "react";
 import { FadeIn } from "../info/FadeInAnimation";
 
@@ -18,7 +19,6 @@ export default function TierTableSection() {
               <tr className="bg-indigo-50 border-b border-indigo-100">
                 <th className="py-4 px-6 text-left">Tier</th>
                 <th className="py-4 px-6 text-left">Periode</th>
-                <th className="py-4 px-6 text-left">Acties</th>
                 <th className="py-4 px-6 text-left">Maandelijkse Leningen</th>
                 <th className="py-4 px-6 text-left">Spirits Actief</th>
                 <th className="py-4 px-6 text-left">Maandelijkse Cashflow</th>
@@ -30,7 +30,6 @@ export default function TierTableSection() {
               <tr className="border-b border-gray-100 hover:bg-indigo-50/30 transition-colors">
                 <td className="py-4 px-6 font-medium">Tier 2</td>
                 <td className="py-4 px-6">0 – 3 maanden</td>
-                <td className="py-4 px-6">4 BV's oprichten, eerste spirit activeren</td>
                 <td className="py-4 px-6">€2.100 (BEL + PLAT)</td>
                 <td className="py-4 px-6">1</td>
                 <td className="py-4 px-6 font-semibold">€400</td>
@@ -41,7 +40,6 @@ export default function TierTableSection() {
               <tr className="border-b border-gray-100 hover:bg-indigo-50/30 transition-colors">
                 <td className="py-4 px-6 font-medium">Tier 3</td>
                 <td className="py-4 px-6">3 – 6 maanden</td>
-                <td className="py-4 px-6">Geen nieuwe leningen, nieuwe spirit activeren</td>
                 <td className="py-4 px-6">€2.100 (BEL)</td>
                 <td className="py-4 px-6">2</td>
                 <td className="py-4 px-6 font-semibold">€800</td>
@@ -52,7 +50,6 @@ export default function TierTableSection() {
               <tr className="border-b border-gray-100 hover:bg-indigo-50/30 transition-colors">
                 <td className="py-4 px-6 font-medium">Tier 4</td>
                 <td className="py-4 px-6">6 – 9 maanden</td>
-                <td className="py-4 px-6">Nieuwe spirit activeren</td>
                 <td className="py-4 px-6">€2.100 (BEL)</td>
                 <td className="py-4 px-6">3</td>
                 <td className="py-4 px-6 font-semibold">€1.200</td>
@@ -63,7 +60,6 @@ export default function TierTableSection() {
               <tr className="border-b border-gray-100 hover:bg-indigo-50/30 transition-colors">
                 <td className="py-4 px-6 font-medium">Tier 5</td>
                 <td className="py-4 px-6">9 – 12 maanden</td>
-                <td className="py-4 px-6">2 spirits activeren</td>
                 <td className="py-4 px-6">€2.100 (BEL)</td>
                 <td className="py-4 px-6">5</td>
                 <td className="py-4 px-6 font-semibold">€2.000</td>
@@ -74,7 +70,6 @@ export default function TierTableSection() {
               <tr className="hover:bg-indigo-50/30 transition-colors">
                 <td className="py-4 px-6 font-medium">Tier 6</td>
                 <td className="py-4 px-6">12 – 15 maanden</td>
-                <td className="py-4 px-6">Geen nieuwe leningen meer</td>
                 <td className="py-4 px-6">€0</td>
                 <td className="py-4 px-6">5</td>
                 <td className="py-4 px-6 font-semibold">€2.000</td>
@@ -90,7 +85,6 @@ export default function TierTableSection() {
             {
               tier: "Tier 2",
               period: "0 – 3 maanden",
-              actions: "4 BV's oprichten, eerste spirit activeren",
               loan: "€2.100 (BEL + PLAT)",
               spirits: 1,
               cashflow: "€400",
@@ -99,7 +93,6 @@ export default function TierTableSection() {
             {
               tier: "Tier 3",
               period: "3 – 6 maanden",
-              actions: "Geen nieuwe leningen, nieuwe spirit activeren",
               loan: "€2.100 (BEL)",
               spirits: 2,
               cashflow: "€800",
@@ -108,7 +101,6 @@ export default function TierTableSection() {
             {
               tier: "Tier 4",
               period: "6 – 9 maanden",
-              actions: "Nieuwe spirit activeren",
               loan: "€2.100 (BEL)",
               spirits: 3,
               cashflow: "€1.200",
@@ -117,7 +109,6 @@ export default function TierTableSection() {
             {
               tier: "Tier 5",
               period: "9 – 12 maanden",
-              actions: "2 spirits activeren",
               loan: "€2.100 (BEL)",
               spirits: 5,
               cashflow: "€2.000",
@@ -126,7 +117,6 @@ export default function TierTableSection() {
             {
               tier: "Tier 6",
               period: "12 – 15 maanden",
-              actions: "Geen nieuwe leningen meer",
               loan: "€0",
               spirits: 5,
               cashflow: "€2.000",
@@ -166,3 +156,4 @@ export default function TierTableSection() {
     </section>
   );
 }
+
