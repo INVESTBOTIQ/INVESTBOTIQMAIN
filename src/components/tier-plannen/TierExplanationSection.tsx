@@ -1,3 +1,4 @@
+
 import React from "react";
 import { FadeIn } from "../info/FadeInAnimation";
 export default function TierExplanationSection() {
@@ -27,7 +28,7 @@ export default function TierExplanationSection() {
                     </div>
                     <div className="ml-4">
                       <p className="font-medium">Tier {tier}</p>
-                      {tier === 6 ? <p className="text-green-600 text-sm">Schuldvrij!</p> : <p className="text-gray-600 text-sm">Maand {(tier - 2) * 3} - {(tier - 1) * 3}</p>}
+                      {tier === 6 ? <p className="text-green-600 text-sm">End Tier Cycle</p> : <p className="text-gray-600 text-sm">Maand {(tier - 2) * 3} - {(tier - 1) * 3}</p>}
                     </div>
                   </div>)}
               </div>
