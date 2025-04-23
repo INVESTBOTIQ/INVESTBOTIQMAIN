@@ -46,7 +46,7 @@ const PublicHeader: React.FC = () => {
   const Logo = (
     <Link 
       to="/" 
-      className="flex items-center gap-4 cursor-pointer select-none" 
+      className="flex items-center gap-2 cursor-pointer select-none" 
       aria-label="Homepage"
     >
       <img 

@@ -56,7 +56,22 @@ const PublicHeaderMobileMenu: React.FC<Props> = ({ menuOpen, setMenuOpen, Logo }
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between px-6 py-4 border-b">
-              {Logo}
+              <Link 
+                to="/" 
+                className="flex items-center gap-2 cursor-pointer select-none"
+                onClick={() => setMenuOpen(false)}
+              >
+                <img 
+                  src="/lovable-uploads/f072ab55-6051-4ac3-a481-2047383cf59f.png" 
+                  alt="Investbotiq Icon" 
+                  className="h-10 w-auto"
+                />
+                <img 
+                  src="/lovable-uploads/4befc6ee-1b19-4552-af1f-062bf7191a8a.png" 
+                  alt="Investbotiq Logo" 
+                  className="h-8 w-auto"
+                />
+              </Link>
               <button
                 className="p-2 rounded-full hover:bg-indigo-50 transition"
                 onClick={() => setMenuOpen(false)}
