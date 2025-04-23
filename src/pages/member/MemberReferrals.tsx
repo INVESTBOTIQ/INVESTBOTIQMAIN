@@ -1,6 +1,4 @@
-
 import React, { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,38 +7,18 @@ import { Button } from "@/components/ui/button";
 import { Copy, Users, AlertCircle, CheckCircle } from "lucide-react";
 import { useAuth } from "@/components/AuthProvider";
 import { withRoleGuard } from "@/utils/withRoleGuard";
-import { 
-  getUserReferrals, 
-  getUserReferralRewards, 
-  createReferralLinkFromCode, 
-  copyReferralLink,
-  type Referral,
-  type ReferralReward 
-} from "@/utils/referral-utils";
+import { copyReferralLink } from "@/utils/referral-utils";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
+import { useUserReferrals, useUserReferralRewards, useReferralSummary } from "@/hooks/use-referrals";
 
 const MemberReferrals = () => {
   const { user } = useAuth();
   const [referralLink, setReferralLink] = useState<string>("");
   
-  const { data: referrals = [] } = useQuery({
-    queryKey: ["referrals", user?.id],
-    queryFn: async () => {
-      if (!user) return [];
-      return getUserReferrals(user.id);
-    },
-    enabled: !!user
-  });
-  
-  const { data: rewards = [] } = useQuery({
-    queryKey: ["referralRewards", user?.id],
-    queryFn: async () => {
-      if (!user) return [];
-      return getUserReferralRewards(user.id);
-    },
-    enabled: !!user
-  });
+  const { data: referrals = [] } = useUserReferrals(user?.id);
+  const { data: rewards = [] } = useUserReferralRewards(user?.id);
+  const { data: summary } = useReferralSummary(user?.id);
 
   // Find the user's primary referral code
   const ownReferral = referrals.find(ref => !ref.referred_user_id);
@@ -56,12 +34,10 @@ const MemberReferrals = () => {
     copyReferralLink(referralLink);
   };
 
-  // Count referrals by status
-  const pendingReferrals = referrals.filter(ref => ref.referred_user_id && ref.status === "pending").length;
-  const successfulReferrals = referrals.filter(ref => ref.referred_user_id && ref.status === "successful").length;
-  
-  // Calculate total rewards
-  const totalRewards = rewards.reduce((sum, reward) => sum + Number(reward.reward_value), 0);
+  // Get stats from summary
+  const pendingReferrals = summary?.pending_referrals || 0;
+  const successfulReferrals = summary?.successful_referrals || 0;
+  const totalRewards = summary?.total_bonus || 0;
   
   return (
     <div className="flex min-h-screen flex-col">
