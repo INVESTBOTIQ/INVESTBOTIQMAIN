@@ -36,6 +36,36 @@ export type Database = {
         }
         Relationships: []
       }
+      cashflow_history: {
+        Row: {
+          amount: number
+          changed_at: string
+          changed_by: string | null
+          id: string
+          note: string | null
+          previous_amount: number
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          changed_at?: string
+          changed_by?: string | null
+          id?: string
+          note?: string | null
+          previous_amount: number
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          changed_at?: string
+          changed_by?: string | null
+          id?: string
+          note?: string | null
+          previous_amount?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       cashflows: {
         Row: {
           cashflow_bedrag: number
@@ -60,6 +90,33 @@ export type Database = {
           maand?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      notification_templates: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          title: string
+          type: Database["public"]["Enums"]["notification_type"]
+          updated_at: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          title: string
+          type: Database["public"]["Enums"]["notification_type"]
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          title?: string
+          type?: Database["public"]["Enums"]["notification_type"]
+          updated_at?: string
         }
         Relationships: []
       }
@@ -150,12 +207,51 @@ export type Database = {
         }
         Relationships: []
       }
+      scheduled_notifications: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          is_group_notification: boolean | null
+          recipient_id: string | null
+          scheduled_for: string
+          status: string
+          title: string
+          type: Database["public"]["Enums"]["notification_type"]
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          is_group_notification?: boolean | null
+          recipient_id?: string | null
+          scheduled_for: string
+          status?: string
+          title: string
+          type: Database["public"]["Enums"]["notification_type"]
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          is_group_notification?: boolean | null
+          recipient_id?: string | null
+          scheduled_for?: string
+          status?: string
+          title?: string
+          type?: Database["public"]["Enums"]["notification_type"]
+        }
+        Relationships: []
+      }
       spirits: {
         Row: {
           activated_at: string
           created_at: string
           id: string
           monthly_cashflow: number
+          next_activation_date: string | null
+          status: Database["public"]["Enums"]["spirit_status"]
+          tier: number
           updated_at: string
           user_id: string
         }
@@ -164,6 +260,9 @@ export type Database = {
           created_at?: string
           id?: string
           monthly_cashflow?: number
+          next_activation_date?: string | null
+          status?: Database["public"]["Enums"]["spirit_status"]
+          tier?: number
           updated_at?: string
           user_id: string
         }
@@ -172,6 +271,9 @@ export type Database = {
           created_at?: string
           id?: string
           monthly_cashflow?: number
+          next_activation_date?: string | null
+          status?: Database["public"]["Enums"]["spirit_status"]
+          tier?: number
           updated_at?: string
           user_id?: string
         }
@@ -233,6 +335,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      check_spirit_activation_allowed: {
+        Args: { user_id: string }
+        Returns: boolean
+      }
       create_admin_user: {
         Args: { email: string; password: string }
         Returns: string
@@ -253,6 +359,7 @@ export type Database = {
     Enums: {
       notification_type: "taak" | "spirit" | "system"
       referral_status: "pending" | "successful"
+      spirit_status: "planned" | "active" | "paused"
       task_status: "open" | "in_progress" | "completed"
       user_role: "guest" | "member" | "admin"
     }
@@ -372,6 +479,7 @@ export const Constants = {
     Enums: {
       notification_type: ["taak", "spirit", "system"],
       referral_status: ["pending", "successful"],
+      spirit_status: ["planned", "active", "paused"],
       task_status: ["open", "in_progress", "completed"],
       user_role: ["guest", "member", "admin"],
     },

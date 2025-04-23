@@ -1,9 +1,11 @@
-
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { withRoleGuard } from "@/utils/withRoleGuard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
+import { updateCashflow } from "@/utils/supabase-utils";
+import { CashflowHistoryTable } from "@/components/cashflow/CashflowHistoryTable";
 import { 
   Table, 
   TableBody, 
@@ -22,7 +24,6 @@ import {
   ArrowDown
 } from "lucide-react";
 
-// Mock data
 const users = [
   {
     id: "1",
@@ -76,22 +77,30 @@ const AdminCashflows = () => {
   const [cashflowValues, setCashflowValues] = useState<Record<string, number>>(
     users.reduce((acc, user) => ({ ...acc, [user.id]: user.currentCashflow }), {})
   );
-  
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+
   const filteredUsers = users.filter(user => 
     user.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
     user.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  
+
   const handleCashflowChange = (userId: string, value: string) => {
     const numValue = parseInt(value, 10) || 0;
     setCashflowValues({ ...cashflowValues, [userId]: numValue });
   };
   
-  const handleSave = (userId: string) => {
-    // In een echte applicatie zou je hier een API-call maken om de cashflow op te slaan
-    console.log(`Updating cashflow for user ${userId} to ${cashflowValues[userId]}`);
-    // Toon succes melding of error
-    alert(`Cashflow bijgewerkt naar €${cashflowValues[userId]}`);
+  const handleSave = async (userId: string) => {
+    try {
+      await updateCashflow(
+        userId, 
+        cashflowValues[userId], 
+        "Handmatige aanpassing door admin"
+      );
+      toast.success("Cashflow succesvol bijgewerkt");
+    } catch (error) {
+      console.error("Error updating cashflow:", error);
+      toast.error("Er is een fout opgetreden bij het bijwerken van de cashflow");
+    }
   };
   
   return (
@@ -208,6 +217,11 @@ const AdminCashflows = () => {
               )}
             </TableBody>
           </Table>
+
+          <div className="mt-8">
+            <CardTitle className="mb-4">Cashflow Historie</CardTitle>
+            <CashflowHistoryTable userId={selectedUserId} />
+          </div>
         </CardContent>
       </Card>
     </div>
