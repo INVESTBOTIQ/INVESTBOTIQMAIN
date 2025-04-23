@@ -19,7 +19,6 @@ export default function TierTableSection() {
               <tr className="bg-indigo-50 border-b border-indigo-100">
                 <th className="py-4 px-6 text-left">Tier</th>
                 <th className="py-4 px-6 text-left">Periode</th>
-                <th className="py-4 px-6 text-left">Maandelijkse Leningen</th>
                 <th className="py-4 px-6 text-left">Spirits Actief</th>
                 <th className="py-4 px-6 text-left">Maandelijkse Cashflow</th>
                 <th className="py-4 px-6 text-left">Status</th>
@@ -30,7 +29,6 @@ export default function TierTableSection() {
               <tr className="border-b border-gray-100 hover:bg-indigo-50/30 transition-colors">
                 <td className="py-4 px-6 font-medium">Tier 2</td>
                 <td className="py-4 px-6">0 – 3 maanden</td>
-                <td className="py-4 px-6">€2.100 (BEL + PLAT)</td>
                 <td className="py-4 px-6">1</td>
                 <td className="py-4 px-6 font-semibold">€400</td>
                 <td className="py-4 px-6"><span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">Actief</span></td>
@@ -40,7 +38,6 @@ export default function TierTableSection() {
               <tr className="border-b border-gray-100 hover:bg-indigo-50/30 transition-colors">
                 <td className="py-4 px-6 font-medium">Tier 3</td>
                 <td className="py-4 px-6">3 – 6 maanden</td>
-                <td className="py-4 px-6">€2.100 (BEL)</td>
                 <td className="py-4 px-6">2</td>
                 <td className="py-4 px-6 font-semibold">€800</td>
                 <td className="py-4 px-6"><span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">Actief</span></td>
@@ -50,7 +47,6 @@ export default function TierTableSection() {
               <tr className="border-b border-gray-100 hover:bg-indigo-50/30 transition-colors">
                 <td className="py-4 px-6 font-medium">Tier 4</td>
                 <td className="py-4 px-6">6 – 9 maanden</td>
-                <td className="py-4 px-6">€2.100 (BEL)</td>
                 <td className="py-4 px-6">3</td>
                 <td className="py-4 px-6 font-semibold">€1.200</td>
                 <td className="py-4 px-6"><span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">Actief</span></td>
@@ -60,7 +56,6 @@ export default function TierTableSection() {
               <tr className="border-b border-gray-100 hover:bg-indigo-50/30 transition-colors">
                 <td className="py-4 px-6 font-medium">Tier 5</td>
                 <td className="py-4 px-6">9 – 12 maanden</td>
-                <td className="py-4 px-6">€2.100 (BEL)</td>
                 <td className="py-4 px-6">5</td>
                 <td className="py-4 px-6 font-semibold">€2.000</td>
                 <td className="py-4 px-6"><span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">Actief</span></td>
@@ -70,10 +65,9 @@ export default function TierTableSection() {
               <tr className="hover:bg-indigo-50/30 transition-colors">
                 <td className="py-4 px-6 font-medium">Tier 6</td>
                 <td className="py-4 px-6">12 – 15 maanden</td>
-                <td className="py-4 px-6">€0</td>
                 <td className="py-4 px-6">5</td>
                 <td className="py-4 px-6 font-semibold">€2.000</td>
-                <td className="py-4 px-6"><span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">Schuldvrij</span></td>
+                <td className="py-4 px-6"><span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">Finishing Tier Plan</span></td>
               </tr>
             </tbody>
           </table>
@@ -85,7 +79,6 @@ export default function TierTableSection() {
             {
               tier: "Tier 2",
               period: "0 – 3 maanden",
-              loan: "€2.100 (BEL + PLAT)",
               spirits: 1,
               cashflow: "€400",
               status: "Actief"
@@ -93,7 +86,6 @@ export default function TierTableSection() {
             {
               tier: "Tier 3",
               period: "3 – 6 maanden",
-              loan: "€2.100 (BEL)",
               spirits: 2,
               cashflow: "€800",
               status: "Actief"
@@ -101,7 +93,6 @@ export default function TierTableSection() {
             {
               tier: "Tier 4",
               period: "6 – 9 maanden",
-              loan: "€2.100 (BEL)",
               spirits: 3,
               cashflow: "€1.200",
               status: "Actief"
@@ -109,7 +100,6 @@ export default function TierTableSection() {
             {
               tier: "Tier 5",
               period: "9 – 12 maanden",
-              loan: "€2.100 (BEL)",
               spirits: 5,
               cashflow: "€2.000",
               status: "Actief"
@@ -117,10 +107,9 @@ export default function TierTableSection() {
             {
               tier: "Tier 6",
               period: "12 – 15 maanden",
-              loan: "€0",
               spirits: 5,
               cashflow: "€2.000",
-              status: "Schuldvrij"
+              status: "Finishing Tier Plan"
             }
           ].map((item, index) => (
             <FadeIn key={index} delay={0.3 + index * 0.1} className="bg-white rounded-lg shadow-md p-4 border border-gray-100">
@@ -140,10 +129,6 @@ export default function TierTableSection() {
                   <span className="text-gray-600">Spirits:</span>
                   <span className="font-medium">{item.spirits}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Lening:</span>
-                  <span className="font-medium">{item.loan}</span>
-                </div>
                 <div className="flex justify-between text-lg mt-4">
                   <span className="text-gray-800">Cashflow:</span>
                   <span className="font-bold text-indigo-600">{item.cashflow}</span>
@@ -156,4 +141,3 @@ export default function TierTableSection() {
     </section>
   );
 }
-
