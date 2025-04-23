@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ChevronDown, LogIn } from "lucide-react";
@@ -35,18 +36,10 @@ const PublicHeaderDesktopMenu: React.FC<Props> = ({ handleNav }) => {
 
   return (
     <nav className="hidden md:flex items-center gap-2 lg:gap-3 xl:gap-6 relative">
-      <Link to="/" className="px-3 py-2 rounded-md font-semibold hover:bg-indigo-50 transition-colors flex items-center gap-2">
-        <img 
-          src="/lovable-uploads/f072ab55-6051-4ac3-a481-2047383cf59f.png" 
-          alt="Investbotiq Icon" 
-          className="h-8 w-auto"
-        />
-        <img 
-          src="/lovable-uploads/4befc6ee-1b19-4552-af1f-062bf7191a8a.png" 
-          alt="Investbotiq Logo" 
-          className="h-6 w-auto hidden md:block"
-        />
+      <Link to="/" className="px-3 py-2 rounded-md font-semibold hover:bg-indigo-50 transition-colors">
+        Home
       </Link>
+      {/* Alles over Investbot (Dropdown) */}
       <div
         className="relative group"
         onMouseEnter={() => setDesktopSubmenuOpen(true)}
@@ -86,6 +79,7 @@ const PublicHeaderDesktopMenu: React.FC<Props> = ({ handleNav }) => {
         )}
         </AnimatePresence>
       </div>
+      {/* Single nav items */}
       {NAV_ITEMS.slice(2).map((item) => (
         <button
           key={item.title}
@@ -95,12 +89,14 @@ const PublicHeaderDesktopMenu: React.FC<Props> = ({ handleNav }) => {
           {item.title}
         </button>
       ))}
+      {/* Inloggen knop */}
       <Link
         to="/auth"
         className="flex items-center px-4 py-2 rounded-md bg-indigo-500 text-white hover:bg-indigo-600 font-semibold transition-all ml-2"
       >
         <LogIn className="mr-2 h-4 w-4" /> Log-in
       </Link>
+      {/* Register / Member */}
       {!user && (
         <Link
           to="/auth"
