@@ -85,8 +85,9 @@ const HeroSection: React.FC<Props> = ({
           <OrbVisual />
         </FadeIn>
         <FadeIn delay={0.34}>
-          <div className="mt-8 md:mt-14 text-indigo-800 font-semibold text-lg sm:text-xl text-center max-w-xs mx-auto">IQ Bot The Next
-Gen AI Agent</div>
+          <div className="mt-8 md:mt-14 text-indigo-800 font-semibold text-lg sm:text-xl text-center max-w-xs mx-auto">IQ Bot 
+The Next Gen 
+AI Agent</div>
         </FadeIn>
       </div>
 
