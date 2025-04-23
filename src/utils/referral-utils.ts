@@ -27,7 +27,7 @@ export interface Referral {
   status: 'pending' | 'successful';
   created_at: string;
   updated_at: string;
-  referred_user_email?: string; // Changed from an object to a string
+  referred_user_email?: string; // Added this property as optional
 }
 
 export interface ReferralWithDetails {
@@ -117,7 +117,7 @@ export async function getUserReferrals(userId: string): Promise<Referral[]> {
             .auth.admin.getUserById(referral.referred_user_id);
           
           if (authUser?.user) {
-            // Store email directly as string instead of object
+            // Add email as a new property
             referral.referred_user_email = authUser.user.email || 'Unknown';
           } else {
             referral.referred_user_email = 'Unknown';
