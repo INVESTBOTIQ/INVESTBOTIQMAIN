@@ -7,7 +7,7 @@ import TotalValueCard from "@/components/dashboard/TotalValueCard";
 import SpiritsCount from "@/components/dashboard/SpiritsCount";
 import OpenTasks from "@/components/dashboard/OpenTasks";
 import DashboardSummary from "@/components/dashboard/DashboardSummary";
-import { TaskList } from "@/components/tasks/TaskList";
+import TaskList from "@/components/dashboard/TaskList";
 import ReferralBox from "@/components/dashboard/ReferralBox";
 import { withRoleGuard } from "@/utils/withRoleGuard";
 

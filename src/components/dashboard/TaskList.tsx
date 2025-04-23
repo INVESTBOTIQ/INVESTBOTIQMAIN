@@ -23,7 +23,7 @@ const TaskList = () => {
 
       if (error) throw error;
 
-      // Ensure all tasks have the required fields
+      // Ensure all tasks have the required fields by providing defaults
       return data.map(task => ({
         ...task,
         type: task.type || 'document',
