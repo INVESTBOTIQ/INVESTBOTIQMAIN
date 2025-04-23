@@ -1,6 +1,12 @@
-
 import React from "react";
 import { FadeIn } from "../info/FadeInAnimation";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function TierTableSection() {
   return (
@@ -137,6 +143,21 @@ export default function TierTableSection() {
             </FadeIn>
           ))}
         </div>
+        
+        {/* Tier Selection Dropdown */}
+        <FadeIn delay={0.4}>
+          <div className="mt-12 max-w-xs mx-auto">
+            <Select>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Selecteer een Tier Plan" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="inbotiq1">InBotIQ1 Tier 1</SelectItem>
+                <SelectItem value="inbotiq2">InBotIQ2 Tier 2-6</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </FadeIn>
       </div>
     </section>
   );
