@@ -83,7 +83,7 @@ const Sidebar: React.FC<SidebarProps> = ({ className }) => {
     {
       icon: Home,
       label: "Dashboard",
-      href: "/member",
+      href: "/member/dashboard",
     },
     {
       icon: BarChart,
@@ -160,7 +160,7 @@ const Sidebar: React.FC<SidebarProps> = ({ className }) => {
   const sidebarItems = isAdmin ? adminItems : memberItems;
 
   return (
-    <aside className={cn("w-64 border-r bg-card p-4", className)}>
+    <aside className={cn("w-64 border-r bg-card p-4 hidden md:block", className)}>
       <div className="flex h-full flex-col justify-between">
         <div className="flex flex-col gap-6">
           <div className="py-2">

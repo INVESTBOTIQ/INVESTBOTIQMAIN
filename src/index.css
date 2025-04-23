@@ -95,6 +95,30 @@
   body {
     @apply bg-background text-foreground font-sans;
   }
+
+  /* Responsive table styling */
+  .responsive-table {
+    @apply w-full;
+  }
+
+  @media (max-width: 768px) {
+    .responsive-table thead {
+      @apply hidden;
+    }
+    
+    .responsive-table tbody tr {
+      @apply block border-b py-4;
+    }
+    
+    .responsive-table tbody td {
+      @apply block pl-4 py-1 text-left;
+    }
+    
+    .responsive-table tbody td::before {
+      @apply font-medium inline-block w-1/3;
+      content: attr(data-label);
+    }
+  }
 }
 
 .card-hover {
@@ -107,4 +131,43 @@
 
 .sidebar-item-active {
   @apply bg-investbotiq-light text-investbotiq-primary font-medium;
+}
+
+/* Added for mobile responsiveness */
+.main-content {
+  @apply flex-1 overflow-x-hidden;
+}
+
+/* Ensure buttons are consistent sizes on mobile */
+.mobile-btn {
+  @apply min-h-[44px] min-w-[44px]; /* Apple/Human Interface Guidelines min size */
+}
+
+/* Make SVG icons scale better */
+svg {
+  @apply flex-shrink-0;
+}
+
+/* Ensure proper scrolling on mobile */
+.overflow-container {
+  @apply overflow-x-auto -mx-4 px-4;
+}
+
+/* Additional animation classes */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+.slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }

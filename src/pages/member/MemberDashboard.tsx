@@ -17,27 +17,27 @@ const MemberDashboard = () => (
     <Header />
     <div className="flex flex-1">
       <Sidebar />
-      <main className="flex-1 p-6">
-        <div className="flex flex-col gap-8">
+      <main className="flex-1 p-4 md:p-6 overflow-auto">
+        <div className="flex flex-col gap-6">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Member Dashboard</h1>
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Member Dashboard</h1>
             <p className="text-muted-foreground">
               Welkom bij uw Investbotiq dashboard
             </p>
           </div>
-          {/* Four statistic cards */}
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {/* Four statistic cards - responsive grid */}
+          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             <CashflowSummary />
             <TotalValueCard />
             <SpiritsCount />
             <OpenTasks />
           </div>
-          {/* Cashflow chart + task list */}
-          <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-3">
+          {/* Cashflow chart + task list - stacked on mobile, side-by-side on desktop */}
+          <div className="grid gap-6 grid-cols-1 lg:grid-cols-3">
             <div className="lg:col-span-2">
               <DashboardSummary />
             </div>
-            <div className="lg:col-span-1">
+            <div>
               <TaskList />
             </div>
           </div>

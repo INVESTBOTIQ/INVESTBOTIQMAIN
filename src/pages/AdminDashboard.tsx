@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
@@ -50,11 +49,9 @@ const AdminDashboard = () => {
     { id: 2, message: "5 users wachten op spiritactivatie" }
   ]);
 
-  // Fetch dashboard insights from Supabase
   useEffect(() => {
     const fetchInsights = async () => {
       try {
-        // Demo data - in production this would come from Supabase
         setInsights({
           activeMembers: 24,
           totalCashflow: 18400,
@@ -125,17 +122,16 @@ const AdminDashboard = () => {
       <Header />
       <div className="flex flex-1">
         <Sidebar />
-        <main className="flex-1 p-6">
+        <main className="flex-1 p-4 md:p-6 overflow-auto">
           <div className="flex flex-col gap-6">
             <div>
-              <h1 className="text-3xl font-bold tracking-tight mb-2">Admin Dashboard</h1>
+              <h1 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">Admin Dashboard</h1>
               <p className="text-muted-foreground">
                 Welkom bij het beheerderspanel van Investbotiq. Als admin kun je hier het volledige platform beheren.
               </p>
             </div>
             
-            {/* Key Insights */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <Card>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-medium">Actieve Members</CardTitle>
@@ -185,7 +181,6 @@ const AdminDashboard = () => {
               </Card>
             </div>
             
-            {/* Alerts */}
             {alerts.length > 0 && (
               <Card className="bg-yellow-50 border-yellow-200">
                 <CardHeader className="pb-2">
@@ -207,12 +202,12 @@ const AdminDashboard = () => {
               </Card>
             )}
             
-            {/* Menu Items */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {adminMenuItems.map((item, index) => (
                 <Card 
                   key={index} 
                   className="cursor-pointer hover:shadow-md transition-shadow"
+                  onClick={() => navigate(item.path)}
                 >
                   <CardHeader className={`${item.color} rounded-t-lg`}>
                     <div className="flex items-center gap-4">
@@ -236,7 +231,6 @@ const AdminDashboard = () => {
               ))}
             </div>
             
-            {/* Recent Activity */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center">
@@ -244,7 +238,7 @@ const AdminDashboard = () => {
                   Recent Activity
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="overflow-x-auto">
                 <ul className="space-y-4">
                   {activities.map(activity => (
                     <li key={activity.id} className="flex items-start border-b pb-2">

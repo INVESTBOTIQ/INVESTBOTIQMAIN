@@ -6,12 +6,13 @@ import ProgressTimeline from "./ProgressTimeline";
 
 const DashboardSummary: React.FC = () => {
   return (
-    <div className="grid gap-6 md:grid-cols-2">
+    <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-2">
       <Card className="card-hover">
         <CardHeader>
           <CardTitle>Cashflow Ontwikkeling</CardTitle>
           <p className="text-sm text-muted-foreground">
             Cashflow groeit automatisch naarmate spirits worden geactiveerd.
+            Elke 3 maanden activeert de IQ Bot een nieuwe spirit.
           </p>
         </CardHeader>
         <CardContent>

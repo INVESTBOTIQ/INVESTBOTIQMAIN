@@ -1,90 +1,67 @@
 
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/components/AuthProvider";
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Link, Share2 } from "lucide-react";
+import { Copy, Check } from "lucide-react";
 import { toast } from "sonner";
+import { useAuth } from "@/components/AuthProvider";
 
 const ReferralBox = () => {
+  const [copied, setCopied] = useState(false);
   const { user } = useAuth();
-
-  const { data: referralData } = useQuery({
-    queryKey: ["referralInfo", user?.id],
-    queryFn: async () => {
-      if (!user) return { code: null, count: 0 };
-
-      // Get referral code
-      const { data: referralCode, error: codeError } = await supabase
-        .from("referrals")
-        .select("referral_code")
-        .eq("user_id", user.id)
-        .single();
-
-      if (codeError && codeError.code !== "PGRST116") {
-        console.error("Error fetching referral code:", codeError);
-      }
-
-      // Get successful referrals count
-      const { count: referralCount, error: countError } = await supabase
-        .from("referrals")
-        .select("*", { count: "exact" })
-        .eq("user_id", user.id)
-        .eq("status", "successful");
-
-      if (countError) {
-        console.error("Error fetching referral count:", countError);
-      }
-
-      return {
-        code: referralCode?.referral_code || null,
-        count: referralCount || 0,
-      };
-    },
-    enabled: !!user,
-  });
-
+  
+  // In a real app, you would get this from the user's profile or generate it
+  const referralCode = user?.id?.substring(0, 8) || "ABC123";
+  const referralLink = `https://investbotiq.nl?ref=${referralCode}`;
+  
   const copyToClipboard = () => {
-    if (referralData?.code) {
-      const referralLink = `https://investbotiq.nl/signup?ref=${referralData.code}`;
-      navigator.clipboard.writeText(referralLink);
-      toast.success("Referral link gekopieerd!");
-    }
+    navigator.clipboard.writeText(referralLink);
+    setCopied(true);
+    toast.success("Referral link gekopieerd naar klembord");
+    
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
   };
-
+  
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Link className="h-5 w-5" /> Referral Programma
-        </CardTitle>
-        <CardDescription>
-          Verdien extra voordelen door vrienden uit te nodigen.
-        </CardDescription>
+        <CardTitle className="text-xl">Referral Programma</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-          <div>
-            <p className="text-sm text-muted-foreground mb-1">Succesvolle referrals</p>
-            <p className="text-3xl font-bold">{referralData?.count || 0}</p>
+      <CardContent>
+        <div className="flex flex-col md:flex-row md:items-center gap-4">
+          <div className="flex-1 space-y-2">
+            <p>
+              Verwijs vrienden naar Investbotiq en ontvang €100 extra cashflow voor elke succesvolle referral.
+            </p>
+            <p className="text-muted-foreground text-sm">
+              Deel je unieke link hieronder om te beginnen:
+            </p>
           </div>
-          
-          <Button 
-            onClick={copyToClipboard} 
-            className="w-full md:w-auto flex gap-2 items-center"
-            disabled={!referralData?.code}
-          >
-            <Share2 className="h-4 w-4" />
-            <span>Kopieer Referral Link</span>
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <div className="p-2 bg-gray-100 rounded text-sm truncate max-w-[200px] sm:max-w-none">
+              {referralLink}
+            </div>
+            <Button 
+              className="flex-shrink-0" 
+              onClick={copyToClipboard}
+              disabled={copied}
+            >
+              {copied ? (
+                <>
+                  <Check className="h-4 w-4 mr-2" />
+                  Gekopieerd
+                </>
+              ) : (
+                <>
+                  <Copy className="h-4 w-4 mr-2" />
+                  Kopieer link
+                </>
+              )}
+            </Button>
+          </div>
         </div>
-        
-        {referralData?.code && (
-          <div className="mt-4 p-3 bg-muted rounded-md text-sm text-center overflow-hidden text-ellipsis">
-            <code>https://investbotiq.nl/signup?ref={referralData.code}</code>
-          </div>
-        )}
       </CardContent>
     </Card>
   );

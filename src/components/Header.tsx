@@ -1,56 +1,52 @@
 
-import React from "react";
-import { Bell, LogOut, Settings, User } from "lucide-react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useAuth } from "./AuthProvider";
+import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { supabase } from "@/integrations/supabase/client";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import MobileMenu from "./MobileMenu";
 
-const Header: React.FC = () => {
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
+const Header = () => {
+  const { user, userRole } = useAuth();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  const handleCloseMobileMenu = () => {
+    setMobileMenuOpen(false);
   };
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b bg-background px-4 md:px-6">
-      <div className="flex items-center gap-2">
-        <h1 className="text-xl font-bold text-investbotiq-primary">
-          Investbotiq
-        </h1>
+    <header className="bg-white border-b sticky top-0 z-30">
+      <div className="flex items-center justify-between h-16 px-4 lg:px-6">
+        <Link to="/" className="flex items-center">
+          <span className="text-xl font-bold text-primary">Investbotiq</span>
+        </Link>
+        
+        <div className="flex items-center gap-4">
+          {user && (
+            <span className="hidden md:block text-sm text-muted-foreground">
+              {user.email}
+            </span>
+          )}
+          
+          {/* Mobile menu toggle */}
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="md:hidden"
+            onClick={() => setMobileMenuOpen(true)}
+          >
+            <Menu className="h-6 w-6" />
+            <span className="sr-only">Open menu</span>
+          </Button>
+        </div>
       </div>
-      <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" className="relative">
-          <Bell className="h-5 w-5" />
-          <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-investbotiq-primary text-[10px] text-white">
-            3
-          </span>
-        </Button>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <User className="h-5 w-5" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Mijn Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Settings className="mr-2 h-4 w-4" />
-              <span>Instellingen</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleLogout}>
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Uitloggen</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+      
+      {/* Mobile menu */}
+      <MobileMenu 
+        isOpen={mobileMenuOpen} 
+        setIsOpen={setMobileMenuOpen} 
+        onClose={handleCloseMobileMenu} 
+      />
     </header>
   );
 };
