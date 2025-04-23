@@ -1,10 +1,9 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import PublicHeader from "@/components/PublicHeader";
-import { CircleCheck, Robot, TrendingUp, Timer } from "lucide-react";
+import { CircleCheck, Bot, TrendingUp, Timer } from "lucide-react";
 import { 
   Accordion,
   AccordionContent,
@@ -308,7 +307,7 @@ export default function TierPlannen() {
             {/* Reason 2 */}
             <motion.div variants={itemVariants} className="bg-white rounded-xl p-6 shadow-md">
               <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mb-4">
-                <Robot className="w-6 h-6 text-indigo-600" />
+                <Bot className="w-6 h-6 text-indigo-600" />
               </div>
               <h3 className="text-xl font-bold mb-3">Automatisering via IQ Bot</h3>
               <p className="text-gray-700">

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import PublicHeader from "@/components/PublicHeader";
-import { BookOpen, Flag, Heart, Shield, Robot } from "lucide-react";
+import { BookOpen, Flag, Heart, Shield, Bot } from "lucide-react";
 
 export default function MissieVisie() {
   return (
@@ -187,7 +187,7 @@ export default function MissieVisie() {
               className="bg-white rounded-xl p-6 shadow-md"
             >
               <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mb-4">
-                <Robot className="w-6 h-6 text-purple-600" />
+                <Bot className="w-6 h-6 text-purple-600" />
               </div>
               <h3 className="text-xl font-bold mb-3">Innovatie</h3>
               <p className="text-gray-700">

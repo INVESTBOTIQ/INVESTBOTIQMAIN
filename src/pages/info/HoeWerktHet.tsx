@@ -1,10 +1,9 @@
-
 import React from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import PublicHeader from "@/components/PublicHeader";
-import { CalendarDays, CircleCheck, CircleUser, Robot, TrendingUp } from "lucide-react";
+import { CalendarDays, CircleCheck, CircleUser, Bot, TrendingUp } from "lucide-react";
 
 // Animation variants
 const containerVariants = {
@@ -97,7 +96,7 @@ export default function HoeWerktHet() {
               </div>
               <div>
                 <div className="flex items-center gap-3 mb-3">
-                  <Robot className="w-5 h-5 text-blue-600" />
+                  <Bot className="w-5 h-5 text-blue-600" />
                   <h3 className="text-xl md:text-2xl font-semibold">Activeer de Bot</h3>
                 </div>
                 <p className="text-lg text-gray-700">
