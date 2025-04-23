@@ -227,10 +227,22 @@ const AdminTasks = () => {
     }
   };
   
-  const isTaskNearDeadline = (dueDate) => {
+  const isTaskNearDeadline = (dueDate: string): boolean => {
     const today = new Date();
-    const taskDate = new Date(dueDate);
-    const diffTime = taskDate - today;
+    // Parse the dueDate string to a Date object
+    const taskDateParts = dueDate.split(' ');
+    const day = parseInt(taskDateParts[0], 10);
+    const month = taskDateParts[1];
+    const year = parseInt(taskDateParts[2], 10);
+    
+    const monthMap: { [key: string]: number } = {
+      'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'Mei': 4,
+      'Jun': 5, 'Jul': 6, 'Aug': 7, 'Sep': 8,
+      'Oct': 9, 'Nov': 10, 'Dec': 11
+    };
+    
+    const taskDate = new Date(year, monthMap[month], day);
+    const diffTime = taskDate.getTime() - today.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return diffDays <= 2 && diffDays >= 0;
   };
@@ -272,7 +284,7 @@ const AdminTasks = () => {
               <SelectItem value="high">Hoge prioriteit</SelectItem>
               <SelectItem value="medium">Gemiddelde prioriteit</SelectItem>
               <SelectItem value="low">Lage prioriteit</SelectItem>
-              <SelectItem disabled>
+              <SelectItem value="divider" disabled>
                 <div className="h-px w-full bg-muted my-1"></div>
               </SelectItem>
               <SelectItem value="verification">Verificatie</SelectItem>

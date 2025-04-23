@@ -288,7 +288,7 @@ const AdminUsers = () => {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center">
-            <Users className="h-4 w-4 mr-2" />
+            <UserCog className="h-4 w-4 mr-2" />
             Alle Gebruikers ({filteredUsers.length})
           </CardTitle>
         </CardHeader>
