@@ -2,22 +2,14 @@
 import React from "react";
 import { TaskItem } from "./TaskItem";
 import { useTaskFilters } from "@/hooks/useTaskFilters";
-
-interface Task {
-  id: string;
-  taak_omschrijving: string;
-  deadline?: string;
-  status: 'open' | 'completed' | 'expired';
-  type: 'contract' | 'document' | 'report';
-  priority: 'high' | 'medium' | 'low';
-}
+import { type Task, type TaskSortBy } from "@/types/task";
 
 interface TaskListProps {
   tasks: Task[];
   statusFilter: string;
   typeFilter: string;
   priorityFilter: string;
-  sortBy: "deadline" | "priority";
+  sortBy: TaskSortBy;
   onStatusChange: (taskId: string) => void;
   onUpload: (taskId: string) => void;
 }
