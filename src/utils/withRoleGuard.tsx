@@ -16,6 +16,7 @@ export function withRoleGuard<P>(
   return function GuardedComponent(props: P) {
     const { user, userRole, isLoading } = useAuth();
 
+    // Show loading state while checking auth
     if (isLoading) {
       return (
         <div className="flex min-h-screen items-center justify-center">
@@ -31,6 +32,7 @@ export function withRoleGuard<P>(
     }
 
     console.log("withRoleGuard - Current user role:", userRole, "Allowed roles:", allowedRoles);
+    console.log("withRoleGuard - Current user email:", user.email);
 
     // Check if the user's role is allowed for this component
     if (!userRole || !allowedRoles.includes(userRole)) {

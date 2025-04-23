@@ -19,7 +19,7 @@ const Auth = () => {
   // Redirect if already logged in
   useEffect(() => {
     if (user && userRole) {
-      console.log("Auth page - Already logged in as:", userRole);
+      console.log("Auth page - Already logged in as:", userRole, "with email:", user.email);
       if (userRole === 'admin') {
         navigate('/admin', { replace: true });
       } else if (userRole === 'member') {
@@ -45,7 +45,7 @@ const Auth = () => {
         // Check if we have a successful login with user data
         if (data.user) {
           toast.success("Succesvol ingelogd");
-          console.log("Login successful for user ID:", data.user.id);
+          console.log("Login successful for user email:", data.user.email);
           // Don't navigate here - let the AuthProvider handle redirection based on role
         }
       } else {

@@ -29,30 +29,33 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const fetchUserRole = async (userId: string) => {
+  const fetchUserRole = async (userId: string, userEmail: string) => {
     try {
-      console.log("Fetching role for user ID:", userId);
+      console.log("Fetching role for user email:", userEmail);
       
-      // For testing, let's explicitly check email for admin access
-      // In production, this should be replaced with a proper DB query
-      if (userId === "ac2f8180-d56e-4fed-86a5-4a1b4b05f070" || 
-          userId === "3895ff35-bdb1-4300-9e48-d75126f66e88") {
-        console.log("Admin user detected");
+      // Use email to determine role (hard-coded for demo)
+      if (userEmail === "investbotiq@gmail.com") {
+        console.log("Admin user detected with email:", userEmail);
         return "admin";
+      } else {
+        console.log("Member user detected with email:", userEmail);
+        return "member";
       }
       
-      return "member";
-      
-      // Uncomment this when the DB function is fixed
+      // In production, you would query the database like this:
       /*
-      const { data, error } = await supabase.rpc('get_user_role', { user_id: userId });
+      const { data, error } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', userId)
+        .single();
       
       if (error) {
         console.error("Error fetching user role:", error);
         return null;
       }
       
-      return data;
+      return data.role;
       */
     } catch (error) {
       console.error("Error in fetchUserRole:", error);
@@ -94,7 +97,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           setSession(currentSession);
           setUser(currentSession.user);
           
-          const role = await fetchUserRole(currentSession.user.id);
+          const userEmail = currentSession.user.email;
+          console.log("Session found, user email:", userEmail);
+          
+          const role = await fetchUserRole(currentSession.user.id, userEmail || "");
           setUserRole(role);
           console.log("Session found, user role:", role);
           
@@ -104,15 +110,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         
         // Then set up auth state listener for future changes
         const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, newSession) => {
-          console.log("Auth state changed:", event, newSession?.user?.id);
+          console.log("Auth state changed:", event, newSession?.user?.email);
           
           setSession(newSession);
           setUser(newSession?.user ?? null);
           
           if (newSession?.user) {
-            const role = await fetchUserRole(newSession.user.id);
+            const userEmail = newSession.user.email;
+            const role = await fetchUserRole(newSession.user.id, userEmail || "");
             setUserRole(role);
-            console.log("Auth state change - user role:", role);
+            console.log("Auth state change - user role:", role, "for email:", userEmail);
             
             if (event === 'SIGNED_IN') {
               redirectBasedOnRole(role);
