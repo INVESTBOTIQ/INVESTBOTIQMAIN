@@ -213,7 +213,7 @@ export default function HoeWerktHet() {
             <motion.div variants={itemVariants} className="bg-white rounded-xl p-6 shadow-md">
               <p className="text-2xl mb-4">📈</p>
               <h3 className="text-xl font-semibold mb-3">Maandelijkse cashflow die groeit</h3>
-              <p className="text-gray-600">Zie je cashflow elke drie maanden groeien dankzij nieuwe spirits en geoptimaliseerde strategieën.</p>
+              <p className="text-gray-600">Zie je cashflow elke drie maanden groeien.</p>
             </motion.div>
             
             {/* Benefit 4 */}
