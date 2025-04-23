@@ -1,10 +1,9 @@
-
 import React from "react";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 import CashflowSummary from "@/components/dashboard/CashflowSummary";
 import TotalValueCard from "@/components/dashboard/TotalValueCard";
-import SpiritsCount from "@/components/dashboard/SpiritsCount";
+import FlowlutasCount from "@/components/dashboard/FlowlutasCount";
 import OpenTasks from "@/components/dashboard/OpenTasks";
 import DashboardSummary from "@/components/dashboard/DashboardSummary";
 import TaskList from "@/components/dashboard/TaskList";
@@ -27,7 +26,7 @@ const MemberDashboard = () => (
           <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             <CashflowSummary />
             <TotalValueCard />
-            <SpiritsCount />
+            <FlowlutasCount />
             <OpenTasks />
           </div>
           {/* Cashflow chart + task list - stacked on mobile, side-by-side on desktop */}

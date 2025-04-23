@@ -33,10 +33,10 @@ import {
 } from "@/components/ui/select";
 
 // Mock data
-const spirits = [
+const flowlutas = [
   {
     id: "1",
-    name: "Spirit Alpha",
+    name: "Flowluta Alpha",
     user: "Jan Jansen",
     userEmail: "jan.jansen@example.com",
     activationDate: "15 Mar 2025",
@@ -46,7 +46,7 @@ const spirits = [
   },
   {
     id: "2",
-    name: "Spirit Beta",
+    name: "Flowluta Beta",
     user: "Emma Visser",
     userEmail: "emma.visser@example.com",
     activationDate: "20 Mar 2025",
@@ -56,7 +56,7 @@ const spirits = [
   },
   {
     id: "3",
-    name: "Spirit Gamma",
+    name: "Flowluta Gamma",
     user: "Lucas de Wit",
     userEmail: "lucas.dewit@example.com",
     activationDate: "5 Apr 2025",
@@ -66,7 +66,7 @@ const spirits = [
   },
   {
     id: "4",
-    name: "Spirit Delta",
+    name: "Flowluta Delta",
     user: "Sophie Bakker",
     userEmail: "sophie.bakker@example.com",
     activationDate: "Nog niet geactiveerd",
@@ -76,7 +76,7 @@ const spirits = [
   },
   {
     id: "5",
-    name: "Spirit Epsilon",
+    name: "Flowluta Epsilon",
     user: "Thomas Meijer",
     userEmail: "thomas.meijer@example.com",
     activationDate: "12 Apr 2025",
@@ -86,30 +86,30 @@ const spirits = [
   },
 ];
 
-const AdminSpirits = () => {
+const AdminFlowlutas = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("all");
   
-  const filteredSpirits = spirits.filter(spirit => {
-    const matchesSearch = spirit.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-      spirit.user.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredFlowlutas = flowlutas.filter(flowluta => {
+    const matchesSearch = flowluta.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      flowluta.user.toLowerCase().includes(searchTerm.toLowerCase());
     
     if (filter === "all") return matchesSearch;
-    if (filter === "active") return matchesSearch && spirit.status === "active";
-    if (filter === "pending") return matchesSearch && spirit.status === "pending";
+    if (filter === "active") return matchesSearch && flowluta.status === "active";
+    if (filter === "pending") return matchesSearch && flowluta.status === "pending";
     
     return matchesSearch;
   });
   
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-4">Spirits Beheer</h2>
+      <h2 className="text-xl font-semibold mb-4">Flowlutas Beheer</h2>
       
       <div className="flex flex-wrap gap-4 justify-between items-center mb-6">
         <div className="relative w-72">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Zoek op spirit of gebruiker"
+            placeholder="Zoek op flowluta of gebruiker"
             className="pl-8"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -125,21 +125,21 @@ const AdminSpirits = () => {
               <SelectValue placeholder="Filter" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Alle spirits</SelectItem>
+              <SelectItem value="all">Alle flowlutas</SelectItem>
               <SelectItem value="active">Actief</SelectItem>
               <SelectItem value="pending">In afwachting</SelectItem>
             </SelectContent>
           </Select>
           
           <Button>
-            <Plus className="mr-2 h-4 w-4" /> Nieuwe Spirit
+            <Plus className="mr-2 h-4 w-4" /> Nieuwe Flowluta
           </Button>
         </div>
       </div>
       
       <Card>
         <CardHeader>
-          <CardTitle>Spirits Overzicht</CardTitle>
+          <CardTitle>Flowlutas Overzicht</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
@@ -147,7 +147,7 @@ const AdminSpirits = () => {
               <TableRow>
                 <TableHead className="w-[200px]">
                   <div className="flex items-center">
-                    Spirit Naam
+                    Flowluta Naam
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                   </div>
                 </TableHead>
@@ -160,37 +160,37 @@ const AdminSpirits = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredSpirits.map((spirit) => (
-                <TableRow key={spirit.id}>
+              {filteredFlowlutas.map((flowluta) => (
+                <TableRow key={flowluta.id}>
                   <TableCell>
                     <div className="flex items-center">
                       <Sparkles className="mr-2 h-4 w-4 text-purple-500" />
-                      <span className="font-medium">{spirit.name}</span>
+                      <span className="font-medium">{flowluta.name}</span>
                     </div>
                   </TableCell>
                   <TableCell>
                     <div>
-                      <p>{spirit.user}</p>
-                      <p className="text-sm text-muted-foreground">{spirit.userEmail}</p>
+                      <p>{flowluta.user}</p>
+                      <p className="text-sm text-muted-foreground">{flowluta.userEmail}</p>
                     </div>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center">
-                      {spirit.status === "active" ? (
+                      {flowluta.status === "active" ? (
                         <>
                           <CheckCircle2 className="mr-2 h-4 w-4 text-green-500" />
-                          {spirit.activationDate}
+                          {flowluta.activationDate}
                         </>
                       ) : (
                         <>
                           <CalendarClock className="mr-2 h-4 w-4 text-yellow-500" />
-                          {spirit.activationDate}
+                          {flowluta.activationDate}
                         </>
                       )}
                     </div>
                   </TableCell>
                   <TableCell>
-                    {spirit.status === "active" ? (
+                    {flowluta.status === "active" ? (
                       <Badge className="bg-green-500">Actief</Badge>
                     ) : (
                       <Badge variant="outline" className="flex items-center">
@@ -200,10 +200,10 @@ const AdminSpirits = () => {
                     )}
                   </TableCell>
                   <TableCell>
-                    <span className="font-medium">{spirit.value.toLocaleString('nl-NL')}</span>
+                    <span className="font-medium">{flowluta.value.toLocaleString('nl-NL')}</span>
                   </TableCell>
                   <TableCell>
-                    <span className="font-medium">{spirit.cashflowContribution}</span>
+                    <span className="font-medium">{flowluta.cashflowContribution}</span>
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
@@ -214,7 +214,7 @@ const AdminSpirits = () => {
                       >
                         <Edit className="h-4 w-4" />
                       </Button>
-                      {spirit.status === "pending" && (
+                      {flowluta.status === "pending" && (
                         <Button
                           variant="outline"
                           size="icon"
@@ -236,10 +236,10 @@ const AdminSpirits = () => {
                   </TableCell>
                 </TableRow>
               ))}
-              {filteredSpirits.length === 0 && (
+              {filteredFlowlutas.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={7} className="h-24 text-center">
-                    <p className="text-muted-foreground">Geen spirits gevonden</p>
+                    <p className="text-muted-foreground">Geen flowlutas gevonden</p>
                   </TableCell>
                 </TableRow>
               )}
@@ -251,4 +251,4 @@ const AdminSpirits = () => {
   );
 };
 
-export default withRoleGuard(AdminSpirits, ["admin"]);
+export default withRoleGuard(AdminFlowlutas, ["admin"]);

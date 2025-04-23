@@ -93,6 +93,42 @@ export type Database = {
         }
         Relationships: []
       }
+      flowlutas: {
+        Row: {
+          activated_at: string
+          created_at: string
+          id: string
+          monthly_cashflow: number
+          next_activation_date: string | null
+          status: Database["public"]["Enums"]["flowluta_status"]
+          tier: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          activated_at?: string
+          created_at?: string
+          id?: string
+          monthly_cashflow?: number
+          next_activation_date?: string | null
+          status?: Database["public"]["Enums"]["flowluta_status"]
+          tier?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          activated_at?: string
+          created_at?: string
+          id?: string
+          monthly_cashflow?: number
+          next_activation_date?: string | null
+          status?: Database["public"]["Enums"]["flowluta_status"]
+          tier?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       notification_templates: {
         Row: {
           content: string
@@ -344,6 +380,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      check_flowluta_activation_allowed: {
+        Args: { user_id: string }
+        Returns: boolean
+      }
       check_spirit_activation_allowed: {
         Args: { user_id: string }
         Returns: boolean
@@ -366,7 +406,8 @@ export type Database = {
       }
     }
     Enums: {
-      notification_type: "taak" | "spirit" | "system"
+      flowluta_status: "planned" | "active" | "paused"
+      notification_type: "taak" | "flowluta" | "system"
       referral_status: "pending" | "successful"
       spirit_status: "planned" | "active" | "paused"
       task_status: "open" | "in_progress" | "completed"
@@ -486,7 +527,8 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      notification_type: ["taak", "spirit", "system"],
+      flowluta_status: ["planned", "active", "paused"],
+      notification_type: ["taak", "flowluta", "system"],
       referral_status: ["pending", "successful"],
       spirit_status: ["planned", "active", "paused"],
       task_status: ["open", "in_progress", "completed"],

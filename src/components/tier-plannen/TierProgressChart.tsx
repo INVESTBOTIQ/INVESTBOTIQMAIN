@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
   BarChart,
@@ -15,7 +14,6 @@ import {
 } from "recharts";
 import { FadeIn } from "../info/FadeInAnimation";
 
-// Enhanced dataset with more detailed information
 const data = [
   {
     month: "1",
@@ -89,7 +87,6 @@ const data = [
   },
 ];
 
-// Custom tooltip component for enhanced information display
 const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
   if (active && payload && payload.length) {
     const dataPoint = payload[0].payload;
@@ -135,7 +132,6 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>)
 export default function TierProgressChart() {
   const [hoveredBar, setHoveredBar] = useState<string | null>(null);
 
-  // Highlight bar on hover
   const handleBarMouseEnter = (dataKey: string) => {
     setHoveredBar(dataKey);
   };
@@ -144,7 +140,6 @@ export default function TierProgressChart() {
     setHoveredBar(null);
   };
 
-  // Get opacity based on hover state
   const getBarOpacity = (dataKey: string) => {
     if (!hoveredBar) return 1;
     return hoveredBar === dataKey ? 1 : 0.5;

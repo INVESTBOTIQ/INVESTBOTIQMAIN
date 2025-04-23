@@ -41,34 +41,34 @@ export async function updateCashflow(userId: string, newAmount: number, note?: s
   }
 }
 
-export async function activateSpirit(spiritId: string) {
+export async function activateFlowluta(flowlutaId: string) {
   try {
-    const { data: spirit, error: spiritError } = await supabase
-      .from('spirits')
+    const { data: flowluta, error: flowlutaError } = await supabase
+      .from('flowlutas')
       .update({
         status: 'active',
         activated_at: new Date().toISOString()
       })
-      .eq('id', spiritId)
+      .eq('id', flowlutaId)
       .select()
       .single();
 
-    if (spiritError) throw spiritError;
+    if (flowlutaError) throw flowlutaError;
 
     // Stuur een notificatie
     const { error: notificationError } = await supabase
       .from('notifications')
       .insert({
-        user_id: spirit.user_id,
-        type: 'spirit',
-        bericht: `Je Spirit is succesvol geactiveerd!`
+        user_id: flowluta.user_id,
+        type: 'flowluta',
+        bericht: `Je Flowluta is succesvol geactiveerd!`
       });
 
     if (notificationError) throw notificationError;
 
-    return { success: true, spirit };
+    return { success: true, flowluta };
   } catch (error) {
-    console.error('Error activating spirit:', error);
+    console.error('Error activating flowluta:', error);
     throw error;
   }
 }
@@ -83,7 +83,7 @@ export async function scheduleNotification({
 }: {
   title: string;
   content: string;
-  type: 'taak' | 'spirit' | 'system';
+  type: 'taak' | 'flowluta' | 'system';
   scheduledFor: Date;
   recipientId?: string;
   isGroupNotification?: boolean;
