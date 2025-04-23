@@ -4,6 +4,7 @@ import { Menu, X } from "lucide-react";
 import PublicHeaderDesktopMenu from "./PublicHeaderDesktopMenu";
 import PublicHeaderMobileMenu from "./PublicHeaderMobileMenu";
 import { useAuth } from "@/components/AuthProvider";
+
 const NAV_ITEMS = [{
   title: "Home",
   to: "/",
@@ -34,19 +35,27 @@ const NAV_ITEMS = [{
   to: "/faq",
   desktopOnly: false
 }];
+
 const PublicHeader: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
-  const {
-    user,
-    userRole
-  } = useAuth();
+  const { user, userRole } = useAuth();
   const isMember = !!user && userRole === "member";
-  const Logo = <Link to="/" className="flex items-center gap-2 cursor-pointer select-none" aria-label="Homepage">
-      <img src="/lovable-uploads/11ad8cab-507c-4b7a-8060-45ab227cd3e6.png" alt="Investbotiq Logo" className="h-10 w-10 mr-2" />
-      <span className="font-extrabold text-2xl md:text-3xl text-indigo-600 tracking-tight">
-INVESTBOTIQ</span>
-    </Link>;
+
+  const Logo = (
+    <Link 
+      to="/" 
+      className="flex items-center gap-2 cursor-pointer select-none" 
+      aria-label="Homepage"
+    >
+      <img 
+        src="/lovable-uploads/7f960c4e-fd2e-4eac-9ede-ccbdd0ab2e60.png" 
+        alt="Investbotiq Logo" 
+        className="h-10 w-auto mr-2"
+      />
+    </Link>
+  );
+
   const handleNav = (to: string) => {
     setMenuOpen(false);
     if (to.startsWith("#")) {
@@ -61,6 +70,7 @@ INVESTBOTIQ</span>
     }
     navigate(to);
   };
+
   return <header className="fixed top-0 left-0 w-full z-40 bg-white shadow">
       <div className="container flex items-center justify-between h-16 md:h-20 px-2">
         {Logo}
@@ -72,4 +82,5 @@ INVESTBOTIQ</span>
       <PublicHeaderMobileMenu menuOpen={menuOpen} setMenuOpen={setMenuOpen} Logo={Logo} />
     </header>;
 };
+
 export default PublicHeader;

@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { X, ChevronDown, LogIn } from "lucide-react";
@@ -46,7 +45,6 @@ const PublicHeaderMobileMenu: React.FC<Props> = ({ menuOpen, setMenuOpen, Logo }
           exit={{ x: "100%" }}
           transition={{ type: "tween", duration: 0.27 }}
           className="fixed inset-0 bg-white z-50"
-          // White bg: no opacity!
           onClick={() => setMenuOpen(false)}
         >
           <motion.div
@@ -57,7 +55,6 @@ const PublicHeaderMobileMenu: React.FC<Props> = ({ menuOpen, setMenuOpen, Logo }
             className="absolute right-0 top-0 h-full w-4/5 max-w-xs sm:max-w-md bg-white shadow-2xl flex flex-col p-0 z-[100]"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Top: logo/close */}
             <div className="flex items-center justify-between px-6 py-4 border-b">
               {Logo}
               <button
@@ -68,7 +65,6 @@ const PublicHeaderMobileMenu: React.FC<Props> = ({ menuOpen, setMenuOpen, Logo }
                 <X className="w-7 h-7" />
               </button>
             </div>
-            {/* Hoofdmenu */}
             <nav className="flex-1 flex flex-col gap-1 px-6 py-5">
               <button
                 className="font-semibold py-2 px-2 rounded hover:bg-indigo-50 text-left transition"
@@ -79,7 +75,6 @@ const PublicHeaderMobileMenu: React.FC<Props> = ({ menuOpen, setMenuOpen, Logo }
               >
                 Home
               </button>
-              {/* Alles over Investbot: dropdown in uitklap */}
               <div className="w-full">
                 <button
                   className="flex items-center w-full justify-between font-semibold py-2 px-2 rounded hover:bg-indigo-50 transition"
@@ -114,7 +109,6 @@ const PublicHeaderMobileMenu: React.FC<Props> = ({ menuOpen, setMenuOpen, Logo }
                   )}
                 </AnimatePresence>
               </div>
-              {/* Overige navs */}
               {NAV_ITEMS.slice(2).map((item) => (
                 <button
                   key={item.title}
@@ -127,7 +121,6 @@ const PublicHeaderMobileMenu: React.FC<Props> = ({ menuOpen, setMenuOpen, Logo }
                   {item.title}
                 </button>
               ))}
-              {/* Login toevoegen in mobiel menu */}
               <button
                 className="font-semibold py-2 px-2 rounded hover:bg-indigo-50 text-left transition flex items-center"
                 onClick={() => {
@@ -137,10 +130,8 @@ const PublicHeaderMobileMenu: React.FC<Props> = ({ menuOpen, setMenuOpen, Logo }
               >
                 <LogIn className="mr-2 h-4 w-4" /> Log-in
               </button>
-              {/* Spacer */}
               <div className="flex-1" />
             </nav>
-            {/* Ondermenu: Reg/Log-in/Member onderin */}
             <div className="border-t mt-0 pt-3 pb-5 px-6 flex flex-col gap-2">
               {!user && (
                 <>
