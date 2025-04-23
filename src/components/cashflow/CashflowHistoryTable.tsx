@@ -19,7 +19,7 @@ export function CashflowHistoryTable({ userId }: { userId: string }) {
         .from('cashflow_history')
         .select(`
           *,
-          changed_by_user:profiles!changed_by(voornaam, achternaam)
+          changed_by_user:profiles(voornaam, achternaam)
         `)
         .eq('user_id', userId)
         .order('changed_at', { ascending: false });

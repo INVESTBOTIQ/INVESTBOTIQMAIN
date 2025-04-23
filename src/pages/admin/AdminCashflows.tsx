@@ -2,27 +2,11 @@ import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { withRoleGuard } from "@/utils/withRoleGuard";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
-import { updateCashflow } from "@/utils/supabase-utils";
+import { BarChart } from "lucide-react";
+import { CashflowSearch } from "@/components/cashflow/CashflowSearch";
+import { CashflowTable } from "@/components/cashflow/CashflowTable";
 import { CashflowHistoryTable } from "@/components/cashflow/CashflowHistoryTable";
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
-} from "@/components/ui/table";
-import { 
-  Search, 
-  ArrowUpDown, 
-  Save, 
-  CircleDollarSign,
-  BarChart,
-  ArrowUp,
-  ArrowDown
-} from "lucide-react";
+import { useCashflowManagement } from "@/hooks/useCashflowManagement";
 
 const users = [
   {
@@ -74,49 +58,24 @@ const users = [
 
 const AdminCashflows = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [cashflowValues, setCashflowValues] = useState<Record<string, number>>(
-    users.reduce((acc, user) => ({ ...acc, [user.id]: user.currentCashflow }), {})
-  );
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
-
+  
   const filteredUsers = users.filter(user => 
     user.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
     user.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleCashflowChange = (userId: string, value: string) => {
-    const numValue = parseInt(value, 10) || 0;
-    setCashflowValues({ ...cashflowValues, [userId]: numValue });
-  };
-  
-  const handleSave = async (userId: string) => {
-    try {
-      await updateCashflow(
-        userId, 
-        cashflowValues[userId], 
-        "Handmatige aanpassing door admin"
-      );
-      toast.success("Cashflow succesvol bijgewerkt");
-    } catch (error) {
-      console.error("Error updating cashflow:", error);
-      toast.error("Er is een fout opgetreden bij het bijwerken van de cashflow");
-    }
-  };
-  
+  const { cashflowValues, handleCashflowChange, handleSave } = useCashflowManagement(users);
+
   return (
     <div>
       <h2 className="text-xl font-semibold mb-4">Cashflowbeheer</h2>
       
       <div className="flex justify-between items-center mb-6">
-        <div className="relative w-72">
-          <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Zoek op naam of email"
-            className="pl-8"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
+        <CashflowSearch
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
+        />
         <Button variant="outline">
           <BarChart className="mr-2 h-4 w-4" />
           Cashflow Rapporten
@@ -132,91 +91,12 @@ const AdminCashflows = () => {
             Pas de maandelijkse cashflow aan per gebruiker. Wijzigingen worden direct doorgevoerd in het systeem.
           </p>
           
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[250px]">
-                  <div className="flex items-center">
-                    Gebruiker
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                  </div>
-                </TableHead>
-                <TableHead>Huidige Cashflow (€)</TableHead>
-                <TableHead>Vorige Cashflow (€)</TableHead>
-                <TableHead>Verandering</TableHead>
-                <TableHead>Laatste Update</TableHead>
-                <TableHead className="text-right">Aanpassen</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredUsers.map((user) => (
-                <TableRow key={user.id}>
-                  <TableCell>
-                    <div>
-                      <p className="font-medium">{user.name}</p>
-                      <p className="text-sm text-muted-foreground">{user.email}</p>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center font-medium">
-                      <CircleDollarSign className="mr-2 h-4 w-4 text-green-500" />
-                      {user.currentCashflow}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    {user.previousCashflow}
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center">
-                      {user.changePercentage > 0 ? (
-                        <>
-                          <ArrowUp className="mr-1 h-4 w-4 text-green-500" />
-                          <span className="text-green-600">+{user.changePercentage}%</span>
-                        </>
-                      ) : user.changePercentage < 0 ? (
-                        <>
-                          <ArrowDown className="mr-1 h-4 w-4 text-red-500" />
-                          <span className="text-red-600">{user.changePercentage}%</span>
-                        </>
-                      ) : (
-                        <span>0%</span>
-                      )}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    {user.lastUpdated}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <div className="w-24">
-                        <Input
-                          type="number"
-                          value={cashflowValues[user.id]}
-                          onChange={(e) => handleCashflowChange(user.id, e.target.value)}
-                          className="text-right"
-                        />
-                      </div>
-                      <Button 
-                        variant="outline" 
-                        size="icon"
-                        onClick={() => handleSave(user.id)}
-                        title="Opslaan"
-                      >
-                        <Save className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-              {filteredUsers.length === 0 && (
-                <TableRow>
-                  <TableCell colSpan={6} className="h-24 text-center">
-                    <p className="text-muted-foreground">Geen gebruikers gevonden</p>
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+          <CashflowTable
+            users={filteredUsers}
+            cashflowValues={cashflowValues}
+            onCashflowChange={handleCashflowChange}
+            onSave={handleSave}
+          />
 
           <div className="mt-8">
             <CardTitle className="mb-4">Cashflow Historie</CardTitle>
