@@ -219,7 +219,7 @@ export default function HoeWerktHet() {
             {/* Benefit 4 */}
             <motion.div variants={itemVariants} className="bg-white rounded-xl p-6 shadow-md">
               <p className="text-2xl mb-4">🤖</p>
-              <h3 className="text-xl font-semibold mb-3">Investbotiq eigen algoritme</h3>
+              <h3 className="text-xl font-semibold mb-3">Persoonlijk IQ Bot Algoritme</h3>
               <p className="text-gray-600">Direct en efficiënt.</p>
             </motion.div>
           </motion.div>
