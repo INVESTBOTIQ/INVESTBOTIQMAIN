@@ -1,56 +1,67 @@
 
-import { useLocation, Link } from "react-router-dom";
-import { useEffect } from "react";
-import { Button } from "@/components/ui/button";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/components/AuthProvider";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Home } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 
 const NotFound = () => {
-  const location = useLocation();
+  const navigate = useNavigate();
   const { userRole } = useAuth();
 
-  useEffect(() => {
-    console.error(
-      "404 Error: User attempted to access non-existent route:",
-      location.pathname
-    );
-  }, [location.pathname]);
+  const getDashboardLink = () => {
+    if (userRole === "admin") return "/admin";
+    if (userRole === "member") return "/member/dashboard";
+    return "/";
+  };
 
-  // Determine the correct home path based on user role
-  const homePath = userRole === "admin" ? "/admin" : "/member/dashboard";
-  const buttonText = userRole === "admin" 
-    ? "Terug naar Admin Console" 
+  const dashboardLabel = userRole === "admin" 
+    ? "Terug naar Admin Dashboard" 
     : userRole === "member" 
-    ? "Terug naar je Dashboard"
-    : "Terug naar Homepage";
+      ? "Terug naar Member Dashboard" 
+      : "Terug naar Home";
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100 px-4">
-      <div className="text-center p-8 bg-white rounded-lg shadow-md max-w-md w-full">
-        <div className="flex justify-center mb-6">
-          <div className="w-24 h-24 relative flex items-center justify-center">
-            {/* Small version of the orb for visual consistency */}
-            <div className="absolute w-full h-full rounded-full bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 animate-pulse opacity-40"></div>
-            <div className="absolute w-4/5 h-4/5 rounded-full bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 animate-pulse opacity-30" style={{ animationDelay: "0.5s" }}></div>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4">
+      <Card className="max-w-md w-full">
+        <CardContent className="pt-6 pb-0 text-center">
+          <div className="rounded-full bg-primary/10 w-16 h-16 flex items-center justify-center mx-auto mb-4">
+            <span className="text-3xl">404</span>
           </div>
-        </div>
-        <h1 className="text-6xl font-bold mb-4 text-primary">404</h1>
-        <p className="text-xl text-gray-600 mb-2">
-          Buiten bereik van de IQ Bot
-        </p>
-        <p className="text-gray-500 mb-6">
-          Deze pagina bestaat niet of je hebt een onbekende route gevolgd.
-        </p>
-        <Button asChild className="w-full mb-4">
-          <Link to={homePath}>
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            {buttonText}
-          </Link>
-        </Button>
-        <p className="text-sm text-gray-400 mt-4">
-          Misschien wordt deze pagina binnenkort geactiveerd.
-        </p>
-      </div>
+          <h1 className="text-xl md:text-2xl font-bold mb-2">Pagina niet gevonden</h1>
+          <p className="text-muted-foreground">
+            Deze pagina is momenteel niet beschikbaar of bestaat niet.
+            {userRole && " De IQ Bot is eraan aan het werken."}
+          </p>
+          
+          <div className="h-32 md:h-48 relative my-8 opacity-50">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-24 h-24 rounded-full bg-gradient-to-r from-primary/20 via-purple-500/20 to-secondary/20 animate-pulse"></div>
+              <div className="w-16 h-16 rounded-full absolute bg-gradient-to-r from-primary/30 via-purple-500/30 to-secondary/30 animate-pulse" style={{ animationDelay: "0.5s" }}></div>
+            </div>
+          </div>
+        </CardContent>
+        
+        <CardFooter className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Button 
+            variant="outline" 
+            className="flex items-center gap-2 w-full sm:w-auto" 
+            onClick={() => navigate(-1)}
+          >
+            <ArrowLeft className="h-4 w-4" /> Ga terug
+          </Button>
+          
+          <Button 
+            className="flex items-center gap-2 w-full sm:w-auto"
+            asChild
+          >
+            <Link to={getDashboardLink()}>
+              <Home className="h-4 w-4" /> {dashboardLabel}
+            </Link>
+          </Button>
+        </CardFooter>
+      </Card>
     </div>
   );
 };

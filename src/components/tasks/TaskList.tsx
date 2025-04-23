@@ -69,32 +69,64 @@ const TaskList: React.FC = () => {
     }
   };
 
+  const getTypeIcon = (type: string) => {
+    switch (type) {
+      case "contract":
+        return <File className="h-4 w-4" />;
+      case "document":
+        return <File className="h-4 w-4" />;
+      case "report":
+        return <CheckSquare className="h-4 w-4" />;
+      default:
+        return <CheckSquare className="h-4 w-4" />;
+    }
+  };
+
+  // Function to check if a task deadline is soon (within 3 days)
+  const isDeadlineSoon = (dateString: string) => {
+    const dueDate = new Date(dateString.replace(/(Jan|Feb|Mar|Apr|Mei|Jun|Jul|Aug|Sep|Okt|Nov|Dec)/, (match) => {
+      const months: Record<string, string> = {
+        'Jan': 'January', 'Feb': 'February', 'Mar': 'March', 'Apr': 'April',
+        'Mei': 'May', 'Jun': 'June', 'Jul': 'July', 'Aug': 'August', 
+        'Sep': 'September', 'Okt': 'October', 'Nov': 'November', 'Dec': 'December'
+      };
+      return months[match] || match;
+    }));
+    
+    const today = new Date();
+    const diffInDays = Math.ceil((dueDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+    return diffInDays >= 0 && diffInDays <= 3;
+  };
+
   return (
     <Card className="col-span-2">
-      <CardHeader>
+      <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Openstaande Taken</CardTitle>
+        <Badge variant="outline" className="bg-primary/10 text-primary">
+          {tasks.filter(t => !t.completed).length} openstaand
+        </Badge>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
           {tasks.map((task) => (
             <div
               key={task.id}
-              className="group flex items-start justify-between space-x-4 rounded-lg border p-4 transition-colors hover:bg-accent hover:text-accent-foreground cursor-pointer"
-              role="button"
+              className="group flex flex-col sm:flex-row sm:items-start justify-between space-y-2 sm:space-y-0 sm:space-x-4 rounded-lg border p-3 sm:p-4 transition-colors hover:bg-accent hover:text-accent-foreground cursor-pointer task-item"
               onClick={() => handleTaskToggle(task.id)}
             >
               <div className="flex space-x-4">
-                <div>
+                <div className="pt-0.5">
                   <Checkbox
                     id={`task-${task.id}`}
                     checked={task.completed}
                     onCheckedChange={() => handleTaskToggle(task.id)}
+                    className="mobile-btn"
                   />
                 </div>
                 <div className="space-y-1">
                   <Label
                     htmlFor={`task-${task.id}`}
-                    className={`font-medium ${
+                    className={`font-medium text-base ${
                       task.completed ? "line-through text-muted-foreground" : ""
                     }`}
                   >
@@ -102,24 +134,21 @@ const TaskList: React.FC = () => {
                   </Label>
                   <div className="flex items-center text-sm text-muted-foreground">
                     <Calendar className="mr-1 h-3 w-3" />
-                    <span>Uiterste datum: {task.dueDate}</span>
+                    <span className={isDeadlineSoon(task.dueDate) && !task.completed ? "text-red-500 font-medium" : ""}>
+                      Uiterste datum: {task.dueDate}
+                      {isDeadlineSoon(task.dueDate) && !task.completed && " (binnenkort)"}
+                    </span>
                   </div>
                 </div>
               </div>
               <Badge
                 variant="outline"
-                className={`flex items-center space-x-1 ${getPriorityColor(
+                className={`flex items-center space-x-1 self-start sm:self-center ${getPriorityColor(
                   task.priority
-                )}`}
+                )} mt-2 sm:mt-0`}
               >
-                {task.type === "contract" ? (
-                  <File className="h-4 w-4" />
-                ) : task.type === "document" ? (
-                  <File className="h-4 w-4" />
-                ) : (
-                  <CheckSquare className="h-4 w-4" />
-                )}
-                <span>{task.type}</span>
+                {getTypeIcon(task.type)}
+                <span className="ml-1">{task.type}</span>
               </Badge>
             </div>
           ))}

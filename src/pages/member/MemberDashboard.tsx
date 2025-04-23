@@ -34,10 +34,10 @@ const MemberDashboard = () => (
           </div>
           {/* Cashflow chart + task list - stacked on mobile, side-by-side on desktop */}
           <div className="grid gap-6 grid-cols-1 lg:grid-cols-3">
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-2 fade-in">
               <DashboardSummary />
             </div>
-            <div>
+            <div className="fade-in slide-up">
               <TaskList />
             </div>
           </div>

@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
@@ -5,7 +6,6 @@ import { withRoleGuard } from "@/utils/withRoleGuard";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
 import { 
   Users, 
   CheckSquare, 
@@ -132,7 +132,7 @@ const AdminDashboard = () => {
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Card>
+              <Card className="fade-in">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-medium">Actieve Members</CardTitle>
                 </CardHeader>
@@ -144,7 +144,7 @@ const AdminDashboard = () => {
                 </CardContent>
               </Card>
               
-              <Card>
+              <Card className="fade-in" style={{ animationDelay: "0.1s" }}>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-medium">Totale Maandelijkse Cashflow</CardTitle>
                 </CardHeader>
@@ -156,7 +156,7 @@ const AdminDashboard = () => {
                 </CardContent>
               </Card>
               
-              <Card>
+              <Card className="fade-in" style={{ animationDelay: "0.2s" }}>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-medium">BEL-Leningen Actief</CardTitle>
                 </CardHeader>
@@ -168,7 +168,7 @@ const AdminDashboard = () => {
                 </CardContent>
               </Card>
               
-              <Card>
+              <Card className="fade-in" style={{ animationDelay: "0.3s" }}>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-medium">Spirits Actief</CardTitle>
                 </CardHeader>
@@ -182,7 +182,7 @@ const AdminDashboard = () => {
             </div>
             
             {alerts.length > 0 && (
-              <Card className="bg-yellow-50 border-yellow-200">
+              <Card className="bg-yellow-50 border-yellow-200 fade-in" style={{ animationDelay: "0.4s" }}>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-sm font-medium flex items-center">
                     <AlertTriangle className="h-5 w-5 text-yellow-500 mr-2" />
@@ -206,7 +206,8 @@ const AdminDashboard = () => {
               {adminMenuItems.map((item, index) => (
                 <Card 
                   key={index} 
-                  className="cursor-pointer hover:shadow-md transition-shadow"
+                  className="cursor-pointer hover:shadow-md transition-shadow fade-in"
+                  style={{ animationDelay: `${0.5 + index * 0.1}s` }}
                   onClick={() => navigate(item.path)}
                 >
                   <CardHeader className={`${item.color} rounded-t-lg`}>
@@ -216,11 +217,11 @@ const AdminDashboard = () => {
                     </div>
                   </CardHeader>
                   <CardContent className="pt-4">
-                    <p>{item.description}</p>
+                    <p className="text-sm text-muted-foreground">{item.description}</p>
                   </CardContent>
                   <CardFooter>
                     <Button 
-                      className="w-full" 
+                      className="w-full mobile-btn" 
                       variant="outline"
                       onClick={() => navigate(item.path)}
                     >
@@ -231,7 +232,7 @@ const AdminDashboard = () => {
               ))}
             </div>
             
-            <Card>
+            <Card className="fade-in" style={{ animationDelay: "0.8s" }}>
               <CardHeader>
                 <CardTitle className="flex items-center">
                   <Activity className="h-5 w-5 mr-2" />
@@ -246,7 +247,7 @@ const AdminDashboard = () => {
                         {getActivityIcon(activity.type)}
                       </div>
                       <div className="flex-1">
-                        <p>{activity.message}</p>
+                        <p className="text-sm">{activity.message}</p>
                         <p className="text-xs text-muted-foreground">{activity.time}</p>
                       </div>
                     </li>

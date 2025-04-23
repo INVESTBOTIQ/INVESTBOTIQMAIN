@@ -18,12 +18,12 @@ const Header = () => {
     <header className="bg-white border-b sticky top-0 z-30">
       <div className="flex items-center justify-between h-16 px-4 lg:px-6">
         <Link to="/" className="flex items-center">
-          <span className="text-xl font-bold text-primary">Investbotiq</span>
+          <span className="text-xl font-bold text-primary truncate">Investbotiq</span>
         </Link>
         
         <div className="flex items-center gap-4">
           {user && (
-            <span className="hidden md:block text-sm text-muted-foreground">
+            <span className="hidden md:block text-sm text-muted-foreground truncate max-w-[200px]">
               {user.email}
             </span>
           )}
@@ -32,11 +32,11 @@ const Header = () => {
           <Button 
             variant="ghost" 
             size="icon" 
-            className="md:hidden"
+            className="md:hidden mobile-btn"
             onClick={() => setMobileMenuOpen(true)}
+            aria-label="Open menu"
           >
             <Menu className="h-6 w-6" />
-            <span className="sr-only">Open menu</span>
           </Button>
         </div>
       </div>
