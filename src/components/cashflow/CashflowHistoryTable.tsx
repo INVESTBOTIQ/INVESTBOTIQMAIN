@@ -18,17 +18,39 @@ export function CashflowHistoryTable({ userId }: { userId: string }) {
   const { data: history, isLoading, error } = useQuery({
     queryKey: ["cashflow-history", userId],
     queryFn: async () => {
+      // We need to fix the join query since there's an issue with the relation
+      // Use a separate query to get the profiles data for each record
       const { data, error } = await supabase
         .from('cashflow_history')
-        .select(`
-          *,
-          changed_by_profile:profiles!changed_by(voornaam, achternaam)
-        `)
+        .select('*')
         .eq('user_id', userId)
         .order('changed_at', { ascending: false });
       
       if (error) throw error;
-      return data;
+      
+      // If we have data and there are changed_by values, fetch the profile information
+      if (data && data.length > 0) {
+        // Get unique changed_by IDs
+        const changedByIds = data
+          .map(record => record.changed_by)
+          .filter(id => id !== null);
+        
+        if (changedByIds.length > 0) {
+          // Fetch profiles for these IDs
+          const { data: profiles } = await supabase
+            .from('profiles')
+            .select('id, voornaam, achternaam')
+            .in('id', changedByIds);
+          
+          // Map profiles to records
+          return data.map(record => ({
+            ...record,
+            changed_by_profile: profiles?.find(p => p.id === record.changed_by) || null
+          }));
+        }
+      }
+      
+      return data || [];
     },
   });
 
@@ -84,7 +106,9 @@ export function CashflowHistoryTable({ userId }: { userId: string }) {
             <TableCell>€{record.previous_amount}</TableCell>
             <TableCell>€{record.amount}</TableCell>
             <TableCell>
-              {record.changed_by_profile?.voornaam} {record.changed_by_profile?.achternaam}
+              {record.changed_by_profile ? 
+                `${record.changed_by_profile.voornaam || ''} ${record.changed_by_profile.achternaam || ''}`.trim() || '-' 
+                : '-'}
             </TableCell>
             <TableCell>{record.note || '-'}</TableCell>
           </TableRow>

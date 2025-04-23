@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { withRoleGuard } from "@/utils/withRoleGuard";
@@ -58,14 +59,14 @@ const users = [
 
 const AdminCashflows = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+  const [selectedUserId, setSelectedUserId] = useState<string | null>("1"); // Default to the first user to show history
   
   const filteredUsers = users.filter(user => 
     user.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
     user.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const { cashflowValues, handleCashflowChange, handleSave } = useCashflowManagement(users);
+  const { cashflowValues, isUpdating, handleCashflowChange, handleSave } = useCashflowManagement(users);
 
   return (
     <div>
@@ -94,13 +95,14 @@ const AdminCashflows = () => {
           <CashflowTable
             users={filteredUsers}
             cashflowValues={cashflowValues}
+            isUpdating={isUpdating}
             onCashflowChange={handleCashflowChange}
             onSave={handleSave}
           />
 
           <div className="mt-8">
             <CardTitle className="mb-4">Cashflow Historie</CardTitle>
-            <CashflowHistoryTable userId={selectedUserId} />
+            {selectedUserId && <CashflowHistoryTable userId={selectedUserId} />}
           </div>
         </CardContent>
       </Card>
