@@ -1,13 +1,15 @@
-
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ArrowUp, ArrowDown, CircleDollarSign, Save } from "lucide-react";
 import type { CashflowUser } from "@/hooks/useCashflowManagement";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { Info } from "lucide-react";
 
 interface CashflowTableProps {
   users: CashflowUser[];
   cashflowValues: Record<string, number>;
+  isUpdating: Record<string, boolean>;
   onCashflowChange: (userId: string, value: string) => void;
   onSave: (userId: string) => void;
 }
@@ -15,9 +17,22 @@ interface CashflowTableProps {
 export const CashflowTable = ({
   users,
   cashflowValues,
+  isUpdating,
   onCashflowChange,
   onSave,
 }: CashflowTableProps) => {
+  if (!users.length) {
+    return (
+      <Alert>
+        <Info className="h-4 w-4" />
+        <AlertTitle>Geen gebruikers gevonden</AlertTitle>
+        <AlertDescription>
+          Er zijn geen gebruikers gevonden die voldoen aan de zoekcriteria.
+        </AlertDescription>
+      </Alert>
+    );
+  }
+
   return (
     <Table>
       <TableHeader>
@@ -79,6 +94,7 @@ export const CashflowTable = ({
                   size="icon"
                   onClick={() => onSave(user.id)}
                   title="Opslaan"
+                  disabled={isUpdating[user.id]}
                 >
                   <Save className="h-4 w-4" />
                 </Button>

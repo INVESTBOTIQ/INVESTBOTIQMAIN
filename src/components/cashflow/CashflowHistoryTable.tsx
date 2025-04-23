@@ -10,16 +10,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatDateTime } from "@/utils/date-utils";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { Skeleton } from "@/components/ui/skeleton";
+import { AlertTriangle, Info } from "lucide-react";
 
 export function CashflowHistoryTable({ userId }: { userId: string }) {
-  const { data: history, isLoading } = useQuery({
+  const { data: history, isLoading, error } = useQuery({
     queryKey: ["cashflow-history", userId],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('cashflow_history')
         .select(`
           *,
-          changed_by_user:profiles(voornaam, achternaam)
+          changed_by_profile:profiles!changed_by(voornaam, achternaam)
         `)
         .eq('user_id', userId)
         .order('changed_at', { ascending: false });
@@ -29,7 +32,39 @@ export function CashflowHistoryTable({ userId }: { userId: string }) {
     },
   });
 
-  if (isLoading) return <div>Laden...</div>;
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        <Skeleton className="h-8 w-full" />
+        <Skeleton className="h-20 w-full" />
+        <Skeleton className="h-20 w-full" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <Alert variant="destructive">
+        <AlertTriangle className="h-4 w-4" />
+        <AlertTitle>Error</AlertTitle>
+        <AlertDescription>
+          Er is een fout opgetreden bij het ophalen van de cashflow historie. Probeer het later opnieuw.
+        </AlertDescription>
+      </Alert>
+    );
+  }
+
+  if (!history?.length) {
+    return (
+      <Alert>
+        <Info className="h-4 w-4" />
+        <AlertTitle>Geen historie</AlertTitle>
+        <AlertDescription>
+          Er zijn nog geen cashflow wijzigingen geregistreerd voor deze gebruiker.
+        </AlertDescription>
+      </Alert>
+    );
+  }
 
   return (
     <Table>
@@ -43,13 +78,13 @@ export function CashflowHistoryTable({ userId }: { userId: string }) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {history?.map((record) => (
+        {history.map((record) => (
           <TableRow key={record.id}>
             <TableCell>{formatDateTime(record.changed_at)}</TableCell>
             <TableCell>€{record.previous_amount}</TableCell>
             <TableCell>€{record.amount}</TableCell>
             <TableCell>
-              {record.changed_by_user?.voornaam} {record.changed_by_user?.achternaam}
+              {record.changed_by_profile?.voornaam} {record.changed_by_profile?.achternaam}
             </TableCell>
             <TableCell>{record.note || '-'}</TableCell>
           </TableRow>

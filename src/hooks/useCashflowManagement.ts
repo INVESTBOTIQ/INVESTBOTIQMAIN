@@ -14,6 +14,7 @@ export type CashflowUser = {
 };
 
 export const useCashflowManagement = (users: CashflowUser[]) => {
+  const [isUpdating, setIsUpdating] = useState<Record<string, boolean>>({});
   const [cashflowValues, setCashflowValues] = useState<Record<string, number>>(
     users.reduce((acc, user) => ({ ...acc, [user.id]: user.currentCashflow }), {})
   );
@@ -24,6 +25,7 @@ export const useCashflowManagement = (users: CashflowUser[]) => {
   };
 
   const handleSave = async (userId: string) => {
+    setIsUpdating({ ...isUpdating, [userId]: true });
     try {
       await updateCashflow(
         userId,
@@ -34,11 +36,14 @@ export const useCashflowManagement = (users: CashflowUser[]) => {
     } catch (error) {
       console.error("Error updating cashflow:", error);
       toast.error("Er is een fout opgetreden bij het bijwerken van de cashflow");
+    } finally {
+      setIsUpdating({ ...isUpdating, [userId]: false });
     }
   };
 
   return {
     cashflowValues,
+    isUpdating,
     handleCashflowChange,
     handleSave,
   };
