@@ -1,6 +1,17 @@
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
+export interface Referral {
+  id: string;
+  user_id: string;
+  referral_code: string;
+  referred_user_id: string | null;
+  status: 'pending' | 'successful';
+  created_at: string;
+  updated_at: string;
+  referred_user_email?: string; // Existing optional property
+}
+
 export interface ReferralSummary {
   referrer_id: string;
   pending_referrals: number;
@@ -16,17 +27,6 @@ export interface ReferralReward {
   reward_value: number;
   granted_at: string;
   note: string | null;
-}
-
-export interface Referral {
-  id: string;
-  user_id: string;
-  referral_code: string;
-  referred_user_id: string | null;
-  status: 'pending' | 'successful';
-  created_at: string;
-  updated_at: string;
-  referred_user_email?: string; // Added this optional property
 }
 
 export interface ReferralWithDetails {
@@ -105,8 +105,7 @@ export async function getUserReferrals(userId: string): Promise<Referral[]> {
 
     if (error) throw error;
 
-    // Get referred user emails in separate query to avoid join issues
-    const referrals = [...data];
+    const referrals = [...data as Referral[]];
     
     for (const referral of referrals) {
       if (referral.referred_user_id) {
@@ -128,7 +127,7 @@ export async function getUserReferrals(userId: string): Promise<Referral[]> {
       }
     }
 
-    return referrals as Referral[];
+    return referrals;
   } catch (error) {
     console.error("Error fetching user referrals:", error);
     return [];
