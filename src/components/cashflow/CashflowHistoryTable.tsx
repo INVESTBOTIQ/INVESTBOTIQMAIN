@@ -14,6 +14,29 @@ import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AlertTriangle, Info } from "lucide-react";
 
+// Define the interface for a cashflow history record
+interface CashflowHistoryRecord {
+  id: string;
+  user_id: string;
+  amount: number;
+  previous_amount: number;
+  changed_by: string | null;
+  changed_at: string;
+  note: string | null;
+}
+
+// Define the interface for profile data
+interface ProfileData {
+  id: string;
+  voornaam: string | null;
+  achternaam: string | null;
+}
+
+// Extended record including the profile data
+interface CashflowHistoryWithProfile extends CashflowHistoryRecord {
+  changed_by_profile: ProfileData | null;
+}
+
 export function CashflowHistoryTable({ userId }: { userId: string }) {
   const { data: history, isLoading, error } = useQuery({
     queryKey: ["cashflow-history", userId],
@@ -33,7 +56,7 @@ export function CashflowHistoryTable({ userId }: { userId: string }) {
         // Get unique changed_by IDs
         const changedByIds = data
           .map(record => record.changed_by)
-          .filter(id => id !== null);
+          .filter(id => id !== null) as string[];
         
         if (changedByIds.length > 0) {
           // Fetch profiles for these IDs
@@ -46,11 +69,15 @@ export function CashflowHistoryTable({ userId }: { userId: string }) {
           return data.map(record => ({
             ...record,
             changed_by_profile: profiles?.find(p => p.id === record.changed_by) || null
-          }));
+          })) as CashflowHistoryWithProfile[];
         }
       }
       
-      return data || [];
+      // Return records with null profile data if no changed_by values
+      return (data || []).map(record => ({
+        ...record,
+        changed_by_profile: null
+      })) as CashflowHistoryWithProfile[];
     },
   });
 
