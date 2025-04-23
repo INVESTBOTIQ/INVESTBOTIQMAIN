@@ -69,16 +69,30 @@ const Auth = () => {
         // If there's a referral code, handle the referral after registration
         if (referralCode && data.user) {
           try {
-            const { error: referralError } = await supabase
+            // First, find the user who owns this referral code
+            const { data: referrerData, error: referrerError } = await supabase
               .from('referrals')
-              .insert({
-                referred_user_id: data.user.id,
-                referral_code: referralCode,
-                status: 'pending'
-              });
+              .select('user_id')
+              .eq('referral_code', referralCode)
+              .is('referred_user_id', null)
+              .single();
 
-            if (referralError) {
-              console.error("Error storing referral:", referralError);
+            if (referrerError) {
+              console.error("Error finding referrer:", referrerError);
+            } else if (referrerData) {
+              // Insert with the user_id from the referrer
+              const { error: referralError } = await supabase
+                .from('referrals')
+                .insert({
+                  user_id: referrerData.user_id, // The referrer
+                  referred_user_id: data.user.id, // The new user being referred
+                  referral_code: referralCode,
+                  status: 'pending'
+                });
+
+              if (referralError) {
+                console.error("Error storing referral:", referralError);
+              }
             }
           } catch (refError) {
             console.error("Error processing referral:", refError);

@@ -19,14 +19,14 @@ import {
   Share2
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useMediaQuery } from '@/hooks/use-mobile';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
 
 const Sidebar = () => {
   const [expanded, setExpanded] = React.useState(true);
   const { userRole } = useAuth();
   const location = useLocation();
-  const isMobile = useMediaQuery('(max-width: 1024px)');
+  const isMobile = useIsMobile();
   
   React.useEffect(() => {
     setExpanded(!isMobile);

@@ -52,7 +52,7 @@ const ReferralBox = () => {
         }
         
         setReferralCode(code);
-        const link = await createReferralLinkFromCode(code);
+        const link = `https://investbotiq.nl/?ref=${code}`;
         setReferralLink(link);
         
         // Get referral summary

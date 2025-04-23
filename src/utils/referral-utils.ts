@@ -19,6 +19,31 @@ export interface ReferralReward {
   note: string | null;
 }
 
+export interface Referral {
+  id: string;
+  user_id: string;
+  referral_code: string;
+  referred_user_id: string | null;
+  status: 'pending' | 'successful';
+  created_at: string;
+  updated_at: string;
+  referred_user?: { email: string };
+}
+
+export interface ReferralWithDetails {
+  referral_id: string;
+  referral_code: string;
+  referrer_id: string;
+  referrer_email: string;
+  referred_user_id: string | null;
+  referred_email: string | null;
+  status: 'pending' | 'successful';
+  rewards_count: number;
+  total_rewards: number;
+  last_reward_at: string | null;
+  created_at: string;
+}
+
 export async function getReferralSummary(userId: string): Promise<ReferralSummary | null> {
   try {
     const { data, error } = await supabase
@@ -41,7 +66,7 @@ export async function getReferralSummary(userId: string): Promise<ReferralSummar
   }
 }
 
-export async function getUserReferrals(userId: string) {
+export async function getUserReferrals(userId: string): Promise<Referral[]> {
   try {
     const { data, error } = await supabase
       .from("referrals")
@@ -57,7 +82,7 @@ export async function getUserReferrals(userId: string) {
   }
 }
 
-export async function getUserReferralRewards(userId: string) {
+export async function getUserReferralRewards(userId: string): Promise<ReferralReward[]> {
   try {
     const { data, error } = await supabase
       .from("referral_rewards")
@@ -73,11 +98,11 @@ export async function getUserReferralRewards(userId: string) {
   }
 }
 
-export async function createReferralLinkFromCode(code: string): string {
+export async function createReferralLinkFromCode(code: string): Promise<string> {
   return `https://investbotiq.nl/?ref=${code}`;
 }
 
-export function copyReferralLink(link: string) {
+export function copyReferralLink(link: string): void {
   navigator.clipboard.writeText(link)
     .then(() => toast.success("Referral link gekopieerd!"))
     .catch(() => toast.error("Kopiëren mislukt. Probeer handmatig te selecteren."));

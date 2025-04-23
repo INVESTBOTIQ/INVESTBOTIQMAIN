@@ -20,20 +20,7 @@ import {
 import { format } from "date-fns";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-interface ReferralWithDetails {
-  referral_id: string;
-  referral_code: string;
-  referrer_id: string;
-  referrer_email: string;
-  referred_user_id: string | null;
-  referred_email: string | null;
-  status: 'pending' | 'successful';
-  rewards_count: number;
-  total_rewards: number;
-  last_reward_at: string | null;
-  created_at: string;
-}
+import { ReferralWithDetails } from "@/utils/referral-utils";
 
 const AdminReferrals = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -43,12 +30,60 @@ const AdminReferrals = () => {
   const { data: referrals = [], refetch } = useQuery({
     queryKey: ["adminReferralOverview"],
     queryFn: async () => {
+      // Since the view might not be properly typed in Supabase types yet,
+      // we can use a raw query and then cast the result
       const { data, error } = await supabase
-        .from("admin_referral_overview")
-        .select("*");
+        .from("referrals")
+        .select(`
+          id, 
+          referral_code,
+          user_id,
+          referrer:user_id(email),
+          referred_user_id,
+          referred:referred_user_id(email),
+          status,
+          created_at
+        `)
+        .order('created_at', { ascending: false });
 
       if (error) throw error;
-      return data as ReferralWithDetails[];
+
+      // Transform the data to match our ReferralWithDetails interface
+      const transformedData = data.map(ref => ({
+        referral_id: ref.id,
+        referral_code: ref.referral_code,
+        referrer_id: ref.user_id,
+        referrer_email: ref.referrer?.email || 'Unknown',
+        referred_user_id: ref.referred_user_id,
+        referred_email: ref.referred?.email || null,
+        status: ref.status as 'pending' | 'successful',
+        rewards_count: 0, // We'll update this below
+        total_rewards: 0, // We'll update this below
+        last_reward_at: null, // We'll update this below
+        created_at: ref.created_at
+      }));
+
+      // Get reward data for each referral
+      for (const ref of transformedData) {
+        const { data: rewardData, error: rewardError } = await supabase
+          .from("referral_rewards")
+          .select("*")
+          .eq("referral_id", ref.referral_id);
+
+        if (!rewardError && rewardData) {
+          ref.rewards_count = rewardData.length;
+          ref.total_rewards = rewardData.reduce((sum, r) => sum + Number(r.reward_value), 0);
+          
+          // Find latest reward date
+          if (rewardData.length > 0) {
+            const dates = rewardData.map(r => new Date(r.granted_at));
+            const latestDate = new Date(Math.max(...dates.map(d => d.getTime())));
+            ref.last_reward_at = latestDate.toISOString();
+          }
+        }
+      }
+
+      return transformedData;
     }
   });
 
@@ -58,7 +93,7 @@ const AdminReferrals = () => {
     pending: 0, 
     totalRewards: 0 
   }} = useQuery({
-    queryKey: ["referralStats"],
+    queryKey: ["referralStats", referrals],
     queryFn: async () => {
       const successful = referrals.filter(r => r.status === 'successful').length;
       const pending = referrals.filter(r => r.status === 'pending' && r.referred_user_id).length;
@@ -71,7 +106,7 @@ const AdminReferrals = () => {
         totalRewards
       };
     },
-    enabled: !!referrals.length
+    enabled: referrals.length > 0
   });
 
   const markAsSuccessful = async (referralId: string, referrerId: string, referredUserId: string | null) => {

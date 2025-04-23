@@ -13,7 +13,9 @@ import {
   getUserReferrals, 
   getUserReferralRewards, 
   createReferralLinkFromCode, 
-  copyReferralLink 
+  copyReferralLink,
+  type Referral,
+  type ReferralReward 
 } from "@/utils/referral-utils";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
@@ -45,7 +47,8 @@ const MemberReferrals = () => {
   
   React.useEffect(() => {
     if (ownReferral?.referral_code) {
-      createReferralLinkFromCode(ownReferral.referral_code).then(setReferralLink);
+      const link = `https://investbotiq.nl/?ref=${ownReferral.referral_code}`;
+      setReferralLink(link);
     }
   }, [ownReferral]);
 
