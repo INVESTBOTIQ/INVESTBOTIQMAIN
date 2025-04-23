@@ -2,7 +2,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 interface AuthContextType {
   user: User | null;
@@ -26,6 +26,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [userRole, setUserRole] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const fetchUserRole = async (userId: string) => {
     try {
@@ -43,24 +44,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  // Only redirect if coming from specific locations or new login
-  const redirectBasedOnRole = (role: string | null, event?: string) => {
+  // Redirect based on role without causing infinite redirects
+  const redirectBasedOnRole = (role: string | null) => {
     if (!role) return;
     
-    const currentPath = window.location.pathname;
+    const currentPath = location.pathname;
     
-    // Don't redirect on initial load unless on restricted pages
-    if (!event && !currentPath.includes('/admin') && !currentPath.includes('/member')) {
-      return;
-    }
-    
-    // Don't redirect if already on appropriate dashboard or auth page
-    if ((role === 'admin' && currentPath === '/admin') || 
-        (role === 'member' && currentPath === '/member/dashboard') ||
+    // Don't redirect if already on the correct page or at login
+    if ((role === 'admin' && currentPath.startsWith('/admin')) || 
+        (role === 'member' && currentPath.startsWith('/member')) ||
         currentPath === '/auth') {
       return;
     }
     
+    // Redirect to the appropriate dashboard
     if (role === 'admin') {
       navigate('/admin');
     } else if (role === 'member') {
@@ -73,35 +70,43 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setIsLoading(true);
       
       try {
-        // Set up auth state listener FIRST
-        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-          console.log("Auth state changed:", event, session?.user?.id);
-          setSession(session);
-          setUser(session?.user ?? null);
+        // First check for existing session
+        const { data: { session: currentSession } } = await supabase.auth.getSession();
+        
+        if (currentSession) {
+          setSession(currentSession);
+          setUser(currentSession.user);
           
-          if (session?.user) {
-            const role = await fetchUserRole(session.user.id);
+          const role = await fetchUserRole(currentSession.user.id);
+          setUserRole(role);
+          
+          // Only redirect if we have a role and aren't on the correct page already
+          if (role) {
+            redirectBasedOnRole(role);
+          }
+        }
+        
+        // Then set up auth state listener for future changes
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, newSession) => {
+          console.log("Auth state changed:", event, newSession?.user?.id);
+          
+          setSession(newSession);
+          setUser(newSession?.user ?? null);
+          
+          if (newSession?.user) {
+            const role = await fetchUserRole(newSession.user.id);
             setUserRole(role);
-            redirectBasedOnRole(role, event);
+            
+            if (event === 'SIGNED_IN') {
+              redirectBasedOnRole(role);
+            }
           } else {
             setUserRole(null);
-            // Only redirect to auth on explicit signout
             if (event === 'SIGNED_OUT') {
               navigate('/auth');
             }
           }
         });
-        
-        // THEN check for existing session
-        const { data: { session } } = await supabase.auth.getSession();
-        setSession(session);
-        setUser(session?.user ?? null);
-        
-        if (session?.user) {
-          const role = await fetchUserRole(session.user.id);
-          setUserRole(role);
-          redirectBasedOnRole(role);
-        }
         
         return () => {
           subscription.unsubscribe();
@@ -114,7 +119,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     initializeAuth();
-  }, [navigate]);
+  }, [navigate, location.pathname]);
 
   return (
     <AuthContext.Provider value={{ user, session, userRole, isLoading }}>

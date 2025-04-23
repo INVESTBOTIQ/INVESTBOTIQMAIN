@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
@@ -29,11 +29,8 @@ const Auth = () => {
         
         // Check if we have a successful login with user data
         if (data.user) {
-          toast({
-            title: "Login succesvol",
-            description: "U bent nu ingelogd.",
-          });
-          navigate("/");
+          toast.success("Succesvol ingelogd");
+          // Don't navigate here - let the AuthProvider handle redirection based on role
         }
       } else {
         const { data, error } = await supabase.auth.signUp({
@@ -43,18 +40,11 @@ const Auth = () => {
         
         if (error) throw error;
         
-        toast({
-          title: "Registratie succesvol",
-          description: "Controleer uw e-mail om uw account te bevestigen.",
-        });
+        toast.success("Registratie succesvol. Controleer uw e-mail om uw account te bevestigen.");
       }
     } catch (error: any) {
       console.error("Auth error:", error);
-      toast({
-        variant: "destructive",
-        title: "Fout bij " + (isLogin ? "inloggen" : "registreren"),
-        description: error.message,
-      });
+      toast.error(error.message || `Fout bij ${isLogin ? "inloggen" : "registreren"}`);
     } finally {
       setLoading(false);
     }

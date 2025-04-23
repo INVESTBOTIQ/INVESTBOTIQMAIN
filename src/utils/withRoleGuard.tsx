@@ -28,10 +28,11 @@ export function withRoleGuard<P>(
       return <Navigate to="/auth" />;
     }
 
-    if (!allowedRoles.includes(userRole || "")) {
-      // For admins, redirect to /admin. For members, to /dashboard.
+    if (!userRole || !allowedRoles.includes(userRole)) {
+      // For admins, redirect to /admin. For members, to /member/dashboard.
       if (userRole === "admin") return <Navigate to="/admin" />;
-      return <Navigate to="/dashboard" />;
+      if (userRole === "member") return <Navigate to="/member/dashboard" />;
+      return <Navigate to="/auth" />;
     }
 
     return <WrappedComponent {...props} />;
