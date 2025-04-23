@@ -43,31 +43,56 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const redirectBasedOnRole = (role: string | null) => {
+  // Only redirect if coming from specific locations or new login
+  const redirectBasedOnRole = (role: string | null, event?: string) => {
     if (!role) return;
     
     const currentPath = window.location.pathname;
     
+    // Don't redirect on initial load unless on restricted pages
+    if (!event && !currentPath.includes('/admin') && !currentPath.includes('/member')) {
+      return;
+    }
+    
     // Don't redirect if already on appropriate dashboard or auth page
     if ((role === 'admin' && currentPath === '/admin') || 
-        (role === 'member' && currentPath === '/member') ||
+        (role === 'member' && currentPath === '/member/dashboard') ||
         currentPath === '/auth') {
       return;
     }
     
     if (role === 'admin') {
       navigate('/admin');
-    } else {
-      navigate('/member');
+    } else if (role === 'member') {
+      navigate('/member/dashboard');
     }
   };
 
   useEffect(() => {
-    // Check active session
     const initializeAuth = async () => {
       setIsLoading(true);
       
       try {
+        // Set up auth state listener FIRST
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+          console.log("Auth state changed:", event, session?.user?.id);
+          setSession(session);
+          setUser(session?.user ?? null);
+          
+          if (session?.user) {
+            const role = await fetchUserRole(session.user.id);
+            setUserRole(role);
+            redirectBasedOnRole(role, event);
+          } else {
+            setUserRole(null);
+            // Only redirect to auth on explicit signout
+            if (event === 'SIGNED_OUT') {
+              navigate('/auth');
+            }
+          }
+        });
+        
+        // THEN check for existing session
         const { data: { session } } = await supabase.auth.getSession();
         setSession(session);
         setUser(session?.user ?? null);
@@ -77,6 +102,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           setUserRole(role);
           redirectBasedOnRole(role);
         }
+        
+        return () => {
+          subscription.unsubscribe();
+        };
       } catch (error) {
         console.error("Error during auth initialization:", error);
       } finally {
@@ -85,27 +114,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     initializeAuth();
-
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      
-      if (event === "SIGNED_IN" && session?.user) {
-        const role = await fetchUserRole(session.user.id);
-        setUserRole(role);
-        redirectBasedOnRole(role);
-      }
-      
-      if (event === "SIGNED_OUT") {
-        setUserRole(null);
-        navigate("/auth");
-      }
-    });
-
-    return () => subscription.unsubscribe();
   }, [navigate]);
 
   return (

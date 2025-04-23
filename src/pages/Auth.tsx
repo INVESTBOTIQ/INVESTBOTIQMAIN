@@ -20,27 +20,39 @@ const Auth = () => {
 
     try {
       if (isLogin) {
-        const { error } = await supabase.auth.signInWithPassword({
+        const { data, error } = await supabase.auth.signInWithPassword({
           email,
           password,
         });
+        
         if (error) throw error;
-        navigate("/");
+        
+        // Check if we have a successful login with user data
+        if (data.user) {
+          toast({
+            title: "Login succesvol",
+            description: "U bent nu ingelogd.",
+          });
+          navigate("/");
+        }
       } else {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
         });
+        
         if (error) throw error;
+        
         toast({
           title: "Registratie succesvol",
           description: "Controleer uw e-mail om uw account te bevestigen.",
         });
       }
     } catch (error: any) {
+      console.error("Auth error:", error);
       toast({
         variant: "destructive",
-        title: "Error",
+        title: "Fout bij " + (isLogin ? "inloggen" : "registreren"),
         description: error.message,
       });
     } finally {
