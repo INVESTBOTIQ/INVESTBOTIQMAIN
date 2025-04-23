@@ -1,30 +1,81 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { Copy, Users, CheckCircle2 } from "lucide-react";
 import { useAuth } from '@/components/AuthProvider';
+import { supabase } from '@/integrations/supabase/client';
+import { createReferralLinkFromCode, copyReferralLink, getReferralSummary } from '@/utils/referral-utils';
 
 const ReferralBox = () => {
   const [copied, setCopied] = useState(false);
+  const [referralCode, setReferralCode] = useState<string | null>(null);
+  const [referralLink, setReferralLink] = useState<string>("https://investbotiq.nl/?ref=demo");
+  const [referralStats, setReferralStats] = useState({
+    successful: 0,
+    pending: 0,
+    bonusEarned: 0
+  });
   const { user } = useAuth();
   
-  // Generate a unique referral link based on user ID
-  const referralLink = user ? `https://investbotiq.nl/?ref=${user.id.substring(0, 8)}` : "https://investbotiq.nl/?ref=demo";
+  useEffect(() => {
+    const loadReferralData = async () => {
+      if (!user) return;
+      
+      try {
+        // Get or create referral code
+        const { data: existingCode, error: codeError } = await supabase
+          .from("referrals")
+          .select("referral_code")
+          .eq("user_id", user.id)
+          .is("referred_user_id", null)
+          .single();
+        
+        if (codeError && codeError.code !== "PGRST116") {
+          console.error("Error fetching referral code:", codeError);
+        }
+        
+        let code: string;
+        if (!existingCode) {
+          // Generate a new referral code if none exists
+          code = `${user.id.substring(0, 8)}`;
+          await supabase
+            .from("referrals")
+            .insert({
+              user_id: user.id,
+              referral_code: code
+            });
+        } else {
+          code = existingCode.referral_code;
+        }
+        
+        setReferralCode(code);
+        const link = await createReferralLinkFromCode(code);
+        setReferralLink(link);
+        
+        // Get referral summary
+        const summary = await getReferralSummary(user.id);
+        if (summary) {
+          setReferralStats({
+            successful: summary.successful_referrals || 0,
+            pending: summary.pending_referrals || 0,
+            bonusEarned: summary.total_bonus || 0
+          });
+        }
+      } catch (error) {
+        console.error("Error in loadReferralData:", error);
+      }
+    };
+    
+    loadReferralData();
+  }, [user]);
   
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(referralLink)
-      .then(() => {
-        setCopied(true);
-        toast.success("Referral link gekopieerd!");
-        setTimeout(() => setCopied(false), 3000);
-      })
-      .catch(err => {
-        console.error('Failed to copy: ', err);
-        toast.error("Kopiëren mislukt. Probeer handmatig te selecteren.");
-      });
+    copyReferralLink(referralLink);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 3000);
   };
   
   return (
@@ -79,15 +130,15 @@ const ReferralBox = () => {
         <div className="flex flex-wrap gap-4 mt-6">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-green-500"></div>
-            <span className="text-xs text-muted-foreground">3 succesvolle referrals</span>
+            <span className="text-xs text-muted-foreground">{referralStats.successful} succesvolle referrals</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
-            <span className="text-xs text-muted-foreground">1 referral in behandeling</span>
+            <span className="text-xs text-muted-foreground">{referralStats.pending} referral in behandeling</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-primary"></div>
-            <span className="text-xs text-muted-foreground">€300 extra cashflow verdiend</span>
+            <span className="text-xs text-muted-foreground">€{referralStats.bonusEarned} extra cashflow verdiend</span>
           </div>
         </div>
       </CardContent>

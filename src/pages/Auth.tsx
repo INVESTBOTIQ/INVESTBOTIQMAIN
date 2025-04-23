@@ -13,8 +13,18 @@ const Auth = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
+  const [referralCode, setReferralCode] = useState<string | null>(null);
   const navigate = useNavigate();
   const { user, userRole } = useAuth();
+
+  useEffect(() => {
+    // Extract referral code from URL if it exists
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('ref');
+    if (code) {
+      setReferralCode(code);
+    }
+  }, []);
 
   // Redirect if already logged in
   useEffect(() => {
@@ -55,6 +65,25 @@ const Auth = () => {
         });
         
         if (error) throw error;
+
+        // If there's a referral code, handle the referral after registration
+        if (referralCode && data.user) {
+          try {
+            const { error: referralError } = await supabase
+              .from('referrals')
+              .insert({
+                referred_user_id: data.user.id,
+                referral_code: referralCode,
+                status: 'pending'
+              });
+
+            if (referralError) {
+              console.error("Error storing referral:", referralError);
+            }
+          } catch (refError) {
+            console.error("Error processing referral:", refError);
+          }
+        }
         
         toast.success("Registratie succesvol. Controleer uw e-mail om uw account te bevestigen.");
       }
@@ -71,6 +100,11 @@ const Auth = () => {
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>{isLogin ? "Inloggen" : "Registreren"}</CardTitle>
+          {referralCode && !isLogin && (
+            <div className="text-sm text-green-600 mt-1">
+              Je bent uitgenodigd! Registreer om €100 bonus te ontvangen.
+            </div>
+          )}
         </CardHeader>
         <CardContent>
           <form onSubmit={handleAuth} className="space-y-4">

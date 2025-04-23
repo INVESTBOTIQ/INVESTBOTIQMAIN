@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
@@ -13,7 +12,8 @@ import {
   Sparkles, 
   Bell,
   Activity,
-  AlertTriangle
+  AlertTriangle,
+  Share2
 } from "lucide-react";
 
 const AdminDashboard = () => {
@@ -101,6 +101,13 @@ const AdminDashboard = () => {
       icon: <Bell className="h-8 w-8" />,
       path: "/admin/notifications",
       color: "bg-red-100",
+    },
+    {
+      title: "Referrals",
+      description: "Beheer referrals en beloningen",
+      icon: <Share2 className="h-8 w-8" />,
+      path: "/admin/referrals",
+      color: "bg-indigo-100",
     },
   ];
 
