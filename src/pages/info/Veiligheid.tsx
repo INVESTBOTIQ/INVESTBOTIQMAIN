@@ -1,4 +1,3 @@
-
 import React from "react";
 import InfoPageLayout from "@/components/layouts/InfoPageLayout";
 import SecurityHero from "@/components/veiligheid/SecurityHero";
@@ -7,10 +6,8 @@ import NoExternalAccess from "@/components/veiligheid/NoExternalAccess";
 import SecurityTimeline from "@/components/veiligheid/SecurityTimeline";
 import FutureUpdates from "@/components/veiligheid/FutureUpdates";
 import SecurityCTA from "@/components/veiligheid/SecurityCTA";
-
 export default function Veiligheid() {
-  return (
-    <InfoPageLayout title="" showGradientBackground>
+  return <InfoPageLayout title="" showGradientBackground>
       {/* Hero Section */}
       <section className="relative pt-24 pb-12 md:pt-32 md:pb-16 px-4 overflow-hidden">
         <div className="container mx-auto max-w-6xl relative z-10">
@@ -25,9 +22,7 @@ export default function Veiligheid() {
       {/* Security Features Grid Section */}
       <section className="py-16 px-4">
         <div className="container mx-auto max-w-6xl">
-          <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-12">
-            Slimme beveiliging – technisch uitgelegd
-          </h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-12">Slimme beveiliging</h2>
           <SecurityFeatures />
         </div>
       </section>
@@ -65,6 +60,5 @@ export default function Veiligheid() {
           <SecurityCTA />
         </div>
       </section>
-    </InfoPageLayout>
-  );
+    </InfoPageLayout>;
 }
