@@ -12,7 +12,7 @@ export interface TierChartData {
 
 export interface ChartConfig {
   yAxisId: "left" | "right";
-  orientation?: "right";
+  orientation: "left" | "right";
   label?: {
     value: string;
     angle: number;
