@@ -43,7 +43,6 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, onClose }) =
     }
   };
 
-  // Define menu items for different roles
   const memberItems = [
     { label: "Dashboard", href: "/member/dashboard", icon: Home },
     { label: "Voortgang", href: "/member/progress", icon: BarChart },
@@ -58,6 +57,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, onClose }) =
     { label: "Gebruikers", href: "/admin/users", icon: Users },
     { label: "Taken Beheer", href: "/admin/tasks", icon: CheckSquare },
     { label: "Cashflow Beheer", href: "/admin/cashflows", icon: CircleDollarSign },
+    { label: "Notificaties", href: "/admin/notifications", icon: Bell },
     { label: "Instellingen", href: "/admin/settings", icon: Settings },
     { label: "Mijn Profiel", href: "/admin/profile", icon: User },
   ];

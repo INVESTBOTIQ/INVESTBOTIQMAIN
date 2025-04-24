@@ -2,7 +2,15 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { Users, CheckSquare, CircleDollarSign, Settings, UserCog, Home } from "lucide-react";
+import { 
+  Users, 
+  CheckSquare, 
+  CircleDollarSign, 
+  Settings, 
+  UserCog, 
+  Home, 
+  Bell 
+} from "lucide-react";
 
 const navItems = [
   {
@@ -24,6 +32,11 @@ const navItems = [
     title: "Cashflows",
     href: "/admin/cashflows",
     icon: CircleDollarSign
+  },
+  {
+    title: "Notificaties",
+    href: "/admin/notifications",
+    icon: Bell
   },
   {
     title: "Instellingen",
