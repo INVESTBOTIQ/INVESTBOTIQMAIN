@@ -14,7 +14,7 @@ export default function WhyItWorksSection() {
               <Timer className="w-6 h-6 text-amber-600" />
             </div>
             <h3 className="text-xl font-bold mb-3">Time Gap Profit</h3>
-            <p className="text-gray-700 text-justify">Door slim gebruik te maken van tijdskloofprofijt kan het systeem optimaal kapitaal benutten tussen verschillende transactie-structuren.</p>
+            <p className="text-gray-700 text-left">Door slim gebruik te maken van tijdskloofprofijt kan het systeem optimaal kapitaal benutten tussen verschillende transactie-structuren.</p>
           </FadeIn>
           
           <FadeIn delay={0.4} className="bg-white rounded-xl p-6 shadow-md">
@@ -22,7 +22,7 @@ export default function WhyItWorksSection() {
               <Bot className="w-6 h-6 text-indigo-600" />
             </div>
             <h3 className="text-xl font-bold mb-3 text-justify">Automatisering via IQ Bot</h3>
-            <p className="text-gray-700 text-justify">De IQ Bot voert het schema foutloos uit en neemt alle optimalisatiebeslissingen zonder enige vorm van menselijke tussenkomst.</p>
+            <p className="text-gray-700 text-left">De IQ Bot voert het schema foutloos uit en neemt alle optimalisatiebeslissingen zonder enige vorm van menselijke tussenkomst.</p>
           </FadeIn>
           
           <FadeIn delay={0.5} className="bg-white rounded-xl p-6 shadow-md">
@@ -30,7 +30,7 @@ export default function WhyItWorksSection() {
               <CircleCheck className="w-6 h-6 text-blue-600" />
             </div>
             <h3 className="text-xl font-bold mb-3">BEL-leningstructuur</h3>
-            <p className="text-gray-700 text-justify">
+            <p className="text-gray-700 text-left">
               Het systeem maakt gebruik van een geoptimaliseerde leningstructuur die zichzelf terugbetaalt en uiteindelijk leidt tot een schuldvrije cashflow.
             </p>
           </FadeIn>
