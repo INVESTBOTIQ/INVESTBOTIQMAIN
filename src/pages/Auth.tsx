@@ -34,6 +34,9 @@ const Auth = () => {
         navigate('/admin', { replace: true });
       } else if (userRole === 'member') {
         navigate('/member/dashboard', { replace: true });
+      } else {
+        // Default to home page for guests or unknown roles
+        navigate('/', { replace: true });
       }
     }
   }, [user, userRole, navigate]);
@@ -50,7 +53,10 @@ const Auth = () => {
           password,
         });
         
-        if (error) throw error;
+        if (error) {
+          console.error("Login error:", error);
+          throw error;
+        }
         
         // Check if we have a successful login with user data
         if (data.user) {
@@ -62,9 +68,17 @@ const Auth = () => {
         const { data, error } = await supabase.auth.signUp({
           email,
           password,
+          options: {
+            data: {
+              // Add any custom user metadata here
+            }
+          }
         });
         
-        if (error) throw error;
+        if (error) {
+          console.error("Signup error:", error);
+          throw error;
+        }
 
         // If there's a referral code, handle the referral after registration
         if (referralCode && data.user) {
@@ -103,7 +117,18 @@ const Auth = () => {
       }
     } catch (error: any) {
       console.error("Auth error:", error);
-      toast.error(error.message || `Fout bij ${isLogin ? "inloggen" : "registreren"}`);
+      
+      // Provide user-friendly error messages
+      let errorMessage = error.message;
+      if (error.message.includes("Invalid login credentials")) {
+        errorMessage = "Ongeldige inloggegevens. Controleer uw e-mail en wachtwoord.";
+      } else if (error.message.includes("Email not confirmed")) {
+        errorMessage = "E-mail niet bevestigd. Controleer uw inbox voor een bevestigingslink.";
+      } else if (error.message.includes("User already registered")) {
+        errorMessage = "Dit e-mailadres is al geregistreerd. Probeer in te loggen.";
+      }
+      
+      toast.error(errorMessage || `Fout bij ${isLogin ? "inloggen" : "registreren"}`);
     } finally {
       setLoading(false);
     }

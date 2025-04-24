@@ -2,6 +2,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Session, User } from "@supabase/supabase-js";
+import { toast } from "sonner";
 
 type AuthContextType = {
   user: User | null;
@@ -34,9 +35,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUser(session?.user ?? null);
         
         if (session?.user) {
-          const { data: role } = await supabase
-            .rpc('get_user_role', { user_id: session.user.id });
-          setUserRole(role || null);
+          try {
+            // Try to get the role from the session jwt claim first
+            if (session.user?.app_metadata?.role) {
+              setUserRole(session.user.app_metadata.role as "admin" | "member" | "guest");
+            } else {
+              // Fallback to RPC call
+              const { data: role, error } = await supabase
+                .rpc('get_user_role', { user_id: session.user.id });
+              
+              if (error) {
+                console.error("Error getting user role:", error);
+                // Default to "guest" if there's an error
+                setUserRole("guest");
+              } else {
+                setUserRole(role || "guest");
+              }
+            }
+          } catch (error) {
+            console.error("Error in auth state change:", error);
+            setUserRole("guest");
+          }
         } else {
           setUserRole(null);
         }
@@ -49,9 +68,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(session?.user ?? null);
       
       if (session?.user) {
-        const { data: role } = await supabase
-          .rpc('get_user_role', { user_id: session.user.id });
-        setUserRole(role || null);
+        try {
+          // Try to get the role from the session jwt claim first
+          if (session.user?.app_metadata?.role) {
+            setUserRole(session.user.app_metadata.role as "admin" | "member" | "guest");
+          } else {
+            // Fallback to RPC call
+            const { data: role, error } = await supabase
+              .rpc('get_user_role', { user_id: session.user.id });
+            
+            if (error) {
+              console.error("Error getting user role:", error);
+              // Default to "guest" if there's an error
+              setUserRole("guest");
+            } else {
+              setUserRole(role || "guest");
+            }
+          }
+        } catch (error) {
+          console.error("Error getting initial user role:", error);
+          setUserRole("guest");
+        }
       }
       setLoading(false);
     });
