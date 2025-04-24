@@ -14,14 +14,15 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChartYAxis } from "./components/ChartYAxis";
 import { ChartBars } from "./components/ChartBars";
 import { useTierChartData } from "./hooks/useTierChartData";
+import { ChartConfig } from "./types/chart-types";
 
-const leftAxisConfig = {
+const leftAxisConfig: ChartConfig = {
   yAxisId: "left",
   orientation: "left",
   label: { value: "Investering (€)", angle: -90, position: "insideLeft" }
 };
 
-const rightAxisConfig = {
+const rightAxisConfig: ChartConfig = {
   yAxisId: "right",
   orientation: "right",
   label: { value: "Cashflow (€)", angle: 90, position: "insideRight" }
