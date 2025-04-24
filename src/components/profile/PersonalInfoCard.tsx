@@ -1,4 +1,4 @@
-
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { User } from "@supabase/supabase-js";
@@ -15,8 +15,8 @@ interface PersonalInfoCardProps {
 }
 
 const PersonalInfoCard = ({ user }: PersonalInfoCardProps) => {
-  const [phoneNumber, setPhoneNumber] = React.useState("");
-  const [isUpdating, setIsUpdating] = React.useState(false);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const { data: profile, refetch } = useQuery({
     queryKey: ["userProfile", user.id],
