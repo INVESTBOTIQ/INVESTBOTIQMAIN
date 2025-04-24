@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ProgressStats } from "@/components/progress/ProgressStats";
 import { FinancialDevelopmentChart } from "@/components/progress/FinancialDevelopmentChart";
 import { CashflowGrowthChart } from "@/components/progress/CashflowGrowthChart";
+import { withRoleGuard } from "@/utils/withRoleGuard";
 
 const Progress = () => {
   return (
@@ -53,4 +54,4 @@ const Progress = () => {
   );
 };
 
-export default Progress;
+export default withRoleGuard(Progress, ["admin"]);
