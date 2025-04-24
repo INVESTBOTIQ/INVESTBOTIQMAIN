@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { PersonalDetails } from "./general-info/PersonalDetails";
@@ -66,6 +65,15 @@ export const GeneralInfo = ({ data, onUpdate, onNext, onBack }: GeneralInfoProps
       newErrors.telefoon = "Telefoonnummer is verplicht";
     }
     
+    if (!data.hoe_hoorde_u_van_ons) {
+      newErrors.hoe_hoorde_u_van_ons = "Dit veld is verplicht";
+    }
+    if (!data.referral) {
+      newErrors.referral = "Referral e-mailadres is verplicht";
+    } else if (!/\S+@\S+\.\S+/.test(data.referral)) {
+      newErrors.referral = "Ongeldig e-mailadres";
+    }
+    
     setErrors(newErrors);
     
     if (Object.keys(newErrors).length === 0) {
@@ -98,6 +106,7 @@ export const GeneralInfo = ({ data, onUpdate, onNext, onBack }: GeneralInfoProps
 
         <AdditionalInfo
           data={data}
+          errors={errors}
           onChange={handleChange}
         />
 
