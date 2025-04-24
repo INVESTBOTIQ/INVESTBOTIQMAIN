@@ -21,7 +21,7 @@ import AdminFlowlutas from "@/pages/admin/AdminFlowlutas";
 import AdminNotifications from "@/pages/admin/AdminNotifications";
 import AdminReferrals from "@/pages/admin/AdminReferrals";
 import NotFound from "@/pages/NotFound";
-import WatIsInvestbotIQ from "@/pages/info/WatIsInvestbotIQ";
+import WatIsInvestBotIQ from "@/pages/info/WatIsInvestBotIQ";
 import HoeWerktHet from "@/pages/info/HoeWerktHet";
 import MissieVisie from "@/pages/info/MissieVisie";
 import TierPlannen from "@/pages/info/TierPlannen";
@@ -43,7 +43,7 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/faq" element={<FAQ />} />
 
-            <Route path="/alles-over-investbot/wat-is-het" element={<WatIsInvestbotIQ />} />
+            <Route path="/alles-over-investbot/wat-is-het" element={<WatIsInvestBotIQ />} />
             <Route path="/alles-over-investbot/hoe-werkt-het" element={<HoeWerktHet />} />
             <Route path="/alles-over-investbot/mission-vision" element={<MissieVisie />} />
             <Route path="/tier-plannen" element={<TierPlannen />} />

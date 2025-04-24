@@ -47,7 +47,7 @@ export default function HoeWerktHet() {
         }} transition={{
           duration: 0.6
         }} className="text-4xl md:text-5xl lg:text-6xl font-bold text-center text-gray-900 mb-4">
-            Hoe werkt InvestbotIQ?
+            Hoe werkt Investbot IQ?
           </motion.h1>
           <motion.p initial={{
           opacity: 0,
@@ -252,7 +252,7 @@ export default function HoeWerktHet() {
           <a href="#" className="underline hover:text-pink-200 transition">Privacybeleid</a>
           <a href="#" className="underline hover:text-pink-200 transition">Contact</a>
         </div>
-        <div className="mt-4 text-xs text-indigo-200">© {new Date().getFullYear()} Investbotiq</div>
+        <div className="mt-4 text-xs text-indigo-200">© {new Date().getFullYear()} Invest Bot IQ</div>
       </footer>
     </div>;
 }

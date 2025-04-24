@@ -36,7 +36,7 @@ export default function Home() {
           <a href="#" className="underline hover:text-pink-200 transition">Privacybeleid</a>
           <a href="#" className="underline hover:text-pink-200 transition">Contact</a>
         </div>
-        <div className="mt-4 text-xs text-indigo-200">© {new Date().getFullYear()} Investbotiq</div>
+        <div className="mt-4 text-xs text-indigo-200">© {new Date().getFullYear()} Invest Bot IQ</div>
       </footer>
     </motion.div>
   );
