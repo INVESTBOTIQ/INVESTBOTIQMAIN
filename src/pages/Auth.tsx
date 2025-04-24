@@ -42,7 +42,13 @@ const Auth = () => {
   }, [user, userRole, navigate]);
 
   const handleAuth = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault(); // This is crucial to prevent the form from submitting and page from refreshing
+    
+    if (!email || !password) {
+      toast.error("Vul alstublieft zowel e-mail als wachtwoord in");
+      return;
+    }
+
     setLoading(true);
 
     try {
