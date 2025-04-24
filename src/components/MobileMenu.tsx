@@ -71,16 +71,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, onClose }) =
   console.log("MobileMenu rendering, isOpen:", isOpen);
 
   return (
-    <Sheet open={isOpen} onOpenChange={(open) => {
-      console.log("Sheet onOpenChange triggered with:", open);
-      // Only allow the Sheet component to update the isOpen state when opening, not when closing
-      if (open) {
-        setIsOpen(open);
-      } else {
-        // If trying to close, we'll handle this ourselves via the onClose function
-        onClose();
-      }
-    }}>
+    <Sheet open={isOpen} onOpenChange={setIsOpen} modal={false}>
       <SheetContent side="left" className="w-[80%] max-w-xs p-0 shadow-xl">
         {user && (
           <div className="flex items-center gap-3 p-4 border-b bg-primary/5">
@@ -108,7 +99,10 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, onClose }) =
                     ? "bg-primary/10 text-primary"
                     : "text-gray-700 hover:bg-gray-100"
                 )}
-                onClick={onClose}
+                onClick={() => {
+                  console.log(`Clicked menu item: ${item.label}`); 
+                  onClose();
+                }}
               >
                 {item.icon && <item.icon className="mr-3 h-4 w-4 shrink-0" />}
                 <span className="truncate">{item.label}</span>

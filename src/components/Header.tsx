@@ -1,8 +1,8 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "./AuthProvider";
 import { LogOut, Bell, Menu } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import MobileMenu from "./MobileMenu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -23,6 +23,15 @@ const Header = () => {
   const { user, userRole } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isMobile = useIsMobile();
+  const location = useLocation();
+  
+  // Close mobile menu on route change
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      console.log("Route changed, closing mobile menu");
+      handleCloseMobileMenu();
+    }
+  }, [location.pathname]);
   
   const handleCloseMobileMenu = () => {
     console.log("Closing mobile menu");
@@ -45,9 +54,8 @@ const Header = () => {
   };
 
   const toggleMobileMenu = () => {
-    console.log("Toggling mobile menu from", mobileMenuOpen, "to", !mobileMenuOpen);
-    // Force the mobile menu to open when toggle button is clicked
-    setMobileMenuOpen(true);
+    console.log("Toggling mobile menu, current state:", mobileMenuOpen);
+    setMobileMenuOpen(!mobileMenuOpen);
   };
 
   const unreadNotificationsCount = 3;
