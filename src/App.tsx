@@ -18,7 +18,7 @@ import AdminDashboard from "@/pages/admin/AdminDashboard";
 import AdminUsers from "@/pages/admin/AdminUsers";
 import AdminTasks from "@/pages/admin/AdminTasks";
 import AdminCashflows from "@/pages/admin/AdminCashflows";
-import AdminSpirits from "@/pages/admin/AdminSpirits";
+import AdminFlowlutas from "@/pages/admin/AdminFlowlutas";
 import AdminNotifications from "@/pages/admin/AdminNotifications";
 import AdminReferrals from "@/pages/admin/AdminReferrals";
 import NotFound from "@/pages/NotFound";
@@ -68,7 +68,7 @@ const App = () => (
             <Route path="/admin/users" element={<AdminUsers />} />
             <Route path="/admin/tasks" element={<AdminTasks />} /> 
             <Route path="/admin/cashflows" element={<AdminCashflows />} />
-            <Route path="/admin/spirits" element={<AdminSpirits />} />
+            <Route path="/admin/flowlutas" element={<AdminFlowlutas />} />
             <Route path="/admin/notifications" element={<AdminNotifications />} />
             <Route path="/admin/referrals" element={<AdminReferrals />} />
             <Route path="/admin/index" element={<Navigate to="/admin" replace />} />

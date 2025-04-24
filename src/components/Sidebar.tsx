@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthProvider';
@@ -45,7 +44,7 @@ const Sidebar = () => {
     { to: '/admin/users', icon: <Users className="h-4 w-4" />, label: 'Gebruikers' },
     { to: '/admin/tasks', icon: <CheckSquare className="h-4 w-4" />, label: 'Taken' },
     { to: '/admin/cashflows', icon: <CircleDollarSign className="h-4 w-4" />, label: 'Cashflows' },
-    { to: '/admin/spirits', icon: <Sparkles className="h-4 w-4" />, label: 'Spirits' },
+    { to: '/admin/flowlutas', icon: <Sparkles className="h-4 w-4" />, label: 'Flowlutas' },
     { to: '/admin/referrals', icon: <Share2 className="h-4 w-4" />, label: 'Referrals' },
     { to: '/admin/notifications', icon: <Bell className="h-4 w-4" />, label: 'Notificaties' },
   ];
