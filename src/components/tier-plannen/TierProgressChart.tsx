@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   ComposedChart,
   Line,
@@ -31,6 +31,11 @@ const rightAxisConfig = {
 export default function TierProgressChart() {
   const isMobile = useIsMobile();
   const { data } = useTierChartData();
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   
   const chartContent = (
     <ComposedChart
@@ -61,36 +66,38 @@ export default function TierProgressChart() {
         name="Maandelijkse Cashflow"
         dot={{ fill: "#000000" }}
         activeDot={{ r: 8, fill: "#6D28D9" }}
-        animationDuration={1500}
+        animationDuration={1000}
       />
     </ComposedChart>
   );
 
   return (
-    <FadeIn delay={0.2} className="overflow-hidden">
-      <div className="w-full relative">
-        {isMobile ? (
+    <FadeIn delay={0.1} className="overflow-hidden w-full mt-4">
+      <div className="w-full relative bg-white p-4 rounded-lg shadow-md">
+        {mounted && (
           <>
-            <ScrollArea className="w-full overflow-x-auto">
-              <div className="min-w-[600px] h-[400px]">
-                <ResponsiveContainer width="100%" height="100%">
+            {isMobile ? (
+              <>
+                <ScrollArea className="w-full overflow-x-auto">
+                  <div className="min-w-[600px] h-[400px]">
+                    <ResponsiveContainer width="100%" height="100%" debounce={50}>
+                      {chartContent}
+                    </ResponsiveContainer>
+                  </div>
+                </ScrollArea>
+                <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent animate-pulse" />
+                <div className="text-xs text-center mt-2 text-muted-foreground italic">
+                  Schuif horizontaal om de volledige grafiek te bekijken
+                </div>
+              </>
+            ) : (
+              <div className="h-[500px] w-full">
+                <ResponsiveContainer width="100%" height="100%" debounce={50}>
                   {chartContent}
                 </ResponsiveContainer>
               </div>
-            </ScrollArea>
-            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent animate-pulse" />
+            )}
           </>
-        ) : (
-          <div className="h-[600px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              {chartContent}
-            </ResponsiveContainer>
-          </div>
-        )}
-        {isMobile && (
-          <div className="text-xs text-center mt-2 text-muted-foreground italic">
-            Schuif horizontaal om de volledige grafiek te bekijken
-          </div>
         )}
       </div>
     </FadeIn>
