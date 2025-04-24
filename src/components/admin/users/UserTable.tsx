@@ -11,7 +11,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { TooltipProvider, Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Dialog } from "@/components/ui/dialog";
-import { ArrowRight, Edit, Trash2, CircleDollarSign, Sparkles, UserCog } from "lucide-react";
+import { ArrowRight, Edit, Trash2, CircleDollarSign, Sparkles, UserCog, Mail } from "lucide-react";
 import { UserNotes } from "./UserNotes";
 import { UserType } from "./types";
 
