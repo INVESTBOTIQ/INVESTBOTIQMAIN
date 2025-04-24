@@ -11,6 +11,14 @@ import {
 } from "@/components/ui/table";
 import { format } from "date-fns";
 import { Database } from "@/integrations/supabase/types";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import { useState } from "react";
 
 type FlowlutaStatus = Database["public"]["Enums"]["flowluta_status"];
 
@@ -20,14 +28,19 @@ interface FlowlutasDataGridProps {
   search: string;
 }
 
+const ITEMS_PER_PAGE = 10;
+
 export const FlowlutasDataGrid = ({ tier, status, search }: FlowlutasDataGridProps) => {
-  const { data: flowlutas } = useQuery({
-    queryKey: ["flowlutas", tier, status, search],
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const { data: flowlutasData } = useQuery({
+    queryKey: ["flowlutas", tier, status, search, currentPage],
     queryFn: async () => {
       let query = supabase
         .from("flowlutas")
-        .select("*")
-        .order("created_at", { ascending: false });
+        .select("*", { count: "exact" })
+        .order("created_at", { ascending: false })
+        .range((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE - 1);
 
       if (tier !== "all") {
         query = query.eq("tier", parseInt(tier));
@@ -47,43 +60,73 @@ export const FlowlutasDataGrid = ({ tier, status, search }: FlowlutasDataGridPro
         query = query.or(`id.ilike.%${search}%`);
       }
 
-      const { data, error } = await query;
+      const { data, error, count } = await query;
 
       if (error) throw error;
-      return data;
+      return { flowlutas: data, totalCount: count || 0 };
     },
   });
 
+  const totalPages = Math.ceil((flowlutasData?.totalCount || 0) / ITEMS_PER_PAGE);
+
   return (
-    <div className="rounded-md border">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Tier</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Maandelijkse Cashflow</TableHead>
-            <TableHead>Geactiveerd Op</TableHead>
-            <TableHead>Volgende Activatie</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {flowlutas?.map((flowluta) => (
-            <TableRow key={flowluta.id}>
-              <TableCell>{flowluta.tier}</TableCell>
-              <TableCell className="capitalize">{flowluta.status}</TableCell>
-              <TableCell>€{flowluta.monthly_cashflow}</TableCell>
-              <TableCell>
-                {format(new Date(flowluta.activated_at), "dd/MM/yyyy")}
-              </TableCell>
-              <TableCell>
-                {flowluta.next_activation_date
-                  ? format(new Date(flowluta.next_activation_date), "dd/MM/yyyy")
-                  : "N/A"}
-              </TableCell>
+    <div className="space-y-4">
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Tier</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Maandelijkse Cashflow</TableHead>
+              <TableHead>Geactiveerd Op</TableHead>
+              <TableHead>Volgende Activatie</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {flowlutasData?.flowlutas.map((flowluta) => (
+              <TableRow key={flowluta.id}>
+                <TableCell>{flowluta.tier}</TableCell>
+                <TableCell className="capitalize">{flowluta.status}</TableCell>
+                <TableCell>€{flowluta.monthly_cashflow}</TableCell>
+                <TableCell>
+                  {format(new Date(flowluta.activated_at), "dd/MM/yyyy")}
+                </TableCell>
+                <TableCell>
+                  {flowluta.next_activation_date
+                    ? format(new Date(flowluta.next_activation_date), "dd/MM/yyyy")
+                    : "N/A"}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+
+      {totalPages > 1 && (
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                disabled={currentPage === 1}
+                className="cursor-pointer"
+              />
+            </PaginationItem>
+            <PaginationItem>
+              <span className="px-4">
+                Pagina {currentPage} van {totalPages}
+              </span>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationNext
+                onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+                disabled={currentPage === totalPages}
+                className="cursor-pointer"
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
     </div>
   );
 };
