@@ -29,11 +29,8 @@ export default function WhatIsSection() {
         </h2>
       </FadeIn>
       <FadeIn delay={0.24}>
-        <p className="mb-8 text-lg text-gray-700 md:text-justify text-justify">
-          Investbotiq is een platform dat automatisch cashflow voor jou genereert met behulp van de IQ Bot. 
-          Geen investeringskeuzes, geen financieringsaanvragen, geen technische kennis vereist – alles gebeurt 
-          transparant en automatisch.
-        </p>
+        <p className="mb-8 text-lg text-gray-700 md:text-justify text-justify">Investbotiq is een platform dat automatisch cashflow voor jou genereert met behulp van de IQ Bot.
+Geen investeringskeuzes, geen financieringsaanvragen, geen technische kennis vereist!</p>
       </FadeIn>
     </>;
 }
