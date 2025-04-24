@@ -24,7 +24,7 @@ export default function TierTableSection() {
           <FadeIn delay={0.2}>
             <TierInfo />
             <div className="mb-10">
-              <TierGrowthVisualizer className="mb-8 md:block" />
+              <TierGrowthVisualizer className="mb-8" />
             </div>
             <TierTable />
             <TierMobileCards />
