@@ -26,12 +26,15 @@ const AdminProfile = () => {
   }
 
   return (
-    <div>
+    <div className="min-h-screen bg-background">
       <Header />
-      <AdminNavBar />
-      <div className="space-y-6">
-        <PersonalInfoCard user={user} />
-        <SecurityCard />
+      <div className="container mx-auto px-4 md:px-6 py-6">
+        <AdminNavBar />
+        <h2 className="text-xl font-semibold mb-4">Mijn Profiel</h2>
+        <div className="space-y-6">
+          <PersonalInfoCard user={user} />
+          <SecurityCard />
+        </div>
       </div>
     </div>
   );

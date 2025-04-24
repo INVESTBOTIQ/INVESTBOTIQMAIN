@@ -2,9 +2,14 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { Users, CheckSquare, CircleDollarSign, Settings, UserCog } from "lucide-react";
+import { Users, CheckSquare, CircleDollarSign, Settings, UserCog, Home } from "lucide-react";
 
 const navItems = [
+  {
+    title: "Dashboard",
+    href: "/admin",
+    icon: Home
+  },
   {
     title: "Gebruikers",
     href: "/admin/users",
