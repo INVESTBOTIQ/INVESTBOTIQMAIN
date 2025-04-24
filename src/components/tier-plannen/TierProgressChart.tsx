@@ -1,3 +1,4 @@
+
 import React from "react";
 import {
   ComposedChart,
@@ -14,6 +15,18 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { ChartYAxis } from "./components/ChartYAxis";
 import { ChartBars } from "./components/ChartBars";
 import { useTierChartData } from "./hooks/useTierChartData";
+
+const leftAxisConfig = {
+  yAxisId: "left",
+  orientation: "left",
+  label: { value: "Investering (€)", angle: -90, position: "insideLeft" }
+};
+
+const rightAxisConfig = {
+  yAxisId: "right",
+  orientation: "right",
+  label: { value: "Cashflow (€)", angle: 90, position: "insideRight" }
+};
 
 export default function TierProgressChart() {
   const isMobile = useIsMobile();

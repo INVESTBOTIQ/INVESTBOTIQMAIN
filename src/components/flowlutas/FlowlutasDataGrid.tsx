@@ -1,32 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { format } from "date-fns";
-import { Database } from "@/integrations/supabase/types";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "react-tooltip";
 
-type FlowlutaStatus = Database["public"]["Enums"]["flowluta_status"];
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { FlowlutaCard } from "./components/FlowlutaCard";
+import { FlowlutaTable } from "./components/FlowlutaTable";
+import { FlowlutaPagination } from "./components/FlowlutaPagination";
+import { FlowlutaStatus, FlowlutaData } from "./types/flowluta";
 
 interface FlowlutasDataGridProps {
   tier: string;
@@ -67,7 +47,7 @@ export const FlowlutasDataGrid = ({ tier, status, search }: FlowlutasDataGridPro
       const { data, error, count } = await query;
 
       if (error) throw error;
-      return { flowlutas: data, totalCount: count || 0 };
+      return { flowlutas: data as FlowlutaData[], totalCount: count || 0 };
     },
   });
 
@@ -87,119 +67,24 @@ export const FlowlutasDataGrid = ({ tier, status, search }: FlowlutasDataGridPro
     }
   };
 
-  const getStatusColor = (status: FlowlutaStatus) => {
-    switch (status) {
-      case "active":
-        return "bg-emerald-500 hover:bg-emerald-600";
-      case "planned":
-        return "bg-blue-500 hover:bg-blue-600";
-      case "paused":
-        return "bg-amber-500 hover:bg-amber-600";
-      default:
-        return "bg-gray-500 hover:bg-gray-600";
-    }
-  };
-
-  const getStatusTooltip = (status: FlowlutaStatus) => {
-    switch (status) {
-      case "active":
-        return "Deze flowluta is actief en genereert momenteel cashflow";
-      case "planned":
-        return "Deze flowluta wordt automatisch geactiveerd volgens planning";
-      case "paused":
-        return "Deze flowluta is tijdelijk gepauzeerd";
-      default:
-        return "";
-    }
-  };
-
   if (isMobile) {
     return (
       <div className="space-y-4">
         <div className="grid gap-4">
           {flowlutasData?.flowlutas.map((flowluta) => (
-            <Card key={flowluta.id} className="overflow-hidden transition-all duration-200 hover:shadow-md">
-              <CardHeader className="pb-2">
-                <div className="flex justify-between items-center">
-                  <CardTitle className="text-base">
-                    Tier {flowluta.tier}
-                  </CardTitle>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <Badge className={getStatusColor(flowluta.status)}>
-                          {flowluta.status.charAt(0).toUpperCase() + flowluta.status.slice(1)}
-                        </Badge>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>{getStatusTooltip(flowluta.status)}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
-              </CardHeader>
-              <CardContent className="pt-0 space-y-2">
-                <div className="grid grid-cols-2 text-sm">
-                  <span className="text-muted-foreground">Cashflow:</span>
-                  <span className="font-medium">€{flowluta.monthly_cashflow}</span>
-                </div>
-                <div className="grid grid-cols-2 text-sm">
-                  <span className="text-muted-foreground">Geactiveerd op:</span>
-                  <span className="font-medium">{format(new Date(flowluta.activated_at), "dd/MM/yyyy")}</span>
-                </div>
-                <div className="grid grid-cols-2 text-sm">
-                  <span className="text-muted-foreground">Volgende activatie:</span>
-                  <span className="font-medium">
-                    {flowluta.next_activation_date
-                      ? format(new Date(flowluta.next_activation_date), "dd/MM/yyyy")
-                      : "N/A"}
-                  </span>
-                </div>
-                <Button variant="outline" size="sm" className="w-full mt-2 group relative" disabled>
-                  <span>Details</span>
-                  <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                    Binnenkort beschikbaar
-                  </span>
-                </Button>
-              </CardContent>
-            </Card>
+            <FlowlutaCard key={flowluta.id} flowluta={flowluta} />
           ))}
         </div>
 
         {totalPages > 1 && (
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={handlePreviousPage}
-                  disabled={isPreviousDisabled}
-                  className="cursor-pointer"
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                  <span className="sr-only">Previous page</span>
-                </Button>
-              </PaginationItem>
-              <PaginationItem>
-                <span className="px-4">
-                  Pagina {currentPage} van {totalPages}
-                </span>
-              </PaginationItem>
-              <PaginationItem>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={handleNextPage}
-                  disabled={isNextDisabled}
-                  className="cursor-pointer"
-                >
-                  <ChevronRight className="h-4 w-4" />
-                  <span className="sr-only">Next page</span>
-                </Button>
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+          <FlowlutaPagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPreviousPage={handlePreviousPage}
+            onNextPage={handleNextPage}
+            isPreviousDisabled={isPreviousDisabled}
+            isNextDisabled={isNextDisabled}
+          />
         )}
       </div>
     );
@@ -207,75 +92,17 @@ export const FlowlutasDataGrid = ({ tier, status, search }: FlowlutasDataGridPro
 
   return (
     <div className="space-y-4">
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Tier</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Maandelijkse Cashflow</TableHead>
-              <TableHead>Geactiveerd Op</TableHead>
-              <TableHead>Volgende Activatie</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {flowlutasData?.flowlutas.map((flowluta) => (
-              <TableRow key={flowluta.id}>
-                <TableCell>{flowluta.tier}</TableCell>
-                <TableCell>
-                  <Badge className={getStatusColor(flowluta.status)}>
-                    {flowluta.status.charAt(0).toUpperCase() + flowluta.status.slice(1)}
-                  </Badge>
-                </TableCell>
-                <TableCell>€{flowluta.monthly_cashflow}</TableCell>
-                <TableCell>
-                  {format(new Date(flowluta.activated_at), "dd/MM/yyyy")}
-                </TableCell>
-                <TableCell>
-                  {flowluta.next_activation_date
-                    ? format(new Date(flowluta.next_activation_date), "dd/MM/yyyy")
-                    : "N/A"}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+      <FlowlutaTable flowlutas={flowlutasData?.flowlutas || []} />
 
       {totalPages > 1 && (
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={handlePreviousPage}
-                disabled={isPreviousDisabled}
-                className="cursor-pointer"
-              >
-                <ChevronLeft className="h-4 w-4" />
-                <span className="sr-only">Previous page</span>
-              </Button>
-            </PaginationItem>
-            <PaginationItem>
-              <span className="px-4">
-                Pagina {currentPage} van {totalPages}
-              </span>
-            </PaginationItem>
-            <PaginationItem>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={handleNextPage}
-                disabled={isNextDisabled}
-                className="cursor-pointer"
-              >
-                <ChevronRight className="h-4 w-4" />
-                <span className="sr-only">Next page</span>
-              </Button>
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+        <FlowlutaPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPreviousPage={handlePreviousPage}
+          onNextPage={handleNextPage}
+          isPreviousDisabled={isPreviousDisabled}
+          isNextDisabled={isNextDisabled}
+        />
       )}
     </div>
   );
