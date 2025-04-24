@@ -1,3 +1,4 @@
+
 import { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Session, User } from "@supabase/supabase-js";
@@ -35,7 +36,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (session?.user) {
           const { data: role } = await supabase
             .rpc('get_user_role', { user_id: session.user.id });
-          setUserRole(role);
+          setUserRole(role || null);
         } else {
           setUserRole(null);
         }
@@ -50,7 +51,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (session?.user) {
         const { data: role } = await supabase
           .rpc('get_user_role', { user_id: session.user.id });
-        setUserRole(role);
+        setUserRole(role || null);
       }
       setLoading(false);
     });
