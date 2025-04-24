@@ -48,6 +48,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 console.error("Error getting user role:", error);
                 // Default to "guest" if there's an error
                 setUserRole("guest");
+                // Let's notify the user that there's an issue with their role
+                if (error.message.includes("role \"member\" does not exist")) {
+                  toast.error("Er is een probleem met uw gebruikersrol. Neem contact op met de beheerder.");
+                }
               } else {
                 setUserRole(role || "guest");
               }
@@ -78,9 +82,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
               .rpc('get_user_role', { user_id: session.user.id });
             
             if (error) {
-              console.error("Error getting user role:", error);
+              console.error("Error getting initial user role:", error);
               // Default to "guest" if there's an error
               setUserRole("guest");
+              // Let's notify the user that there's an issue with their role
+              if (error.message.includes("role \"member\" does not exist")) {
+                toast.error("Er is een probleem met uw gebruikersrol. Neem contact op met de beheerder.");
+              }
             } else {
               setUserRole(role || "guest");
             }
