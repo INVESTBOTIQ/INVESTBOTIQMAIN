@@ -11,8 +11,14 @@ export type ChartConfig = {
 
 export type TierChartData = {
   month: string;
-  kas: number;
+  kaspositie?: number;
+  kas?: number;
+  bel?: number;
+  plat?: number;
+  flowluta?: number;
   cashflow: number;
-  timegap: number;
-  flowlutas: string;
+  timegap?: number;
+  flowlutas?: string;
+  flowlutas_count?: number;
+  tier?: string;
 };
