@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "./AuthProvider";
@@ -21,19 +20,16 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 const CollapsibleSidebar = () => {
   const [expanded, setExpanded] = useState(() => {
-    // Get the stored state or default to true (expanded)
     const storedState = localStorage.getItem("sidebar-expanded");
     return storedState === null ? true : storedState === "true";
   });
   const { userRole } = useAuth();
   const isMobile = useIsMobile();
 
-  // Store the expanded state in localStorage when it changes
   useEffect(() => {
     localStorage.setItem("sidebar-expanded", String(expanded));
   }, [expanded]);
   
-  // If on mobile, don't render the sidebar at all
   if (isMobile) {
     return null;
   }
@@ -68,7 +64,6 @@ const CollapsibleSidebar = () => {
         )}
       >
         <div className="flex flex-col h-full">
-          {/* Navigation menu */}
           <nav className="flex-1 py-4 px-2">
             <ul className="space-y-1">
               {links.map((link) => (
@@ -102,7 +97,6 @@ const CollapsibleSidebar = () => {
             </ul>
           </nav>
 
-          {/* Profile link and collapse toggle */}
           <div className="border-t pt-4 px-2 pb-4">
             <Tooltip delayDuration={300}>
               <TooltipTrigger asChild>
@@ -145,7 +139,6 @@ const CollapsibleSidebar = () => {
         </div>
       </div>
       
-      {/* Spacer div to push content to the right */}
       <div className={cn("hidden md:block transition-all duration-300", expanded ? "w-64" : "w-16")} />
     </div>
   );

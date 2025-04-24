@@ -1,8 +1,6 @@
-
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { useAuth } from "./AuthProvider";
-import { Menu, LogOut, Bell } from "lucide-react";
+import { LogOut, Bell, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import MobileMenu from "./MobileMenu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -16,6 +14,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import BrandLogo from "./BrandLogo";
 
 const Header = () => {
   const { user, userRole } = useAuth();
@@ -45,9 +44,20 @@ const Header = () => {
   return (
     <header className="bg-white border-b sticky top-0 z-40">
       <div className="flex items-center justify-between h-16 px-4 lg:px-6">
-        <Link to="/" className="flex items-center">
-          <span className="text-xl font-bold text-primary truncate">Investbotiq</span>
-        </Link>
+        <div className="flex items-center gap-4">
+          {user && (
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="md:hidden"
+              onClick={() => setMobileMenuOpen(true)}
+              aria-label="Open menu"
+            >
+              <Menu className="h-6 w-6" />
+            </Button>
+          )}
+          <BrandLogo />
+        </div>
         
         <div className="flex items-center gap-3">
           {user && (
@@ -120,7 +130,7 @@ const Header = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
                 <div className="px-4 py-3 border-b">
-                  <p className="text-sm font-medium">{userRole}</p>
+                  <p className="text-sm font-medium capitalize">{userRole}</p>
                   <p className="text-xs text-muted-foreground truncate">{user.email}</p>
                 </div>
                 <DropdownMenuItem asChild>
@@ -136,25 +146,6 @@ const Header = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           )}
-          
-          {/* Mobile menu button - single button */}
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="md:hidden relative"
-            onClick={() => setMobileMenuOpen(true)}
-            aria-label="Open menu"
-          >
-            <Menu className="h-6 w-6" />
-            {unreadNotificationsCount > 0 && (
-              <Badge 
-                variant="destructive" 
-                className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
-              >
-                {unreadNotificationsCount}
-              </Badge>
-            )}
-          </Button>
         </div>
       </div>
       
