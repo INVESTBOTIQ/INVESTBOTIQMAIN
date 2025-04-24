@@ -6,10 +6,10 @@ import FeaturesSection from "@/components/wat-is-investbot/FeaturesSection";
 import QuoteSection from "@/components/wat-is-investbot/QuoteSection";
 import CTASection from "@/components/tier-plannen/CTASection";
 
-export default function WatIsInvestbotIQ() {
+export default function WatIsInvestBotIQ() {
   return (
     <InfoPageLayout
-      title="Wat is InvestbotIQ?"
+      title="Wat is Invest Bot IQ?"
       subtitle="Slimme AI. Automatische cashflow. Geen zorgen."
     >
       <IntroductionSection />
