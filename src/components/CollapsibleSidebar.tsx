@@ -33,6 +33,11 @@ const CollapsibleSidebar = () => {
     localStorage.setItem("sidebar-expanded", String(expanded));
   }, [expanded]);
   
+  // If on mobile, don't render the sidebar at all
+  if (isMobile) {
+    return null;
+  }
+  
   const memberLinks = [
     { to: "/member/dashboard", icon: <Home className="h-4 w-4" />, label: "Dashboard" },
     { to: "/member/progress", icon: <BarChart4 className="h-4 w-4" />, label: "Voortgang" },
@@ -53,10 +58,6 @@ const CollapsibleSidebar = () => {
 
   const links = userRole === "admin" ? adminLinks : memberLinks;
   const profileLink = userRole === "admin" ? "/admin/profile" : "/member/profile";
-
-  if (isMobile) {
-    return null; // We don't show the sidebar on mobile
-  }
 
   return (
     <div className="hidden md:block">

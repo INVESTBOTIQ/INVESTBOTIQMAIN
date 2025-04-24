@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "./AuthProvider";
@@ -105,6 +106,7 @@ const Header = () => {
             </DropdownMenu>
           )}
           
+          {/* Desktop user menu */}
           {user && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild className="hidden md:flex">
@@ -135,10 +137,11 @@ const Header = () => {
             </DropdownMenu>
           )}
           
+          {/* Mobile menu button - single button */}
           <Button 
             variant="ghost" 
             size="icon" 
-            className="md:hidden mobile-btn relative"
+            className="md:hidden relative"
             onClick={() => setMobileMenuOpen(true)}
             aria-label="Open menu"
           >

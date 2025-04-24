@@ -11,10 +11,22 @@ import TaskList from "@/components/dashboard/TaskList";
 import ReferralBox from "@/components/dashboard/ReferralBox";
 import { withRoleGuard } from "@/utils/withRoleGuard";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useAuth } from "@/components/AuthProvider";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 // Let only 'member' users access this page
 const MemberDashboard = () => {
   const isMobile = useIsMobile();
+  const { user } = useAuth();
+
+  // Extract first name from email for personalized greeting
+  const getFirstName = () => {
+    if (!user || !user.email) return "";
+    const emailParts = user.email.split('@');
+    const namePart = emailParts[0];
+    // Convert first letter to uppercase for nicer display
+    return namePart.charAt(0).toUpperCase() + namePart.slice(1).split('.')[0];
+  };
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -26,11 +38,11 @@ const MemberDashboard = () => {
             <div className="space-y-1.5">
               <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Member Dashboard</h1>
               <p className="text-muted-foreground">
-                Welkom bij uw Investbotiq dashboard
+                {getFirstName() ? `Welkom ${getFirstName()} bij uw Investbotiq dashboard` : "Welkom bij uw Investbotiq dashboard"}
               </p>
             </div>
             
-            {/* Four statistic cards - responsive grid */}
+            {/* Four statistic cards - responsive grid with hover effects */}
             <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
               <CashflowSummary />
               <TotalValueCard />
@@ -41,7 +53,15 @@ const MemberDashboard = () => {
             {/* Cashflow chart + task list - stacked on mobile, side-by-side on desktop */}
             <div className="grid gap-6 grid-cols-1 lg:grid-cols-3">
               <div className="lg:col-span-2 fade-in">
-                <DashboardSummary />
+                {isMobile ? (
+                  <ScrollArea className="w-full">
+                    <div className="min-w-[600px]">
+                      <DashboardSummary />
+                    </div>
+                  </ScrollArea>
+                ) : (
+                  <DashboardSummary />
+                )}
               </div>
               <div className="fade-in slide-up">
                 <TaskList />
@@ -51,9 +71,10 @@ const MemberDashboard = () => {
             {/* Referral section */}
             <ReferralBox />
 
-            {/* Mobile footer navigation hints */}
+            {/* Mobile help hint - only on mobile */}
             {isMobile && (
-              <div className="mt-4 p-4 bg-muted/50 rounded-lg text-center text-sm text-muted-foreground">
+              <div className="mt-4 p-4 bg-muted rounded-lg text-center text-sm text-muted-foreground border border-muted-foreground/20">
+                <p className="mb-2">Swipe over grafieken om meer detail te zien</p>
                 <p>Open menu rechtsboven voor meer navigatie opties</p>
               </div>
             )}

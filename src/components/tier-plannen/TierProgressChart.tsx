@@ -87,6 +87,11 @@ export default function TierProgressChart() {
             </ResponsiveContainer>
           </div>
         )}
+        {isMobile && (
+          <div className="text-xs text-center mt-2 text-muted-foreground italic">
+            Schuif horizontaal om de volledige grafiek te bekijken
+          </div>
+        )}
       </div>
     </FadeIn>
   );
