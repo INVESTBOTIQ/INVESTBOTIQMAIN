@@ -6,7 +6,7 @@ import { Session, User } from "@supabase/supabase-js";
 type AuthContextType = {
   user: User | null;
   session: Session | null;
-  userRole: "admin" | "member" | null;
+  userRole: "admin" | "member" | "guest" | null;
   loading: boolean;
 };
 
@@ -23,7 +23,7 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
-  const [userRole, setUserRole] = useState<"admin" | "member" | null>(null);
+  const [userRole, setUserRole] = useState<"admin" | "member" | "guest" | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
