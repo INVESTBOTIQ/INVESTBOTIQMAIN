@@ -1,6 +1,8 @@
 import React from "react";
 import { FadeIn } from "../info/FadeInAnimation";
 import { Timer, Bot, CircleCheck, TrendingUp } from "lucide-react";
+import TierCashflowChart from "./TierCashflowChart";
+
 export default function WhyItWorksSection() {
   return <section className="py-16 px-4">
       <div className="container mx-auto max-w-6xl">
@@ -8,7 +10,7 @@ export default function WhyItWorksSection() {
           Waarom werkt dit?
         </h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
           <FadeIn delay={0.3} className="bg-white rounded-xl p-6 shadow-md">
             <div className="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center mb-4">
               <Timer className="w-6 h-6 text-amber-600" />
@@ -44,6 +46,21 @@ export default function WhyItWorksSection() {
 De groei is voorspelbaar, meetbaar, zichtbaar en controleerbaar.</p>
           </FadeIn>
         </div>
+
+        <FadeIn delay={0.7}>
+          <div className="mt-12 bg-white rounded-xl p-6 shadow-md">
+            <h3 className="text-xl font-bold mb-6 text-center">
+              Kaspositie, Cashflow, Flowlutas en TimeGap-leningen per maand (TIER 2-6)
+            </h3>
+            <div className="h-[600px] w-full">
+              <img
+                src="/lovable-uploads/315e9350-1215-4c77-af5e-ff7f4e676b66.png"
+                alt="Grafiek van Kaspositie, Cashflow, Flowlutas en TimeGap-leningen"
+                className="w-full h-full object-contain"
+              />
+            </div>
+          </div>
+        </FadeIn>
       </div>
     </section>;
 }
