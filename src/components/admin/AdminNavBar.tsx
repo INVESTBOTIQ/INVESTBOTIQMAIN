@@ -51,4 +51,5 @@ export const AdminNavBar = () => {
   );
 };
 
+// Add default export
 export default AdminNavBar;

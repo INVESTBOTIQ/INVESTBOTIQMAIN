@@ -53,7 +53,9 @@ const AdminLeads = () => {
       // Transform the data to match our Lead type
       return (data as SupabaseLead[]).map(lead => ({
         ...lead,
-        general: lead.general as Lead["general"]
+        general: typeof lead.general === 'string' 
+          ? JSON.parse(lead.general) 
+          : lead.general as Lead['general']
       })) as Lead[];
     }
   });
