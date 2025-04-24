@@ -7,6 +7,7 @@ import { BarChart } from "lucide-react";
 import { CashflowSearch } from "@/components/cashflow/CashflowSearch";
 import { CashflowTable } from "@/components/cashflow/CashflowTable";
 import { CashflowHistoryTable } from "@/components/cashflow/CashflowHistoryTable";
+import { AdminNavBar } from "@/components/admin/AdminNavBar";
 import { useCashflowManagement } from "@/hooks/useCashflowManagement";
 
 const users = [
@@ -70,6 +71,7 @@ const AdminCashflows = () => {
 
   return (
     <div>
+      <AdminNavBar />
       <h2 className="text-xl font-semibold mb-4">Cashflowbeheer</h2>
       
       <div className="flex justify-between items-center mb-6">

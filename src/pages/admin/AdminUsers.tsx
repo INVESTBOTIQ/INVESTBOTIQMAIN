@@ -5,7 +5,7 @@ import { UserCog } from "lucide-react";
 import { useState } from "react";
 import { UserTable } from "@/components/admin/users/UserTable";
 import { UserFilters } from "@/components/admin/users/UserFilters";
-import { NewUserDialog } from "@/components/admin/users/NewUserDialog";
+import { AdminNavBar } from "@/components/admin/AdminNavBar";
 import { useUsers } from "@/hooks/useUsers";
 
 const AdminUsers = () => {
@@ -22,6 +22,7 @@ const AdminUsers = () => {
 
   return (
     <div>
+      <AdminNavBar />
       <h2 className="text-xl font-semibold mb-2">Gebruikers Overzicht</h2>
       <p className="text-muted-foreground mb-4">
         Bekijk hier het overzicht van alle gebruikers in het ecosysteem van Investbotiq. 
