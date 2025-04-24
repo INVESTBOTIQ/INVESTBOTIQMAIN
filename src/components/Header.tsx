@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "./AuthProvider";
-import { Menu, LogOut } from "lucide-react";
+import { Menu, LogOut, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import MobileMenu from "./MobileMenu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -13,6 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -40,6 +41,9 @@ const Header = () => {
     return user.email.substring(0, 2).toUpperCase();
   };
 
+  // Dummy notification count for demonstration
+  const unreadNotificationsCount = 3;
+
   return (
     <header className="bg-white border-b sticky top-0 z-30">
       <div className="flex items-center justify-between h-16 px-4 lg:px-6">
@@ -48,6 +52,63 @@ const Header = () => {
         </Link>
         
         <div className="flex items-center gap-3">
+          {/* Notifications dropdown for desktop */}
+          {user && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild className="hidden md:flex">
+                <Button variant="ghost" size="icon" className="relative">
+                  <Bell className="h-5 w-5" />
+                  {unreadNotificationsCount > 0 && (
+                    <Badge 
+                      variant="destructive" 
+                      className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
+                    >
+                      {unreadNotificationsCount}
+                    </Badge>
+                  )}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-80">
+                <div className="px-4 py-3 border-b">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-medium">Notificaties</p>
+                    <Button variant="ghost" size="sm" className="text-xs h-auto py-1">
+                      Alles markeren als gelezen
+                    </Button>
+                  </div>
+                </div>
+                <div className="max-h-80 overflow-y-auto">
+                  <div className="flex items-center px-4 py-3 hover:bg-muted transition-colors cursor-pointer border-b">
+                    <div className="ml-3">
+                      <p className="text-sm font-medium">Flowluta Tier 2 geactiveerd</p>
+                      <p className="text-xs text-muted-foreground">Vandaag, 10:45</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center px-4 py-3 hover:bg-muted transition-colors cursor-pointer border-b">
+                    <div className="ml-3">
+                      <p className="text-sm font-medium">Nieuwe taak toegewezen</p>
+                      <p className="text-xs text-muted-foreground">Gisteren, 14:30</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center px-4 py-3 hover:bg-muted transition-colors cursor-pointer border-b">
+                    <div className="ml-3">
+                      <p className="text-sm font-medium">Cashflow ontvangen: €400</p>
+                      <p className="text-xs text-muted-foreground">2 dagen geleden</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-2 text-center border-t">
+                  <Link 
+                    to={userRole === 'admin' ? "/admin/notifications" : "/member/notifications"}
+                    className="text-sm text-primary hover:underline w-full inline-block py-2"
+                  >
+                    Alle notificaties bekijken
+                  </Link>
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+          
           {/* User dropdown for desktop */}
           {user && (
             <DropdownMenu>
@@ -79,15 +140,23 @@ const Header = () => {
             </DropdownMenu>
           )}
           
-          {/* Mobile menu toggle - single button */}
+          {/* Mobile menu toggle with notification badge */}
           <Button 
             variant="ghost" 
             size="icon" 
-            className="md:hidden mobile-btn"
+            className="md:hidden mobile-btn relative"
             onClick={() => setMobileMenuOpen(true)}
             aria-label="Open menu"
           >
             <Menu className="h-6 w-6" />
+            {unreadNotificationsCount > 0 && (
+              <Badge 
+                variant="destructive" 
+                className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
+              >
+                {unreadNotificationsCount}
+              </Badge>
+            )}
           </Button>
         </div>
       </div>

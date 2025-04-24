@@ -1,7 +1,7 @@
 
 import React from "react";
 import Header from "@/components/Header";
-import Sidebar from "@/components/Sidebar";
+import CollapsibleSidebar from "@/components/CollapsibleSidebar";
 import CashflowSummary from "@/components/dashboard/CashflowSummary";
 import TotalValueCard from "@/components/dashboard/TotalValueCard";
 import FlowlutasCount from "@/components/dashboard/FlowlutasCount";
@@ -20,7 +20,7 @@ const MemberDashboard = () => {
     <div className="flex min-h-screen flex-col">
       <Header />
       <div className="flex flex-1">
-        <Sidebar />
+        <CollapsibleSidebar />
         <main className="flex-1 p-4 md:p-6 overflow-auto">
           <div className="flex flex-col gap-6">
             <div className="space-y-1.5">

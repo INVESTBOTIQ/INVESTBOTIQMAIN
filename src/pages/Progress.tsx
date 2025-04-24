@@ -1,7 +1,7 @@
 
 import React from "react";
 import Header from "@/components/Header";
-import Sidebar from "@/components/Sidebar";
+import CollapsibleSidebar from "@/components/CollapsibleSidebar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ProgressStats } from "@/components/progress/ProgressStats";
@@ -13,7 +13,7 @@ const Progress = () => {
     <div className="flex min-h-screen flex-col">
       <Header />
       <div className="flex flex-1">
-        <Sidebar />
+        <CollapsibleSidebar />
         <main className="flex-1 p-6">
           <div className="flex flex-col gap-6">
             <div>
@@ -54,4 +54,3 @@ const Progress = () => {
 };
 
 export default Progress;
-
