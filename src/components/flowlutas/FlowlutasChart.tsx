@@ -32,7 +32,7 @@ export const FlowlutasChart = () => {
   return (
     <div className="h-[300px] w-full mt-4">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={flowlutasData}>
+        <LineChart data={flowlutasData || []}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="date" />
           <YAxis />

@@ -72,8 +72,8 @@ export default function TierProgressChart() {
         {isMobile ? (
           <>
             <ScrollArea className="w-full overflow-x-auto">
-              <div className="min-w-[600px]">
-                <ResponsiveContainer width="100%" height={400}>
+              <div className="min-w-[600px] h-[400px]">
+                <ResponsiveContainer width="100%" height="100%">
                   {chartContent}
                 </ResponsiveContainer>
               </div>
@@ -81,7 +81,7 @@ export default function TierProgressChart() {
             <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent animate-pulse" />
           </>
         ) : (
-          <div className="h-[600px]">
+          <div className="h-[600px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               {chartContent}
             </ResponsiveContainer>

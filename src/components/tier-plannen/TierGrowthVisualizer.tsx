@@ -39,7 +39,7 @@ export default function TierGrowthVisualizer({ className = "" }: Props) {
     <FadeIn delay={0.3} className={`overflow-hidden rounded-lg shadow-md ${className}`}>
       <div className="bg-white p-4">
         <h3 className="text-xl font-semibold text-center mb-4">Flowlutas & Cashflow Groei</h3>
-        <div className="h-[300px]">
+        <div className="h-[300px] w-full">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart
               data={growthData}
