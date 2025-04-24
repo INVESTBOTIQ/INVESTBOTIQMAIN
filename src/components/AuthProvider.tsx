@@ -27,6 +27,31 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [userRole, setUserRole] = useState<"admin" | "member" | "guest" | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // Helper function to get user role with error handling
+  const getUserRole = async (userId: string): Promise<"admin" | "member" | "guest"> => {
+    try {
+      const { data: role, error } = await supabase
+        .rpc('get_user_role', { user_id: userId });
+      
+      if (error) {
+        console.error("Error getting user role:", error);
+        
+        // Display an error message only once for database configuration issues
+        if (error.message.includes("role \"member\" does not exist")) {
+          toast.error("Er is een probleem met uw gebruikersrol. Neem contact op met de beheerder.");
+        }
+        
+        // Default to "guest" for any error
+        return "guest";
+      }
+      
+      return (role as "admin" | "member" | "guest") || "guest";
+    } catch (error) {
+      console.error("Exception in getUserRole:", error);
+      return "guest";
+    }
+  };
+
   useEffect(() => {
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -41,20 +66,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
               setUserRole(session.user.app_metadata.role as "admin" | "member" | "guest");
             } else {
               // Fallback to RPC call
-              const { data: role, error } = await supabase
-                .rpc('get_user_role', { user_id: session.user.id });
-              
-              if (error) {
-                console.error("Error getting user role:", error);
-                // Default to "guest" if there's an error
-                setUserRole("guest");
-                // Let's notify the user that there's an issue with their role
-                if (error.message.includes("role \"member\" does not exist")) {
-                  toast.error("Er is een probleem met uw gebruikersrol. Neem contact op met de beheerder.");
-                }
-              } else {
-                setUserRole(role || "guest");
-              }
+              const role = await getUserRole(session.user.id);
+              setUserRole(role);
             }
           } catch (error) {
             console.error("Error in auth state change:", error);
@@ -78,20 +91,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             setUserRole(session.user.app_metadata.role as "admin" | "member" | "guest");
           } else {
             // Fallback to RPC call
-            const { data: role, error } = await supabase
-              .rpc('get_user_role', { user_id: session.user.id });
-            
-            if (error) {
-              console.error("Error getting initial user role:", error);
-              // Default to "guest" if there's an error
-              setUserRole("guest");
-              // Let's notify the user that there's an issue with their role
-              if (error.message.includes("role \"member\" does not exist")) {
-                toast.error("Er is een probleem met uw gebruikersrol. Neem contact op met de beheerder.");
-              }
-            } else {
-              setUserRole(role || "guest");
-            }
+            const role = await getUserRole(session.user.id);
+            setUserRole(role);
           }
         } catch (error) {
           console.error("Error getting initial user role:", error);

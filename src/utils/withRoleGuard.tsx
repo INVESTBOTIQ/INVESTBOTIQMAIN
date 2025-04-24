@@ -49,8 +49,9 @@ export function withRoleGuard<P>(
         return <Navigate to="/member/dashboard" replace />;
       }
       
-      // If role is neither admin nor member, redirect to auth
-      return <Navigate to="/auth" replace />;
+      // If role is guest or other non-allowed role, redirect to home page
+      console.log("Redirecting guest to home page");
+      return <Navigate to="/" replace />;
     }
 
     // If the user's role is allowed, render the component
