@@ -30,12 +30,12 @@ export const FlowlutasFilters = ({
           onChange={(e) => onSearch(e.target.value)}
           className="w-full"
         />
-        <div className="flex gap-3">
+        <div className="flex flex-col gap-3">
           <Select onValueChange={onTierFilter} defaultValue="all">
-            <SelectTrigger className="flex-1">
+            <SelectTrigger className="w-full">
               <SelectValue placeholder="Filter op tier" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent align="center" className="min-w-[200px]">
               <SelectItem value="all">Alle tiers</SelectItem>
               <SelectItem value="1">Tier 1</SelectItem>
               <SelectItem value="2">Tier 2</SelectItem>
@@ -43,10 +43,10 @@ export const FlowlutasFilters = ({
             </SelectContent>
           </Select>
           <Select onValueChange={onStatusFilter} defaultValue="all">
-            <SelectTrigger className="flex-1">
+            <SelectTrigger className="w-full">
               <SelectValue placeholder="Filter op status" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent align="center" className="min-w-[200px]">
               <SelectItem value="all">Alle statussen</SelectItem>
               <SelectItem value="planned">Gepland</SelectItem>
               <SelectItem value="active">Actief</SelectItem>

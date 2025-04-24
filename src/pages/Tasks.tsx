@@ -1,3 +1,4 @@
+
 import React from "react";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
@@ -140,10 +141,10 @@ const TasksPage = () => {
                   value={filter}
                   onValueChange={setFilter}
                 >
-                  <SelectTrigger className="w-[180px]">
+                  <SelectTrigger className="w-[180px] md:w-[180px]">
                     <SelectValue placeholder="Filter" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent position="popper" className="min-w-[220px] bg-white">
                     <SelectItem value="all">Alle taken</SelectItem>
                     <SelectItem value="pending">Openstaand</SelectItem>
                     <SelectItem value="completed">Afgerond</SelectItem>
