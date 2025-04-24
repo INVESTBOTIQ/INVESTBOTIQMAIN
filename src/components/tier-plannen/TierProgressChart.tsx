@@ -17,15 +17,15 @@ import { ChartBars } from "./components/ChartBars";
 import { useTierChartData } from "./hooks/useTierChartData";
 
 const leftAxisConfig = {
-  yAxisId: "left",
-  orientation: "left",
-  label: { value: "Investering (€)", angle: -90, position: "insideLeft" }
+  yAxisId: "left" as const,
+  orientation: "left" as const,
+  label: { value: "Investering (€)", angle: -90, position: "insideLeft" as const }
 };
 
 const rightAxisConfig = {
-  yAxisId: "right",
-  orientation: "right",
-  label: { value: "Cashflow (€)", angle: 90, position: "insideRight" }
+  yAxisId: "right" as const,
+  orientation: "right" as const,
+  label: { value: "Cashflow (€)", angle: 90, position: "insideRight" as const }
 };
 
 export default function TierProgressChart() {
