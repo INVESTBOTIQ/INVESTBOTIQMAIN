@@ -10,6 +10,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { format } from "date-fns";
+import { Database } from "@/integrations/supabase/types";
+
+type FlowlutaStatus = Database["public"]["Enums"]["flowluta_status"];
 
 interface FlowlutasDataGridProps {
   tier: string;
@@ -31,7 +34,11 @@ export const FlowlutasDataGrid = ({ tier, status, search }: FlowlutasDataGridPro
       }
 
       if (status !== "all") {
-        query = query.eq("status", status);
+        // Only apply status filter if it's a valid flowluta status
+        const validStatuses: FlowlutaStatus[] = ["planned", "active", "paused"];
+        if (validStatuses.includes(status as FlowlutaStatus)) {
+          query = query.eq("status", status as FlowlutaStatus);
+        }
       }
 
       if (search) {
