@@ -1,6 +1,5 @@
 import React from "react";
 import { motion } from "framer-motion";
-
 function FadeIn({
   children,
   className = "",
@@ -22,16 +21,15 @@ function FadeIn({
       {children}
     </motion.div>;
 }
-
 export default function WhatIsSection() {
   return <>
       <FadeIn delay={0.13}>
         <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 text-center md:text-left">
-          Wat is CashFlow Intelligence?
+          Wat is Investbotiq?
         </h2>
       </FadeIn>
       <FadeIn delay={0.24}>
-        <p className="mb-8 text-lg text-gray-700 md:text-justify text-justify">CashFlow Intelligence is een platform dat automatisch cashflow voor jou genereert met behulp van intelligente automatisering. Geen lastige investeringskeuzes, geen technische kennis vereist!</p>
+        <p className="mb-8 text-lg text-gray-700 md:text-justify text-justify">Investbotiq is een platform dat automatisch cashflow voor jou genereert met behulp van de IQ Bot. Geen lastige investeringskeuzes, geen technische kennis vereist!</p>
       </FadeIn>
     </>;
 }

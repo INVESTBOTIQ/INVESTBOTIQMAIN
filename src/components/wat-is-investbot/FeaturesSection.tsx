@@ -1,7 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Box, Check, Coins, Lock, Shield, Users } from "lucide-react";
-
 const containerVariants = {
   hidden: {
     opacity: 0
@@ -14,7 +13,6 @@ const containerVariants = {
     }
   }
 };
-
 const itemVariants = {
   hidden: {
     opacity: 0,
@@ -28,16 +26,15 @@ const itemVariants = {
     }
   }
 };
-
 const features = [{
   title: "Automatisch inkomen opbouwen",
-  description: "CashFlow Intelligence bouwt automatisch een maandelijkse cashflow op zonder dat je er omkijken naar hebt.",
+  description: "De IQ Bot bouwt automatisch een maandelijkse cashflow op zonder dat je er omkijken naar hebt.",
   icon: Coins,
   bgColor: "bg-indigo-100",
   iconColor: "text-indigo-600"
 }, {
   title: "Geen technische kennis vereist",
-  description: "Geen financiële of technische voorkennis nodig. CashFlow Intelligence neemt alle complexiteit voor je weg.",
+  description: "Geen financiële of technische voorkennis nodig. De IQ Bot neemt alle complexiteit voor je weg.",
   icon: Users,
   bgColor: "bg-blue-100",
   iconColor: "text-blue-600"
@@ -54,7 +51,6 @@ const features = [{
   bgColor: "bg-purple-100",
   iconColor: "text-purple-600"
 }];
-
 export default function FeaturesSection() {
   return <section className="py-12 px-4 bg-white/80">
       <div className="container mx-auto max-w-6xl">

@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-
 function OrbVisual() {
   return <motion.div initial={{
     scale: 0.95,
@@ -22,14 +21,13 @@ function OrbVisual() {
       </div>
     </motion.div>;
 }
-
 type Props = {
   onScrollToInfo: () => void;
 };
-
-const HeroSection: React.FC<Props> = ({ onScrollToInfo }) => {
+const HeroSection: React.FC<Props> = ({
+  onScrollToInfo
+}) => {
   const [showDemoModal, setShowDemoModal] = useState(false);
-
   function FadeIn({
     children,
     delay = 0,
@@ -51,12 +49,11 @@ const HeroSection: React.FC<Props> = ({ onScrollToInfo }) => {
         {children}
       </motion.div>;
   }
-
   return <section className="relative z-10 w-full flex flex-col md:flex-row min-h-[81vh] md:min-h-[70vh] lg:min-h-[72vh] pt-24 md:pt-32 bg-transparent">
       <div className="flex-1 flex flex-col items-center md:items-start justify-center px-5 sm:px-10 lg:pl-20">
         <FadeIn delay={0.05}>
           <h1 className="text-4xl xs:text-5xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 leading-snug md:leading-tight drop-shadow-sm text-center md:text-left text-balance max-w-2xl">
-            Laat <span className="text-indigo-500">CashFlow Intelligence</span> automatisch jouw cashflow opbouwen
+            Laat de <span className="text-indigo-500">IQ Bot</span> automatisch jouw cashflow opbouwen
           </h1>
         </FadeIn>
         <FadeIn delay={0.15}>
@@ -88,8 +85,8 @@ const HeroSection: React.FC<Props> = ({ onScrollToInfo }) => {
           <OrbVisual />
         </FadeIn>
         <FadeIn delay={0.34}>
-          <div className="mt-8 md:mt-14 text-indigo-800 font-semibold text-lg sm:text-xl text-center max-w-xs mx-auto">CashFlow Intelligence 
-The Next Gen 
+          <div className="mt-8 md:mt-14 text-indigo-800 font-semibold text-lg sm:text-xl text-center max-w-xs mx-auto">IQ Bot 
+The Next Gen 
 AI Agent</div>
         </FadeIn>
       </div>
@@ -106,5 +103,4 @@ AI Agent</div>
       </Dialog>
     </section>;
 };
-
 export default HeroSection;
