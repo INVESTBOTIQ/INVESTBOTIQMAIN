@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   BarChart,
   Bar,
@@ -6,13 +6,15 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
+  ResponsiveContainer,
   Legend,
   Line,
   ComposedChart,
-  ResponsiveContainer,
   TooltipProps
 } from "recharts";
 import { FadeIn } from "../info/FadeInAnimation";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const data = [
   {
@@ -87,160 +89,179 @@ const data = [
   },
 ];
 
-const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
-  if (active && payload && payload.length) {
-    const dataPoint = payload[0].payload;
-    return (
-      <div className="bg-white p-4 border border-gray-100 shadow-lg rounded-lg">
-        <p className="text-gray-800 font-semibold mb-2">Maand {label}: {dataPoint.tier}</p>
-        <div className="space-y-1">
-          <p className="text-sm flex justify-between">
-            <span className="text-gray-600">Kaspositie:</span> 
-            <span className="font-medium">€{dataPoint.kaspositie}</span>
-          </p>
-          <p className="text-sm flex justify-between">
-            <span className="text-gray-600">BEL lening:</span> 
-            <span className="font-medium">€{dataPoint.bel}</span>
-          </p>
-          {dataPoint.plat > 0 && (
-            <p className="text-sm flex justify-between">
-              <span className="text-gray-600">PLAT lening:</span> 
-              <span className="font-medium">€{dataPoint.plat}</span>
-            </p>
-          )}
-          <p className="text-sm flex justify-between">
-            <span className="text-gray-600">Flowlutas:</span> 
-            <span className="font-medium">{dataPoint.flowlutas_count}</span>
-          </p>
-          <p className="text-sm flex justify-between">
-            <span className="text-gray-600">Flowluta waarde:</span> 
-            <span className="font-medium">€{dataPoint.flowluta}</span>
-          </p>
-          <div className="mt-2 pt-2 border-t border-gray-100">
-            <p className="text-indigo-600 font-semibold flex justify-between">
-              <span>Maandelijkse cashflow:</span> 
-              <span>€{dataPoint.cashflow}</span>
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-  return null;
-};
-
 export default function TierProgressChart() {
-  const [hoveredBar, setHoveredBar] = useState<string | null>(null);
-
-  const handleBarMouseEnter = (dataKey: string) => {
-    setHoveredBar(dataKey);
-  };
-
-  const handleBarMouseLeave = () => {
-    setHoveredBar(null);
-  };
-
-  const getBarOpacity = (dataKey: string) => {
-    if (!hoveredBar) return 1;
-    return hoveredBar === dataKey ? 1 : 0.5;
-  };
-
+  const isMobile = useIsMobile();
+  
   return (
-    <FadeIn delay={0.2}>
+    <FadeIn delay={0.2} className="overflow-hidden">
       <div className="w-full">
-        <div className="h-[600px] w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <ComposedChart
-              data={data}
-              margin={{
-                top: 20,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis
-                dataKey="month"
-                label={{ value: "Maand", position: "insideBottom", offset: -5 }}
-              />
-              <YAxis
-                yAxisId="left"
-                label={{
-                  value: "Bedrag (€)",
-                  angle: -90,
-                  position: "insideLeft",
+        {isMobile ? (
+          <ScrollArea className="w-full">
+            <div className="min-w-[600px]">
+              <ResponsiveContainer width="100%" height={400}>
+                <ComposedChart
+                  data={data}
+                  margin={{
+                    top: 20,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis
+                    dataKey="month"
+                    label={{ value: "Maand", position: "insideBottom", offset: -5 }}
+                  />
+                  <YAxis
+                    yAxisId="left"
+                    label={{
+                      value: "Bedrag (€)",
+                      angle: -90,
+                      position: "insideLeft",
+                    }}
+                  />
+                  <YAxis
+                    yAxisId="right"
+                    orientation="right"
+                    label={{
+                      value: "Maandelijkse Cashflow (€)",
+                      angle: 90,
+                      position: "insideRight",
+                    }}
+                  />
+                  <Tooltip />
+                  <Legend />
+                  <Bar
+                    yAxisId="left"
+                    dataKey="kaspositie"
+                    stackId="a"
+                    fill="#0EA5E9"
+                    name="Kaspositie"
+                    animationDuration={1000}
+                  />
+                  <Bar
+                    yAxisId="left"
+                    dataKey="bel"
+                    stackId="a"
+                    fill="#22C55E"
+                    name="BEL"
+                    animationDuration={1000}
+                  />
+                  <Bar
+                    yAxisId="left"
+                    dataKey="plat"
+                    stackId="a"
+                    fill="#F97316"
+                    name="PLAT"
+                    animationDuration={1000}
+                  />
+                  <Bar
+                    yAxisId="left"
+                    dataKey="flowluta"
+                    stackId="a"
+                    fill="#8B5CF6"
+                    name="Flowluta"
+                    animationDuration={1000}
+                  />
+                  <Line
+                    yAxisId="right"
+                    type="stepAfter"
+                    dataKey="cashflow"
+                    stroke="#000000"
+                    strokeWidth={2}
+                    name="Maandelijkse Cashflow"
+                    dot={{ fill: "#000000" }}
+                    activeDot={{ r: 8, fill: "#6D28D9" }}
+                    animationDuration={1500}
+                  />
+                </ComposedChart>
+              </ResponsiveContainer>
+            </div>
+          </ScrollArea>
+        ) : (
+          <div className="h-[600px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <ComposedChart
+                data={data}
+                margin={{
+                  top: 20,
+                  right: 30,
+                  left: 20,
+                  bottom: 5,
                 }}
-              />
-              <YAxis
-                yAxisId="right"
-                orientation="right"
-                label={{
-                  value: "Maandelijkse Cashflow (€)",
-                  angle: 90,
-                  position: "insideRight",
-                }}
-              />
-              <Tooltip content={<CustomTooltip />} />
-              <Legend />
-              <Bar
-                yAxisId="left"
-                dataKey="kaspositie"
-                stackId="a"
-                fill="#0EA5E9"
-                name="Kaspositie"
-                opacity={getBarOpacity("kaspositie")}
-                onMouseEnter={() => handleBarMouseEnter("kaspositie")}
-                onMouseLeave={handleBarMouseLeave}
-                animationDuration={1000}
-              />
-              <Bar
-                yAxisId="left"
-                dataKey="bel"
-                stackId="a"
-                fill="#22C55E"
-                name="BEL"
-                opacity={getBarOpacity("bel")}
-                onMouseEnter={() => handleBarMouseEnter("bel")}
-                onMouseLeave={handleBarMouseLeave}
-                animationDuration={1000}
-              />
-              <Bar
-                yAxisId="left"
-                dataKey="plat"
-                stackId="a"
-                fill="#F97316"
-                name="PLAT"
-                opacity={getBarOpacity("plat")}
-                onMouseEnter={() => handleBarMouseEnter("plat")}
-                onMouseLeave={handleBarMouseLeave}
-                animationDuration={1000}
-              />
-              <Bar
-                yAxisId="left"
-                dataKey="flowluta"
-                stackId="a"
-                fill="#8B5CF6"
-                name="Flowluta"
-                opacity={getBarOpacity("flowluta")}
-                onMouseEnter={() => handleBarMouseEnter("flowluta")}
-                onMouseLeave={handleBarMouseLeave}
-                animationDuration={1000}
-              />
-              <Line
-                yAxisId="right"
-                type="stepAfter"
-                dataKey="cashflow"
-                stroke="#000000"
-                strokeWidth={2}
-                name="Maandelijkse Cashflow"
-                dot={{ fill: "#000000" }}
-                activeDot={{ r: 8, fill: "#6D28D9" }}
-                animationDuration={1500}
-              />
-            </ComposedChart>
-          </ResponsiveContainer>
-        </div>
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis
+                  dataKey="month"
+                  label={{ value: "Maand", position: "insideBottom", offset: -5 }}
+                />
+                <YAxis
+                  yAxisId="left"
+                  label={{
+                    value: "Bedrag (€)",
+                    angle: -90,
+                    position: "insideLeft",
+                  }}
+                />
+                <YAxis
+                  yAxisId="right"
+                  orientation="right"
+                  label={{
+                    value: "Maandelijkse Cashflow (€)",
+                    angle: 90,
+                    position: "insideRight",
+                  }}
+                />
+                <Tooltip />
+                <Legend />
+                <Bar
+                  yAxisId="left"
+                  dataKey="kaspositie"
+                  stackId="a"
+                  fill="#0EA5E9"
+                  name="Kaspositie"
+                  animationDuration={1000}
+                />
+                <Bar
+                  yAxisId="left"
+                  dataKey="bel"
+                  stackId="a"
+                  fill="#22C55E"
+                  name="BEL"
+                  animationDuration={1000}
+                />
+                <Bar
+                  yAxisId="left"
+                  dataKey="plat"
+                  stackId="a"
+                  fill="#F97316"
+                  name="PLAT"
+                  animationDuration={1000}
+                />
+                <Bar
+                  yAxisId="left"
+                  dataKey="flowluta"
+                  stackId="a"
+                  fill="#8B5CF6"
+                  name="Flowluta"
+                  animationDuration={1000}
+                />
+                <Line
+                  yAxisId="right"
+                  type="stepAfter"
+                  dataKey="cashflow"
+                  stroke="#000000"
+                  strokeWidth={2}
+                  name="Maandelijkse Cashflow"
+                  dot={{ fill: "#000000" }}
+                  activeDot={{ r: 8, fill: "#6D28D9" }}
+                  animationDuration={1500}
+                />
+              </ComposedChart>
+            </ResponsiveContainer>
+          </div>
+        )}
       </div>
     </FadeIn>
   );

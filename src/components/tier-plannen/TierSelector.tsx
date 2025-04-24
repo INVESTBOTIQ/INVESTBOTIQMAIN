@@ -1,5 +1,6 @@
 
 import { FadeIn } from "../info/FadeInAnimation";
+import { ChevronDown } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -20,6 +21,7 @@ export default function TierSelector({ selectedTier, onTierChange }: TierSelecto
         <Select value={selectedTier} onValueChange={onTierChange}>
           <SelectTrigger className="w-full bg-white border-indigo-200 hover:border-indigo-300 transition-colors">
             <SelectValue placeholder="Selecteer een Tier Plan" />
+            <ChevronDown className="h-4 w-4 text-indigo-500" />
           </SelectTrigger>
           <SelectContent className="bg-white border border-indigo-100 shadow-lg">
             <SelectItem value="inbotiq1" className="hover:bg-indigo-50 cursor-pointer">
