@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import TierDescription from "./TierDescription";
 import TierSelector from "./TierSelector";
-import TierInfo from "./TierInfo";
 import TierTable from "./TierTable";
 import TierMobileCards from "./TierMobileCards";
 import { FadeIn } from "../info/FadeInAnimation";
@@ -21,9 +20,6 @@ export default function TierTableSection() {
         
         {selectedTier === "inbotiq2" && (
           <FadeIn delay={0.1}>
-            {/* Only include TierInfo which has the single chart */}
-            <TierInfo />
-            
             <TierTable />
             <TierMobileCards />
           </FadeIn>
