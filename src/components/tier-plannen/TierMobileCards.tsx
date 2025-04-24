@@ -9,19 +9,19 @@ const tierData = [
   {
     tier: "Tier 2",
     status: "Actief",
-    period: "April 2024 - Juli 2024",
+    period: "Maand 1 - Maand 3",
     cashflow: "€400/mnd"
   },
   {
     tier: "Tier 3",
     status: "Gepland",
-    period: "Juli 2024 - Oktober 2024",
+    period: "Maand 4 - Maand 6",
     cashflow: "€800/mnd"
   },
   {
     tier: "Tier 4",
     status: "Gepland",
-    period: "Oktober 2024 - Januari 2025",
+    period: "Maand 7 - Maand 9",
     cashflow: "€1200/mnd"
   }
 ];
