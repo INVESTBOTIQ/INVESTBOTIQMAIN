@@ -1,13 +1,23 @@
 
-import React, { useEffect } from "react";
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { X, Home, BarChart, CheckSquare, User, Sparkles, LogOut, Users, Bell, CircleDollarSign, Settings, Share2 } from "lucide-react";
+import { 
+  Home, BarChart, CheckSquare, User, Sparkles, LogOut, 
+  Users, Bell, CircleDollarSign, Settings, Share2 
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/components/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetFooter,
+} from "@/components/ui/sheet";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -25,10 +35,6 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, onClose }) =
     return user.email.substring(0, 2).toUpperCase();
   };
 
-  useEffect(() => {
-    onClose();
-  }, [location.pathname, onClose]);
-
   const handleLogout = async () => {
     try {
       await supabase.auth.signOut();
@@ -40,8 +46,10 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, onClose }) =
     }
   };
 
-  // Als het menu niet open is, render dan een leeg fragment
-  if (!isOpen) return null;
+  // Auto-close the menu when route changes
+  React.useEffect(() => {
+    onClose();
+  }, [location.pathname, onClose]);
 
   const memberItems = [
     { label: "Dashboard", href: "/member/dashboard", icon: Home },
@@ -66,16 +74,9 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, onClose }) =
 
   const menuItems = isAdmin ? adminItems : memberItems;
 
-  // Zorg ervoor dat het menu altijd zichtbaar is als isOpen = true
   return (
-    <div 
-      className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
-      onClick={onClose}
-    >
-      <div 
-        className="absolute right-0 top-0 h-full w-4/5 max-w-xs bg-white shadow-xl p-0 flex flex-col"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <SheetContent className="w-[80%] max-w-xs p-0 shadow-xl">
         {user && (
           <div className="flex items-center gap-3 p-4 border-b bg-primary/5">
             <Avatar className="h-10 w-10">
@@ -87,13 +88,6 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, onClose }) =
               <p className="font-medium truncate">{userRole}</p>
               <p className="text-sm text-muted-foreground truncate">{user.email}</p>
             </div>
-            <button
-              onClick={onClose}
-              className="rounded-full p-2 hover:bg-gray-100 transition-colors"
-              aria-label="Sluit menu"
-            >
-              <X className="h-5 w-5 text-gray-500" />
-            </button>
           </div>
         )}
         
@@ -118,7 +112,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, onClose }) =
           </nav>
         </div>
         
-        <div className="border-t p-4">
+        <SheetFooter className="border-t p-4">
           <Button
             onClick={handleLogout}
             variant="destructive"
@@ -127,9 +121,9 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, onClose }) =
             <LogOut className="h-4 w-4" />
             <span>Uitloggen</span>
           </Button>
-        </div>
-      </div>
-    </div>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
   );
 };
 

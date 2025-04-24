@@ -17,10 +17,12 @@ import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import BrandLogo from "./BrandLogo";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Header = () => {
   const { user, userRole } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isMobile = useIsMobile();
   
   const handleCloseMobileMenu = () => {
     setMobileMenuOpen(false);
@@ -41,7 +43,10 @@ const Header = () => {
     return user.email.substring(0, 2).toUpperCase();
   };
 
-  console.log("Mobile menu open status:", mobileMenuOpen);
+  const toggleMobileMenu = () => {
+    console.log("Toggling mobile menu from", mobileMenuOpen, "to", !mobileMenuOpen);
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
 
   const unreadNotificationsCount = 3;
 
@@ -54,11 +59,8 @@ const Header = () => {
               variant="ghost" 
               size="icon" 
               className="md:hidden"
-              onClick={() => {
-                console.log("Menu button clicked, setting mobileMenuOpen to", !mobileMenuOpen);
-                setMobileMenuOpen(!mobileMenuOpen);
-              }}
-              aria-label="Open menu"
+              onClick={toggleMobileMenu}
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             >
               <Menu className="h-6 w-6" />
             </Button>
@@ -156,7 +158,7 @@ const Header = () => {
         </div>
       </div>
       
-      {/* Pass current state and handlers to MobileMenu */}
+      {/* Mobile menu */}
       <MobileMenu 
         isOpen={mobileMenuOpen} 
         setIsOpen={setMobileMenuOpen} 
