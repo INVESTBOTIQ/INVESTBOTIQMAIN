@@ -30,6 +30,7 @@ import TierPlannen from "@/pages/info/TierPlannen";
 import Veiligheid from "@/pages/info/Veiligheid";
 import AdminSettings from "@/pages/admin/AdminSettings";
 import AdminProfile from "@/pages/admin/AdminProfile";
+import AdminLeads from "@/pages/admin/AdminLeads";
 
 const queryClient = new QueryClient();
 
@@ -63,6 +64,7 @@ const App = () => (
             <Route path="/member" element={<Navigate to="/member/dashboard" replace />} />
 
             <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/leads" element={<AdminLeads />} />
             <Route path="/admin/users" element={<AdminUsers />} />
             <Route path="/admin/tasks" element={<AdminTasks />} /> 
             <Route path="/admin/cashflows" element={<AdminCashflows />} />
