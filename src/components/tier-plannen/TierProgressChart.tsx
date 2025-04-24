@@ -34,8 +34,20 @@ export default function TierProgressChart() {
   const [mounted, setMounted] = useState(false);
   
   useEffect(() => {
+    // Ensure component is mounted before rendering chart
     setMounted(true);
+    
+    // Force reflow on mobile devices
+    const timer = setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 200);
+    
+    return () => clearTimeout(timer);
   }, []);
+  
+  if (!mounted) {
+    return <div className="h-[400px] w-full flex items-center justify-center">Laden...</div>;
+  }
   
   const chartContent = (
     <ComposedChart
@@ -72,34 +84,18 @@ export default function TierProgressChart() {
   );
 
   return (
-    <FadeIn delay={0.1} className="overflow-hidden w-full mt-4">
-      <div className="w-full relative bg-white p-4 rounded-lg shadow-md">
-        {mounted && (
-          <>
-            {isMobile ? (
-              <>
-                <ScrollArea className="w-full overflow-x-auto">
-                  <div className="min-w-[600px] h-[400px]">
-                    <ResponsiveContainer width="100%" height="100%" debounce={50}>
-                      {chartContent}
-                    </ResponsiveContainer>
-                  </div>
-                </ScrollArea>
-                <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent animate-pulse" />
-                <div className="text-xs text-center mt-2 text-muted-foreground italic">
-                  Schuif horizontaal om de volledige grafiek te bekijken
-                </div>
-              </>
-            ) : (
-              <div className="h-[500px] w-full">
-                <ResponsiveContainer width="100%" height="100%" debounce={50}>
-                  {chartContent}
-                </ResponsiveContainer>
-              </div>
-            )}
-          </>
-        )}
-      </div>
-    </FadeIn>
+    <div className="w-full h-[400px]">
+      {isMobile ? (
+        <ScrollArea className="w-full h-[400px]">
+          <div className="min-w-[600px] h-[400px]">
+            {chartContent}
+          </div>
+        </ScrollArea>
+      ) : (
+        <ResponsiveContainer width="100%" height="100%" debounce={50}>
+          {chartContent}
+        </ResponsiveContainer>
+      )}
+    </div>
   );
 }

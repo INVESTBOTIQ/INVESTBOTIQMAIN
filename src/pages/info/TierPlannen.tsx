@@ -11,6 +11,13 @@ export default function TierPlannen() {
   // Force scroll to top when component mounts to ensure charts are in viewport
   useEffect(() => {
     window.scrollTo(0, 0);
+    
+    // Force charts to re-render after a delay
+    const timer = setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 500);
+    
+    return () => clearTimeout(timer);
   }, []);
   
   return (

@@ -23,9 +23,11 @@ export default function TierTableSection() {
         {selectedTier === "inbotiq2" && (
           <FadeIn delay={0.1}>
             <TierInfo />
+            
             <div className="mb-10 w-full">
               <TierGrowthVisualizer className="mb-8 w-full" />
             </div>
+            
             <TierTable />
             <TierMobileCards />
           </FadeIn>
