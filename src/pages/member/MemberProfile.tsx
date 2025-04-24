@@ -15,7 +15,7 @@ import { toast } from "sonner";
 import { withRoleGuard } from "@/utils/withRoleGuard";
 
 const MemberProfile = () => {
-  const { user, isLoading } = useAuth();
+  const { user, loading } = useAuth();
   const [isUpdating, setIsUpdating] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [showPasswordForm, setShowPasswordForm] = useState(false);
@@ -44,7 +44,7 @@ const MemberProfile = () => {
     enabled: !!user,
   });
 
-  if (isLoading) {
+  if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
