@@ -243,6 +243,36 @@ export type Database = {
         }
         Relationships: []
       }
+      registration_leads: {
+        Row: {
+          answers: Json
+          created_at: string
+          general: Json
+          id: string
+          role: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          answers: Json
+          created_at?: string
+          general: Json
+          id?: string
+          role: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          answers?: Json
+          created_at?: string
+          general?: Json
+          id?: string
+          role?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       scheduled_notifications: {
         Row: {
           content: string
@@ -407,7 +437,7 @@ export type Database = {
     }
     Enums: {
       flowluta_status: "planned" | "active" | "paused"
-      notification_type: "taak" | "flowluta" | "system"
+      notification_type: "taak" | "flowluta" | "system" | "lead"
       referral_status: "pending" | "successful"
       spirit_status: "planned" | "active" | "paused"
       task_status: "open" | "in_progress" | "completed"
@@ -528,7 +558,7 @@ export const Constants = {
   public: {
     Enums: {
       flowluta_status: ["planned", "active", "paused"],
-      notification_type: ["taak", "flowluta", "system"],
+      notification_type: ["taak", "flowluta", "system", "lead"],
       referral_status: ["pending", "successful"],
       spirit_status: ["planned", "active", "paused"],
       task_status: ["open", "in_progress", "completed"],

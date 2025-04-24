@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,19 +12,8 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [isLogin, setIsLogin] = useState(true);
-  const [referralCode, setReferralCode] = useState<string | null>(null);
   const navigate = useNavigate();
   const { user, userRole } = useAuth();
-
-  useEffect(() => {
-    // Extract referral code from URL if it exists
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('ref');
-    if (code) {
-      setReferralCode(code);
-    }
-  }, []);
 
   // Redirect if already logged in
   useEffect(() => {
@@ -44,8 +34,8 @@ const Auth = () => {
     }
   }, [user, userRole, navigate]);
 
-  const handleAuth = async (e: React.FormEvent) => {
-    e.preventDefault(); // This is crucial to prevent the form from submitting and page from refreshing
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
     
     if (!email || !password) {
       toast.error("Vul alstublieft zowel e-mail als wachtwoord in");
@@ -55,74 +45,21 @@ const Auth = () => {
     setLoading(true);
 
     try {
-      if (isLogin) {
-        console.log("Attempting to sign in with email:", email);
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-        
-        if (error) {
-          console.error("Login error:", error);
-          throw error;
-        }
-        
-        // Check if we have a successful login with user data
-        if (data.user) {
-          toast.success("Succesvol ingelogd");
-          console.log("Login successful for user email:", data.user.email);
-          // Redirect will be handled by the useEffect above
-        }
-      } else {
-        const { data, error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: {
-              // Add any custom user metadata here
-            }
-          }
-        });
-        
-        if (error) {
-          console.error("Signup error:", error);
-          throw error;
-        }
-
-        // If there's a referral code, handle the referral after registration
-        if (referralCode && data.user) {
-          try {
-            // First, find the user who owns this referral code
-            const { data: referrerData, error: referrerError } = await supabase
-              .from('referrals')
-              .select('user_id')
-              .eq('referral_code', referralCode)
-              .is('referred_user_id', null)
-              .single();
-
-            if (referrerError) {
-              console.error("Error finding referrer:", referrerError);
-            } else if (referrerData) {
-              // Insert with the user_id from the referrer
-              const { error: referralError } = await supabase
-                .from('referrals')
-                .insert({
-                  user_id: referrerData.user_id, // The referrer
-                  referred_user_id: data.user.id, // The new user being referred
-                  referral_code: referralCode,
-                  status: 'pending'
-                });
-
-              if (referralError) {
-                console.error("Error storing referral:", referralError);
-              }
-            }
-          } catch (refError) {
-            console.error("Error processing referral:", refError);
-          }
-        }
-        
-        toast.success("Registratie succesvol. Controleer uw e-mail om uw account te bevestigen.");
+      console.log("Attempting to sign in with email:", email);
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      
+      if (error) {
+        console.error("Login error:", error);
+        throw error;
+      }
+      
+      // Check if we have a successful login with user data
+      if (data.user) {
+        toast.success("Succesvol ingelogd");
+        console.log("Login successful for user email:", data.user.email);
       }
     } catch (error: any) {
       console.error("Auth error:", error);
@@ -133,11 +70,9 @@ const Auth = () => {
         errorMessage = "Ongeldige inloggegevens. Controleer uw e-mail en wachtwoord.";
       } else if (error.message.includes("Email not confirmed")) {
         errorMessage = "E-mail niet bevestigd. Controleer uw inbox voor een bevestigingslink.";
-      } else if (error.message.includes("User already registered")) {
-        errorMessage = "Dit e-mailadres is al geregistreerd. Probeer in te loggen.";
       }
       
-      toast.error(errorMessage || `Fout bij ${isLogin ? "inloggen" : "registreren"}`);
+      toast.error(errorMessage || "Fout bij inloggen");
     } finally {
       setLoading(false);
     }
@@ -147,15 +82,10 @@ const Auth = () => {
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>{isLogin ? "Inloggen" : "Registreren"}</CardTitle>
-          {referralCode && !isLogin && (
-            <div className="text-sm text-green-600 mt-1">
-              Je bent uitgenodigd! Registreer om €100 bonus te ontvangen.
-            </div>
-          )}
+          <CardTitle>Inloggen</CardTitle>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleAuth} className="space-y-4">
+          <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
               <Input
                 type="email"
@@ -175,21 +105,7 @@ const Auth = () => {
               />
             </div>
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading
-                ? "Bezig..."
-                : isLogin
-                ? "Inloggen"
-                : "Account aanmaken"}
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              className="w-full"
-              onClick={() => setIsLogin(!isLogin)}
-            >
-              {isLogin
-                ? "Nog geen account? Registreer hier"
-                : "Al een account? Log hier in"}
+              {loading ? "Bezig..." : "Inloggen"}
             </Button>
           </form>
         </CardContent>
