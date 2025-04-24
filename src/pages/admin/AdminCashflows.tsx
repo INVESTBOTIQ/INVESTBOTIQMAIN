@@ -10,53 +10,28 @@ import { AdminNavBar } from "@/components/admin/AdminNavBar";
 import { useCashflowManagement } from "@/hooks/useCashflowManagement";
 import Header from "@/components/Header";
 
-const users = [
-  {
-    id: "1",
-    email: "jan.jansen@example.com",
-    name: "Jan Jansen",
-    currentCashflow: 1420,
-    previousCashflow: 1200,
-    changePercentage: 18.33,
-    lastUpdated: "15 Apr 2025"
-  },
-  {
-    id: "2",
-    email: "emma.visser@example.com",
-    name: "Emma Visser",
-    currentCashflow: 1780,
-    previousCashflow: 1620,
-    changePercentage: 9.88,
-    lastUpdated: "12 Apr 2025"
-  },
-  {
-    id: "3",
-    email: "lucas.dewit@example.com",
-    name: "Lucas de Wit",
-    currentCashflow: 2240,
-    previousCashflow: 2040,
-    changePercentage: 9.80,
-    lastUpdated: "18 Apr 2025"
-  },
-  {
-    id: "4",
-    email: "sophie.bakker@example.com",
-    name: "Sophie Bakker",
-    currentCashflow: 920,
-    previousCashflow: 920,
-    changePercentage: 0,
-    lastUpdated: "10 Apr 2025"
-  },
-  {
-    id: "5",
-    email: "thomas.meijer@example.com",
-    name: "Thomas Meijer",
-    currentCashflow: 1650,
-    previousCashflow: 1450,
-    changePercentage: 13.79,
-    lastUpdated: "20 Apr 2025"
-  },
-];
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+
+const { data: users = [], isLoading, error } = useQuery({
+  queryKey: ["admin-cashflow-users"],
+  queryFn: async () => {
+    // Fetch users and their cashflow data from Supabase
+    const { data, error } = await supabase
+      .from("cashflows")
+      .select("user_id, cashflow_bedrag, previous_cashflow, last_updated, profiles:profiles!cashflows_user_id_fkey(id, email, voornaam, achternaam)");
+    if (error) throw error;
+    return (data || []).map((row: any) => ({
+      id: row.user_id,
+      email: row.profiles?.email || "",
+      name: `${row.profiles?.voornaam || ''} ${row.profiles?.achternaam || ''}`.trim() || row.profiles?.email || row.user_id,
+      currentCashflow: row.cashflow_bedrag || 0,
+      previousCashflow: row.previous_cashflow || 0,
+      changePercentage: row.previous_cashflow ? ((row.cashflow_bedrag - row.previous_cashflow) / row.previous_cashflow) * 100 : 0,
+      lastUpdated: row.last_updated || ""
+    }));
+  }
+});
 
 const AdminCashflows = () => {
   const [searchTerm, setSearchTerm] = useState("");

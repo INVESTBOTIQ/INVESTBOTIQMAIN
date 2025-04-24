@@ -19,6 +19,7 @@ const NAV_ITEMS = [
     ],
     desktopOnly: false
   },
+  { title: "Iemand Aanmelden", to: "/register", desktopOnly: false },
   { title: "Tier Plannen", to: "/tier-plannen", desktopOnly: false },
   { title: "Veiligheid", to: "/veiligheid", desktopOnly: false },
   { title: "FAQ", to: "/faq", desktopOnly: false }

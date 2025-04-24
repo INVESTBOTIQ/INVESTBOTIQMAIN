@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { withRoleGuard } from "@/utils/withRoleGuard";
 import Header from "@/components/Header";
-import Sidebar from "@/components/Sidebar";
+import { AdminNavBar } from "@/components/admin/AdminNavBar";
 import { FlowlutasDataGrid } from "@/components/flowlutas/FlowlutasDataGrid";
 import { FlowlutasChart } from "@/components/flowlutas/FlowlutasChart";
 import { FlowlutasFilters } from "@/components/flowlutas/FlowlutasFilters";
@@ -33,9 +33,9 @@ const AdminFlowlutas = () => {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <div className="flex flex-1">
-        <Sidebar />
-        <main className="flex-1 p-4 md:p-6">
+      <div className="container mx-auto px-4 md:px-6 py-6">
+        <AdminNavBar />
+        <main className="p-0">
           <div className="flex flex-col gap-6">
             <div>
               <h1 className="text-2xl font-bold">Flowlutas Beheer</h1>

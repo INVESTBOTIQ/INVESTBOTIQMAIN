@@ -10,6 +10,15 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AdminNavBar } from "@/components/admin/AdminNavBar";
 import Header from "@/components/Header";
 import { Json } from "@/integrations/supabase/types";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter
+} from "@/components/ui/dialog";
 
 type Lead = {
   id: string;
@@ -70,6 +79,82 @@ const AdminLeads = () => {
     
     return matchesRole && matchesSearch;
   });
+
+  // Dynamisch alle velden tonen
+  const renderLeadDetails = (lead: Lead) => {
+    if (!lead) return null;
+    const generalFields = [
+      ["Voornaam", lead.general.voornaam],
+      ["Achternaam", lead.general.achternaam],
+      ["Woonplaats", lead.general.woonplaats],
+      ["Geboortedatum", lead.general.geboortedatum],
+      ["E-mail", lead.general.email],
+      ["Telefoonnummer", lead.general.telefoonnummer],
+      ["Hoe gehoord", lead.general.hoe_gehoord],
+      ["Referral", lead.general.referral_email],
+      ["Plus 1", `${lead.general.plus1_voornaam || ''} ${lead.general.plus1_achternaam || ''} (${lead.general.plus1_email || ''})`],
+    ];
+    // Rol-specifieke velden
+    const roleFields: Record<string, [string,string|boolean|undefined][]> = {
+      member: [
+        ["Motivatie", lead.general.motivatie],
+        ["Financieel actief", lead.general.financieel_actief ? "Ja" : "Nee"]
+      ],
+      student: [
+        ["Opleiding", lead.general.opleiding],
+        ["Instelling", lead.general.instelling],
+        ["Verwachte afstudeerdatum", lead.general.afstudeerdatum],
+      ],
+      ouder: [
+        ["Naam kind", lead.general.kind_naam],
+        ["Geboortedatum kind", lead.general.kind_geboortedatum],
+        ["Kind heeft eigen e-mail?", lead.general.kind_email ? "Ja" : "Nee"],
+      ],
+      affiliated: [
+        ["Regio", lead.general.regio],
+        ["Netwerkbereik", lead.general.netwerk],
+      ],
+      freelancer: [
+        ["Vakgebied", lead.general.vakgebied],
+        ["Heeft klanten?", lead.general.heeft_klanten ? "Ja" : "Nee"]
+      ],
+      ondernemer: [
+        ["Bedrijfsnaam", lead.general.bedrijfsnaam],
+        ["KvK-nummer", lead.general.kvk],
+        ["Bedrijfsmodel", lead.general.bedrijfsmodel],
+      ],
+      artiest: [
+        ["Type artiest", lead.general.artiest_type],
+        ["Portfolio", lead.general.portfolio],
+      ],
+    };
+    return (
+      <div className="space-y-4">
+        <div>
+          <h4 className="font-semibold mb-2 text-indigo-700">Algemene gegevens</h4>
+          <ul className="space-y-1">
+            {generalFields.map(([label, value]) => (
+              value ? (
+                <li key={label} className="flex gap-2 text-sm"><span className="w-40 font-medium text-gray-700">{label}:</span> <span>{value}</span></li>
+              ) : null
+            ))}
+          </ul>
+        </div>
+        {roleFields[lead.role] && (
+          <div>
+            <h4 className="font-semibold mt-4 mb-2 text-indigo-700 capitalize">{lead.role} specifieke vragen</h4>
+            <ul className="space-y-1">
+              {roleFields[lead.role].map(([label, value]) => (
+                value ? (
+                  <li key={label} className="flex gap-2 text-sm"><span className="w-40 font-medium text-gray-700">{label}:</span> <span>{value}</span></li>
+                ) : null
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-background relative overflow-x-hidden">
@@ -154,14 +239,25 @@ const AdminLeads = () => {
                           </div>
                         </div>
                         <div className="mt-4 flex flex-col sm:flex-row justify-end gap-2">
-                          <Button variant="outline" size="sm" className="group-hover:border-indigo-400 group-hover:text-indigo-700 transition-all">
-                            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" className="inline mr-1"><path d="M15 12H9m6 0l-3-3m3 3l-3 3" stroke="#6366f1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                            Details bekijken
-                          </Button>
-                          <Button size="sm" className="bg-indigo-500 hover:bg-indigo-600 text-white shadow-md transition-all">
-                            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" className="inline mr-1"><path d="M12 4v16m8-8H4" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                            Account aanmaken
-                          </Button>
+                          <Dialog open={detailsOpen && selectedLead?.id === lead.id} onOpenChange={open => { setDetailsOpen(open); if (!open) setSelectedLead(null); }}>
+                            <DialogTrigger asChild>
+                              <Button variant="outline" size="sm" className="group-hover:border-indigo-400 group-hover:text-indigo-700 transition-all" onClick={() => { setSelectedLead(lead); setDetailsOpen(true); }}>
+                                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" className="inline mr-1"><path d="M15 12H9m6 0l-3-3m3 3l-3 3" stroke="#6366f1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                Details bekijken
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent className="max-w-xl">
+                              <DialogHeader>
+                                <DialogTitle>Lead details</DialogTitle>
+                                <DialogDescription>Volledige antwoorden van deze lead</DialogDescription>
+                              </DialogHeader>
+                              {selectedLead && renderLeadDetails(selectedLead)}
+                              <DialogFooter>
+                                <Button variant="outline" onClick={() => setDetailsOpen(false)}>Sluiten</Button>
+                              </DialogFooter>
+                            </DialogContent>
+                          </Dialog>
+                          <AccountCreateDialog lead={lead} />
                         </div>
                       </CardContent>
                     </Card>
@@ -183,6 +279,127 @@ const AdminLeads = () => {
         }
       `}</style>
     </div>
+  );
+};
+
+// Modal component voor account aanmaken
+import { useForm } from "react-hook-form";
+import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { toast } from "sonner";
+import { useState as useReactState } from "react";
+
+type AccountCreateDialogProps = { lead: Lead };
+const AccountCreateDialog = ({ lead }: AccountCreateDialogProps) => {
+  const [open, setOpen] = useReactState(false);
+  const [loading, setLoading] = useReactState(false);
+  const [success, setSuccess] = useReactState(false);
+  const form = useForm({
+    defaultValues: {
+      email: lead.general.email || "",
+      voornaam: lead.general.voornaam || "",
+      achternaam: lead.general.achternaam || "",
+      rol: lead.role || "member",
+    },
+  });
+
+  const onSubmit = async (values: any) => {
+    setLoading(true);
+    setSuccess(false);
+    try {
+      const response = await fetch("/.netlify/functions/create-user", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: values.email,
+          voornaam: values.voornaam,
+          achternaam: values.achternaam,
+          rol: values.rol,
+        })
+      });
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result.error || "Fout bij aanmaken account");
+      }
+      setSuccess(true);
+      toast.success("Account succesvol aangemaakt!");
+    } catch (error: any) {
+      toast.error(error.message || "Fout bij aanmaken account");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button size="sm" className="bg-indigo-500 hover:bg-indigo-600 text-white shadow-md transition-all" onClick={() => setOpen(true)}>
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24" className="inline mr-1"><path d="M12 4v16m8-8H4" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          Account aanmaken
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-w-lg">
+        <DialogHeader>
+          <DialogTitle>Account aanmaken</DialogTitle>
+          <DialogDescription>Maak handmatig een account aan voor deze lead. Er wordt een e-mail verstuurd met inloginstructies.</DialogDescription>
+        </DialogHeader>
+        {success ? (
+          <div className="text-center py-8">
+            <svg width="48" height="48" fill="none" viewBox="0 0 24 24" className="mx-auto mb-2 text-green-500"><circle cx="12" cy="12" r="12" fill="#dcfce7" /><path d="M7 13l3 3 7-7" stroke="#22c55e" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            <p className="font-semibold text-green-700">Account succesvol aangemaakt!</p>
+          </div>
+        ) : (
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <FormField name="email" control={form.control} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <Input {...field} type="email" required disabled={loading} />
+                </FormItem>
+              )} />
+              <div className="flex gap-2">
+                <FormField name="voornaam" control={form.control} render={({ field }) => (
+                  <FormItem className="w-1/2">
+                    <FormLabel>Voornaam</FormLabel>
+                    <Input {...field} required disabled={loading} />
+                  </FormItem>
+                )} />
+                <FormField name="achternaam" control={form.control} render={({ field }) => (
+                  <FormItem className="w-1/2">
+                    <FormLabel>Achternaam</FormLabel>
+                    <Input {...field} required disabled={loading} />
+                  </FormItem>
+                )} />
+              </div>
+              <FormField name="rol" control={form.control} render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Rol</FormLabel>
+                  <Select value={field.value} onValueChange={field.onChange} disabled={loading}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="member">Member</SelectItem>
+                      <SelectItem value="student">Student</SelectItem>
+                      <SelectItem value="ouder">Ouder</SelectItem>
+                      <SelectItem value="affiliated">Affiliated</SelectItem>
+                      <SelectItem value="freelancer">Freelancer</SelectItem>
+                      <SelectItem value="ondernemer">Ondernemer</SelectItem>
+                      <SelectItem value="artiest">Artiest</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )} />
+              <DialogFooter>
+                <Button type="submit" className="bg-indigo-500 hover:bg-indigo-600 text-white" loading={loading} disabled={loading}>
+                  {loading ? "Bezig..." : "Account aanmaken"}
+                </Button>
+                <Button type="button" variant="outline" onClick={() => setOpen(false)} disabled={loading}>Annuleren</Button>
+              </DialogFooter>
+            </form>
+          </Form>
+        )}
+      </DialogContent>
+    </Dialog>
   );
 };
 
