@@ -16,6 +16,8 @@ export function withRoleGuard<P>(
   return function GuardedComponent(props: P) {
     const { user, userRole, loading } = useAuth();
 
+    console.log("withRoleGuard - User:", user?.email, "Role:", userRole, "Loading:", loading, "Allowed Roles:", allowedRoles);
+
     // Show loading state while checking auth
     if (loading) {
       return (
@@ -27,11 +29,14 @@ export function withRoleGuard<P>(
 
     // If no user, redirect to auth
     if (!user) {
+      console.log("No user, redirecting to auth");
       return <Navigate to="/auth" replace />;
     }
 
     // Check if the user's role is allowed for this component
     if (!userRole || !allowedRoles.includes(userRole)) {
+      console.log("User role not allowed, redirecting based on role", userRole);
+      
       // For unauthorized access, redirect based on user's role
       if (userRole === "admin") {
         return <Navigate to="/admin" replace />;
@@ -45,6 +50,7 @@ export function withRoleGuard<P>(
       return <Navigate to="/" replace />;
     }
 
+    console.log("Access granted to component for role:", userRole);
     // If the user's role is allowed, render the component
     return <WrappedComponent {...props} />;
   };

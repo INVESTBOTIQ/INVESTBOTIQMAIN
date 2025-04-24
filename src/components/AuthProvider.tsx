@@ -29,15 +29,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const fetchUserRole = async (userId: string) => {
     try {
-      const { data: roleData, error: roleError } = await supabase
-        .rpc('get_user_role', { user_id: userId });
-
-      if (roleError) {
-        console.error("Error fetching user role:", roleError);
+      console.log("Fetching role for user:", userId);
+      
+      const { data, error } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', userId)
+        .single();
+      
+      if (error) {
+        console.error("Error fetching user role:", error);
         return null;
       }
-
-      return roleData as "admin" | "member" | "guest";
+      
+      console.log("User role data:", data);
+      return data.role as "admin" | "member" | "guest";
     } catch (error) {
       console.error("Exception in fetchUserRole:", error);
       return null;
@@ -48,6 +54,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log("Auth state changed:", event, session?.user?.email);
         setSession(session);
         setUser(session?.user ?? null);
         
@@ -55,6 +62,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           // Defer role fetching to avoid auth deadlock
           setTimeout(async () => {
             const role = await fetchUserRole(session.user.id);
+            console.log("User role fetched:", role);
             setUserRole(role);
             setLoading(false);
           }, 0);
@@ -67,11 +75,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     // THEN check for existing session
     supabase.auth.getSession().then(async ({ data: { session } }) => {
+      console.log("Getting existing session:", session?.user?.email);
       setSession(session);
       setUser(session?.user ?? null);
       
       if (session?.user) {
         const role = await fetchUserRole(session.user.id);
+        console.log("Initial user role:", role);
         setUserRole(role);
       }
       setLoading(false);

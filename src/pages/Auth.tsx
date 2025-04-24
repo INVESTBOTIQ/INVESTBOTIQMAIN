@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -30,14 +29,18 @@ const Auth = () => {
   useEffect(() => {
     if (user && userRole) {
       console.log("Auth page - Already logged in as:", userRole, "with email:", user.email);
-      if (userRole === 'admin') {
-        navigate('/admin', { replace: true });
-      } else if (userRole === 'member') {
-        navigate('/member/dashboard', { replace: true });
-      } else {
-        // Default to home page for guests or unknown roles
-        navigate('/', { replace: true });
-      }
+      
+      // Add a slight delay to ensure role is properly set
+      setTimeout(() => {
+        if (userRole === 'admin') {
+          navigate('/admin', { replace: true });
+        } else if (userRole === 'member') {
+          navigate('/member/dashboard', { replace: true });
+        } else {
+          // Default to home page for guests or unknown roles
+          navigate('/', { replace: true });
+        }
+      }, 100);
     }
   }, [user, userRole, navigate]);
 
@@ -68,7 +71,7 @@ const Auth = () => {
         if (data.user) {
           toast.success("Succesvol ingelogd");
           console.log("Login successful for user email:", data.user.email);
-          // Don't navigate here - let the AuthProvider handle redirection based on role
+          // Redirect will be handled by the useEffect above
         }
       } else {
         const { data, error } = await supabase.auth.signUp({
