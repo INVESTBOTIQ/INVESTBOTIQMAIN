@@ -1,5 +1,6 @@
+
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { 
   Home, BarChart, CheckSquare, User, Sparkles, LogOut, 
   Users, Bell, CircleDollarSign, Settings, Share2 
@@ -26,6 +27,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, onClose }) =
   const { user, userRole } = useAuth();
   const isAdmin = userRole === "admin";
   const location = useLocation();
+  const navigate = useNavigate();
 
   const getUserInitials = () => {
     if (!user || !user.email) return "?";
@@ -34,9 +36,17 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, onClose }) =
 
   const handleLogout = async () => {
     try {
-      await supabase.auth.signOut();
+      const { error } = await supabase.auth.signOut();
+      
+      if (error) {
+        console.error("Error during logout:", error);
+        throw error;
+      }
+      
       toast.success("U bent uitgelogd");
       onClose();
+      // Navigeren naar homepage na uitloggen
+      navigate("/", { replace: true });
     } catch (error) {
       console.error("Error during logout:", error);
       toast.error("Er is een fout opgetreden bij het uitloggen");

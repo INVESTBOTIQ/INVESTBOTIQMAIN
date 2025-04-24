@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "./AuthProvider";
 import { LogOut, Bell, Menu } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import MobileMenu from "./MobileMenu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -24,6 +24,7 @@ const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isMobile = useIsMobile();
   const location = useLocation();
+  const navigate = useNavigate();
   
   // Close mobile menu on route change
   useEffect(() => {
@@ -40,8 +41,16 @@ const Header = () => {
 
   const handleLogout = async () => {
     try {
-      await supabase.auth.signOut();
+      const { error } = await supabase.auth.signOut();
+      
+      if (error) {
+        console.error("Error during logout:", error);
+        throw error;
+      }
+      
       toast.success("U bent uitgelogd");
+      // Navigeren naar homepage na uitloggen
+      navigate("/", { replace: true });
     } catch (error) {
       console.error("Error during logout:", error);
       toast.error("Er is een fout opgetreden bij het uitloggen");
