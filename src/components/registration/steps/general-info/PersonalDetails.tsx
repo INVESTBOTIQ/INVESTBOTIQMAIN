@@ -23,6 +23,7 @@ export const PersonalDetails = ({ data, errors, onChange }: PersonalDetailsProps
           value={data.voornaam}
           onChange={onChange}
           className={errors.voornaam ? "border-destructive" : ""}
+          required
         />
         {errors.voornaam && (
           <p className="text-destructive text-sm">{errors.voornaam}</p>
@@ -37,6 +38,7 @@ export const PersonalDetails = ({ data, errors, onChange }: PersonalDetailsProps
           value={data.achternaam}
           onChange={onChange}
           className={errors.achternaam ? "border-destructive" : ""}
+          required
         />
         {errors.achternaam && (
           <p className="text-destructive text-sm">{errors.achternaam}</p>
@@ -51,6 +53,7 @@ export const PersonalDetails = ({ data, errors, onChange }: PersonalDetailsProps
           value={data.woonplaats}
           onChange={onChange}
           className={errors.woonplaats ? "border-destructive" : ""}
+          required
         />
         {errors.woonplaats && (
           <p className="text-destructive text-sm">{errors.woonplaats}</p>
