@@ -1,24 +1,21 @@
 
-export type ChartConfig = {
+export interface TierChartData {
+  month: string;
+  kaspositie: number;
+  bel: number;
+  plat: number;
+  flowluta: number;
+  cashflow: number;
+  flowlutas_count: number;
+  tier: string;
+}
+
+export interface ChartConfig {
   yAxisId: "left" | "right";
   orientation: "left" | "right";
-  label: {
+  label?: {
     value: string;
     angle: number;
-    position: string;
+    position: "insideLeft" | "insideRight";
   };
-};
-
-export type TierChartData = {
-  month: string;
-  kaspositie?: number;
-  kas?: number;
-  bel?: number;
-  plat?: number;
-  flowluta?: number;
-  cashflow: number;
-  timegap?: number;
-  flowlutas?: string;
-  flowlutas_count?: number;
-  tier?: string;
-};
+}

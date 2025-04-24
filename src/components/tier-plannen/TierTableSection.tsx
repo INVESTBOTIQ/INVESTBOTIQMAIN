@@ -4,7 +4,6 @@ import TierDescription from "./TierDescription";
 import TierSelector from "./TierSelector";
 import TierTable from "./TierTable";
 import TierMobileCards from "./TierMobileCards";
-import TierCashflowChart from "./TierCashflowChart";
 import { FadeIn } from "../info/FadeInAnimation";
 
 export default function TierTableSection() {
@@ -22,7 +21,6 @@ export default function TierTableSection() {
         {selectedTier === "inbotiq2" && (
           <FadeIn delay={0.1}>
             <TierTable />
-            <TierCashflowChart />
             <TierMobileCards />
           </FadeIn>
         )}
