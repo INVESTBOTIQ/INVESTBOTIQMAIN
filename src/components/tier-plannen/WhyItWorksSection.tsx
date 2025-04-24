@@ -1,8 +1,6 @@
-
 import React from "react";
 import { FadeIn } from "../info/FadeInAnimation";
 import { Timer, Bot, CircleCheck, TrendingUp } from "lucide-react";
-
 export default function WhyItWorksSection() {
   return <section className="py-16 px-4">
       <div className="container mx-auto max-w-6xl">
@@ -31,10 +29,8 @@ export default function WhyItWorksSection() {
             <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mb-4">
               <CircleCheck className="w-6 h-6 text-blue-600" />
             </div>
-            <h3 className="text-xl font-bold mb-3">BEL-leningstructuur</h3>
-            <p className="text-gray-700 text-left">
-              Het systeem maakt gebruik van een geoptimaliseerde leningstructuur die zichzelf terugbetaalt en uiteindelijk leidt tot een schuldvrije cashflow.
-            </p>
+            <h3 className="text-xl font-bold mb-3">Tijskloof Structuur</h3>
+            <p className="text-gray-700 text-left">Het systeem maakt gebruik van een AI geoptimaliseerde tijdskloof structuren.</p>
           </FadeIn>
           
           <FadeIn delay={0.6} className="bg-white rounded-xl p-6 shadow-md">
@@ -53,11 +49,7 @@ De groei is voorspelbaar, meetbaar, zichtbaar en controleerbaar.</p>
               Kaspositie, Cashflow, Flowlutas en TimeGap-leningen per maand (TIER 2-6)
             </h3>
             <div className="h-[600px] w-full">
-              <img
-                src="/lovable-uploads/315e9350-1215-4c77-af5e-ff7f4e676b66.png"
-                alt="Grafiek van Kaspositie, Cashflow, Flowlutas en TimeGap-leningen"
-                className="w-full h-full object-contain"
-              />
+              <img src="/lovable-uploads/315e9350-1215-4c77-af5e-ff7f4e676b66.png" alt="Grafiek van Kaspositie, Cashflow, Flowlutas en TimeGap-leningen" className="w-full h-full object-contain" />
             </div>
           </div>
         </FadeIn>
