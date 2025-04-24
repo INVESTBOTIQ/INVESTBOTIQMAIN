@@ -64,7 +64,7 @@ export const FlowlutaTimeline = ({ userId, tier }: FlowlutaTimelineProps) => {
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-0">
-            <ScrollArea className="w-full" orientation="horizontal">
+            <ScrollArea className="w-full">
               <div className="flex space-x-4 p-1 min-w-max">
                 {flowlutas.map((flowluta, idx) => (
                   <div key={idx} className="flex flex-col items-center">
