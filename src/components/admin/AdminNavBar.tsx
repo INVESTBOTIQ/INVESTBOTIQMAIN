@@ -1,3 +1,4 @@
+
 import {
   Home,
   BarChartBig,
@@ -24,21 +25,18 @@ const navigation = [
   { name: "Profiel", href: "/admin/profile", icon: User },
 ];
 
-const AdminNavBar = () => {
+export const AdminNavBar = () => {
   return (
-    <aside className="w-64 bg-gray-900 text-white h-screen fixed top-0 left-0 py-12 px-6">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold">Admin Panel</h1>
-      </div>
-      <nav>
+    <div className="mb-8">
+      <nav className="space-y-1">
         <ul className="space-y-2">
           {navigation.map((item) => (
             <li key={item.name}>
               <NavLink
                 to={item.href}
                 className={({ isActive }) =>
-                  `flex items-center space-x-3 p-3 rounded-md hover:bg-gray-800 transition-colors ${
-                    isActive ? "bg-gray-800 font-semibold" : ""
+                  `flex items-center space-x-3 p-3 rounded-md hover:bg-gray-100 transition-colors ${
+                    isActive ? "bg-gray-100 font-semibold" : ""
                   }`
                 }
               >
@@ -49,7 +47,7 @@ const AdminNavBar = () => {
           ))}
         </ul>
       </nav>
-    </aside>
+    </div>
   );
 };
 
