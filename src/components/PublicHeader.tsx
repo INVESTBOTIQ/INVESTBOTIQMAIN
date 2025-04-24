@@ -74,13 +74,7 @@ const PublicHeader: React.FC = () => {
       <div className="container flex items-center justify-between h-16 md:h-20 px-2">
         {Logo}
         <div className="flex items-center space-x-4">
-          <Button 
-            variant="default" 
-            onClick={() => navigate("/register")}
-            className="transition-all hover:bg-indigo-600 hover:scale-105"
-          >
-            Registreren
-          </Button>
+
           <PublicHeaderDesktopMenu handleNav={handleNav} />
           <button className="md:hidden p-2 rounded-full hover:bg-indigo-50 transition-colors" aria-label={menuOpen ? "Sluit menu" : "Open menu"} onClick={() => setMenuOpen(v => !v)}>
             {menuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}

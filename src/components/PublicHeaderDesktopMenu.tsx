@@ -1,9 +1,9 @@
-
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ChevronDown, LogIn } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/components/AuthProvider";
+import { Button } from "@/components/ui/button";
 
 const NAV_ITEMS = [
   {
@@ -33,6 +33,7 @@ const PublicHeaderDesktopMenu: React.FC<Props> = ({ handleNav }) => {
   const { user, userRole } = useAuth();
   const isMember = !!user && userRole === "member";
   const [desktopSubmenuOpen, setDesktopSubmenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <nav className="hidden md:flex items-center gap-2 lg:gap-3 xl:gap-6 relative">
@@ -89,22 +90,22 @@ const PublicHeaderDesktopMenu: React.FC<Props> = ({ handleNav }) => {
           {item.title}
         </button>
       ))}
-      {/* Inloggen knop */}
+      {/* Inloggen knop + Registreren knop */}
       <Link
         to="/auth"
         className="flex items-center px-4 py-2 rounded-md bg-indigo-500 text-white hover:bg-indigo-600 font-semibold transition-all ml-2"
       >
         <LogIn className="mr-2 h-4 w-4" /> Log-in
       </Link>
+      <Button
+        variant="default"
+        onClick={() => navigate("/register")}
+        className="transition-all hover:bg-indigo-600 hover:scale-105 ml-2"
+      >
+        Registreren
+      </Button>
       {/* Register / Member */}
-      {!user && (
-        <Link
-          to="/auth"
-          className="px-5 py-2 rounded-md bg-gray-100 text-indigo-700 hover:bg-indigo-200 font-semibold transition-all"
-        >
-          Register
-        </Link>
-      )}
+
       {isMember && (
         <Link
           to="/member/dashboard"
