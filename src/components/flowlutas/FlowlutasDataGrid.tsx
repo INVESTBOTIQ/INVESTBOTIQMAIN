@@ -19,6 +19,8 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 type FlowlutaStatus = Database["public"]["Enums"]["flowluta_status"];
 
@@ -68,6 +70,20 @@ export const FlowlutasDataGrid = ({ tier, status, search }: FlowlutasDataGridPro
   });
 
   const totalPages = Math.ceil((flowlutasData?.totalCount || 0) / ITEMS_PER_PAGE);
+  const isPreviousDisabled = currentPage === 1;
+  const isNextDisabled = currentPage === totalPages || totalPages === 0;
+
+  const handlePreviousPage = () => {
+    if (!isPreviousDisabled) {
+      setCurrentPage((prev) => Math.max(1, prev - 1));
+    }
+  };
+
+  const handleNextPage = () => {
+    if (!isNextDisabled) {
+      setCurrentPage((prev) => Math.min(totalPages, prev + 1));
+    }
+  };
 
   return (
     <div className="space-y-4">
@@ -106,11 +122,16 @@ export const FlowlutasDataGrid = ({ tier, status, search }: FlowlutasDataGridPro
         <Pagination>
           <PaginationContent>
             <PaginationItem>
-              <PaginationPrevious
-                onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
-                disabled={currentPage === 1}
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={handlePreviousPage}
+                disabled={isPreviousDisabled}
                 className="cursor-pointer"
-              />
+              >
+                <ChevronLeft className="h-4 w-4" />
+                <span className="sr-only">Previous page</span>
+              </Button>
             </PaginationItem>
             <PaginationItem>
               <span className="px-4">
@@ -118,11 +139,16 @@ export const FlowlutasDataGrid = ({ tier, status, search }: FlowlutasDataGridPro
               </span>
             </PaginationItem>
             <PaginationItem>
-              <PaginationNext
-                onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
-                disabled={currentPage === totalPages}
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={handleNextPage}
+                disabled={isNextDisabled}
                 className="cursor-pointer"
-              />
+              >
+                <ChevronRight className="h-4 w-4" />
+                <span className="sr-only">Next page</span>
+              </Button>
             </PaginationItem>
           </PaginationContent>
         </Pagination>
