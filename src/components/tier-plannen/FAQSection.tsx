@@ -1,15 +1,7 @@
-
 import React from "react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 export default function FAQSection() {
-  return (
-    <section className="py-16 px-4 bg-indigo-50">
+  return <section className="py-16 px-4 bg-indigo-50">
       <div className="container mx-auto max-w-3xl">
         <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-12">
           Veelgestelde vragen
@@ -17,7 +9,7 @@ export default function FAQSection() {
         
         <Accordion type="single" collapsible className="bg-white rounded-lg shadow-sm">
           <AccordionItem value="item-1">
-            <AccordionTrigger className="px-6">Wat als ik tussendoor wil stoppen?</AccordionTrigger>
+            <AccordionTrigger className="px-6 text-left">Wat als ik tussendoor wil stoppen?</AccordionTrigger>
             <AccordionContent className="px-6 pb-4">
               Je kunt op elk moment stoppen. De IQ Bot zorgt voor een gecontroleerde afbouw van lopende processen en sluit eventuele openstaande verplichtingen af. Neem contact op met support voor persoonlijke begeleiding bij dit proces.
             </AccordionContent>
@@ -38,6 +30,5 @@ export default function FAQSection() {
           </AccordionItem>
         </Accordion>
       </div>
-    </section>
-  );
+    </section>;
 }
