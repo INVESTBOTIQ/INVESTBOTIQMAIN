@@ -1,4 +1,3 @@
-
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -25,6 +24,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "react-tooltip";
 
 type FlowlutaStatus = Database["public"]["Enums"]["flowluta_status"];
 
@@ -54,7 +54,6 @@ export const FlowlutasDataGrid = ({ tier, status, search }: FlowlutasDataGridPro
       }
 
       if (status !== "all") {
-        // Only apply status filter if it's a valid flowluta status
         const validStatuses: FlowlutaStatus[] = ["planned", "active", "paused"];
         if (validStatuses.includes(status as FlowlutaStatus)) {
           query = query.eq("status", status as FlowlutaStatus);
@@ -62,8 +61,6 @@ export const FlowlutasDataGrid = ({ tier, status, search }: FlowlutasDataGridPro
       }
 
       if (search) {
-        // Search in relevant fields - since flowlutas don't have a name/title,
-        // we'll search in the id which might be useful for admins
         query = query.or(`id.ilike.%${search}%`);
       }
 
@@ -90,11 +87,10 @@ export const FlowlutasDataGrid = ({ tier, status, search }: FlowlutasDataGridPro
     }
   };
 
-  // Helper function to get status badge color
   const getStatusColor = (status: FlowlutaStatus) => {
     switch (status) {
       case "active":
-        return "bg-green-500 hover:bg-green-600";
+        return "bg-emerald-500 hover:bg-emerald-600";
       case "planned":
         return "bg-blue-500 hover:bg-blue-600";
       case "paused":
@@ -104,21 +100,42 @@ export const FlowlutasDataGrid = ({ tier, status, search }: FlowlutasDataGridPro
     }
   };
 
-  // Mobile view with cards
+  const getStatusTooltip = (status: FlowlutaStatus) => {
+    switch (status) {
+      case "active":
+        return "Deze flowluta is actief en genereert momenteel cashflow";
+      case "planned":
+        return "Deze flowluta wordt automatisch geactiveerd volgens planning";
+      case "paused":
+        return "Deze flowluta is tijdelijk gepauzeerd";
+      default:
+        return "";
+    }
+  };
+
   if (isMobile) {
     return (
       <div className="space-y-4">
         <div className="grid gap-4">
           {flowlutasData?.flowlutas.map((flowluta) => (
-            <Card key={flowluta.id} className="overflow-hidden">
+            <Card key={flowluta.id} className="overflow-hidden transition-all duration-200 hover:shadow-md">
               <CardHeader className="pb-2">
                 <div className="flex justify-between items-center">
                   <CardTitle className="text-base">
                     Tier {flowluta.tier}
                   </CardTitle>
-                  <Badge className={getStatusColor(flowluta.status)}>
-                    {flowluta.status.charAt(0).toUpperCase() + flowluta.status.slice(1)}
-                  </Badge>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <Badge className={getStatusColor(flowluta.status)}>
+                          {flowluta.status.charAt(0).toUpperCase() + flowluta.status.slice(1)}
+                        </Badge>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{getStatusTooltip(flowluta.status)}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 </div>
               </CardHeader>
               <CardContent className="pt-0 space-y-2">
@@ -138,8 +155,11 @@ export const FlowlutasDataGrid = ({ tier, status, search }: FlowlutasDataGridPro
                       : "N/A"}
                   </span>
                 </div>
-                <Button variant="outline" size="sm" className="w-full mt-2">
-                  Details
+                <Button variant="outline" size="sm" className="w-full mt-2 group relative" disabled>
+                  <span>Details</span>
+                  <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                    Binnenkort beschikbaar
+                  </span>
                 </Button>
               </CardContent>
             </Card>
@@ -185,7 +205,6 @@ export const FlowlutasDataGrid = ({ tier, status, search }: FlowlutasDataGridPro
     );
   }
 
-  // Desktop view with table
   return (
     <div className="space-y-4">
       <div className="rounded-md border">

@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   ComposedChart,
@@ -20,25 +19,6 @@ export default function TierProgressChart() {
   const isMobile = useIsMobile();
   const { data } = useTierChartData();
   
-  const leftAxisConfig = {
-    yAxisId: "left" as const,
-    label: {
-      value: "Bedrag (€)",
-      angle: -90,
-      position: "insideLeft" as const,
-    },
-  };
-
-  const rightAxisConfig = {
-    yAxisId: "right" as const,
-    orientation: "right" as const,
-    label: {
-      value: "Maandelijkse Cashflow (€)",
-      angle: 90,
-      position: "insideRight" as const,
-    },
-  };
-
   const chartContent = (
     <ComposedChart
       data={data}
@@ -75,15 +55,18 @@ export default function TierProgressChart() {
 
   return (
     <FadeIn delay={0.2} className="overflow-hidden">
-      <div className="w-full">
+      <div className="w-full relative">
         {isMobile ? (
-          <ScrollArea className="w-full">
-            <div className="min-w-[600px]">
-              <ResponsiveContainer width="100%" height={400}>
-                {chartContent}
-              </ResponsiveContainer>
-            </div>
-          </ScrollArea>
+          <>
+            <ScrollArea className="w-full overflow-x-auto">
+              <div className="min-w-[600px]">
+                <ResponsiveContainer width="100%" height={400}>
+                  {chartContent}
+                </ResponsiveContainer>
+              </div>
+            </ScrollArea>
+            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent animate-pulse" />
+          </>
         ) : (
           <div className="h-[600px]">
             <ResponsiveContainer width="100%" height="100%">

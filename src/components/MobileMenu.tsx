@@ -1,4 +1,3 @@
-
 import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { X, Home, BarChart, CheckSquare, User, Sparkles, LogOut, Users, Bell, CircleDollarSign, Settings, Share2 } from "lucide-react";
@@ -20,13 +19,11 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, onClose }) =
   const isAdmin = userRole === "admin";
   const location = useLocation();
 
-  // Get user initials for avatar
   const getUserInitials = () => {
     if (!user || !user.email) return "?";
     return user.email.substring(0, 2).toUpperCase();
   };
 
-  // Close menu when route changes
   useEffect(() => {
     onClose();
   }, [location.pathname, onClose]);
@@ -68,12 +65,14 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, onClose }) =
   const menuItems = isAdmin ? adminItems : memberItems;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" onClick={onClose}>
+    <div 
+      className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm transition-all duration-300"
+      onClick={onClose}
+    >
       <div 
         className="absolute right-0 top-0 h-full w-4/5 max-w-xs bg-white shadow-xl p-0 flex flex-col animate-in slide-in-from-right duration-300"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* User profile header */}
         {user && (
           <div className="flex items-center gap-3 p-4 border-b bg-primary/5">
             <Avatar className="h-10 w-10">
@@ -87,15 +86,14 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, onClose }) =
             </div>
             <button
               onClick={onClose}
-              className="rounded-full p-1 hover:bg-gray-100 transition-colors"
-              aria-label="Close menu"
+              className="rounded-full p-2 hover:bg-gray-100 transition-colors"
+              aria-label="Sluit menu"
             >
               <X className="h-5 w-5 text-gray-500" />
             </button>
           </div>
         )}
         
-        {/* Menu items */}
         <div className="flex-1 overflow-y-auto py-2">
           <nav className="space-y-0.5 px-2">
             {menuItems.map((item) => (
@@ -116,7 +114,6 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, onClose }) =
           </nav>
         </div>
         
-        {/* Logout button at bottom */}
         <div className="border-t p-4">
           <Button
             onClick={handleLogout}

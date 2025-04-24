@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "./AuthProvider";
@@ -35,24 +34,21 @@ const Header = () => {
     }
   };
 
-  // Get user initials for avatar
   const getUserInitials = () => {
     if (!user || !user.email) return "?";
     return user.email.substring(0, 2).toUpperCase();
   };
 
-  // Dummy notification count for demonstration
   const unreadNotificationsCount = 3;
 
   return (
-    <header className="bg-white border-b sticky top-0 z-30">
+    <header className="bg-white border-b sticky top-0 z-40">
       <div className="flex items-center justify-between h-16 px-4 lg:px-6">
         <Link to="/" className="flex items-center">
           <span className="text-xl font-bold text-primary truncate">Investbotiq</span>
         </Link>
         
         <div className="flex items-center gap-3">
-          {/* Notifications dropdown for desktop */}
           {user && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild className="hidden md:flex">
@@ -109,7 +105,6 @@ const Header = () => {
             </DropdownMenu>
           )}
           
-          {/* User dropdown for desktop */}
           {user && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild className="hidden md:flex">
@@ -140,7 +135,6 @@ const Header = () => {
             </DropdownMenu>
           )}
           
-          {/* Mobile menu toggle with notification badge */}
           <Button 
             variant="ghost" 
             size="icon" 
@@ -161,7 +155,6 @@ const Header = () => {
         </div>
       </div>
       
-      {/* Mobile menu */}
       <MobileMenu 
         isOpen={mobileMenuOpen} 
         setIsOpen={setMobileMenuOpen} 
