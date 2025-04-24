@@ -1,47 +1,32 @@
 
 import { FadeIn } from "../info/FadeInAnimation";
-import { CalendarDays, ChevronDown } from "lucide-react";
+import { CalendarDays } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { FlowlutaDetailsAccordion } from "./FlowlutaDetailsAccordion";
+import { Button } from "../ui/button";
 
-const tierData = [
-  {
-    tier: "Tier 2",
-    period: "0 – 3 maanden",
-    flowlutas: 1,
-    cashflow: "€400",
-    status: "Actief"
-  },
-  {
-    tier: "Tier 3",
-    period: "3 – 6 maanden",
-    flowlutas: 2,
-    cashflow: "€800",
-    status: "Actief"
-  },
-  {
-    tier: "Tier 4",
-    period: "6 – 9 maanden",
-    flowlutas: 3,
-    cashflow: "€1.200",
-    status: "Actief"
-  },
-  {
-    tier: "Tier 5",
-    period: "9 – 12 maanden",
-    flowlutas: 5,
-    cashflow: "€2.000",
-    status: "Actief"
-  },
-  {
-    tier: "Tier 6",
-    period: "12 – 15 maanden",
-    flowlutas: 5,
-    cashflow: "€2.000",
-    status: "Finishing Tier Plan"
-  }
-];
+const tierData = // ... keep existing code (tierData array)
 
 export default function TierMobileCards() {
+  if (tierData.length === 0) {
+    return (
+      <div className="md:hidden">
+        <FadeIn delay={0.3}>
+          <div className="bg-white rounded-lg shadow-md p-6 text-center">
+            <h3 className="text-lg font-semibold mb-2">Nog geen flowlutas geactiveerd</h3>
+            <p className="text-gray-600 mb-4">Begin vandaag nog met het opbouwen van je cashflow!</p>
+            <Button 
+              className="bg-indigo-600 hover:bg-indigo-700 text-white"
+              onClick={() => {}}
+            >
+              Start nu
+            </Button>
+          </div>
+        </FadeIn>
+      </div>
+    );
+  }
+
   return (
     <div className="md:hidden space-y-6">
       {tierData.map((item, index) => (
@@ -82,17 +67,12 @@ export default function TierMobileCards() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between pt-2">
-                <span className="text-sm text-gray-600">
-                  {item.flowlutas} {item.flowlutas === 1 ? 'Flowluta' : 'Flowlutas'}
-                </span>
-                <button 
-                  className="text-indigo-600 hover:text-indigo-700 text-sm font-medium inline-flex items-center gap-1"
-                  onClick={() => {}}
-                >
-                  Details
-                  <ChevronDown className="h-4 w-4" />
-                </button>
+              <div>
+                <FlowlutaDetailsAccordion
+                  activatedAt="01/04/2024"
+                  nextActivation={item.status === "Actief" ? "01/07/2024" : undefined}
+                  cashPosition="€5.400"
+                />
               </div>
             </div>
           </div>

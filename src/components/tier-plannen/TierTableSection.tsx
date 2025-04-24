@@ -21,20 +21,26 @@ export default function TierTableSection() {
         />
         
         {selectedTier === "inbotiq2" && (
-          <>
+          <FadeIn delay={0.2}>
             <TierInfo />
             <div className="mb-10">
               <TierGrowthVisualizer className="mb-8 hidden md:block" />
             </div>
             <TierTable />
             <TierMobileCards />
-          </>
+          </FadeIn>
         )}
 
         {selectedTier === "inbotiq1" && (
-          <FadeIn delay={0.4}>
-            <div className="text-center text-gray-600 py-8">
-              Informatie over InBotIQ1 Tier 1 komt binnenkort beschikbaar.
+          <FadeIn delay={0.2}>
+            <div className="text-center p-8 bg-gray-50 rounded-lg border border-gray-200">
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                InBotIQ1 Tier 1 - Binnenkort Beschikbaar
+              </h3>
+              <p className="text-gray-600">
+                We werken hard aan de ontwikkeling van InBotIQ1. 
+                Blijf op de hoogte voor updates over de lancering!
+              </p>
             </div>
           </FadeIn>
         )}

@@ -24,11 +24,11 @@ export default function TierSelector({ selectedTier, onTierChange }: TierSelecto
             <ChevronDown className="h-4 w-4 text-indigo-500" />
           </SelectTrigger>
           <SelectContent className="bg-white border border-indigo-100 shadow-lg">
-            <SelectItem value="inbotiq1" className="hover:bg-indigo-50 cursor-pointer">
-              InBotIQ1 Tier 1
-            </SelectItem>
             <SelectItem value="inbotiq2" className="hover:bg-indigo-50 cursor-pointer">
               InBotIQ2 Tier 2-6
+            </SelectItem>
+            <SelectItem value="inbotiq1" className="text-gray-400 hover:bg-gray-50 cursor-not-allowed" disabled>
+              InBotIQ1 Tier 1 (Binnenkort beschikbaar)
             </SelectItem>
           </SelectContent>
         </Select>
