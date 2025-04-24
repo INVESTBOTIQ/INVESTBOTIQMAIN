@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
@@ -42,6 +43,12 @@ const PublicHeader: React.FC = () => {
   const navigate = useNavigate();
   const { user, userRole } = useAuth();
   const isMember = !!user && userRole === "member";
+
+  // Add the missing handleNav function here
+  const handleNav = (to: string) => {
+    navigate(to);
+    setMenuOpen(false);
+  };
 
   const Logo = (
     <Link 
