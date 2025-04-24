@@ -7,6 +7,7 @@ import { UserTable } from "@/components/admin/users/UserTable";
 import { UserFilters } from "@/components/admin/users/UserFilters";
 import { AdminNavBar } from "@/components/admin/AdminNavBar";
 import { useUsers } from "@/hooks/useUsers";
+import Header from "@/components/Header";
 
 const AdminUsers = () => {
   const { 
@@ -22,6 +23,7 @@ const AdminUsers = () => {
 
   return (
     <div>
+      <Header />
       <AdminNavBar />
       <h2 className="text-xl font-semibold mb-2">Gebruikers Overzicht</h2>
       <p className="text-muted-foreground mb-4">

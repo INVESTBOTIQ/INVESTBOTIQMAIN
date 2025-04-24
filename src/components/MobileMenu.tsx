@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { 
@@ -59,9 +58,6 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, onClose }) =
     { label: "Gebruikers", href: "/admin/users", icon: Users },
     { label: "Taken Beheer", href: "/admin/tasks", icon: CheckSquare },
     { label: "Cashflow Beheer", href: "/admin/cashflows", icon: CircleDollarSign },
-    { label: "Flowlutas Beheer", href: "/admin/flowlutas", icon: Sparkles },
-    { label: "Referrals", href: "/admin/referrals", icon: Share2 },
-    { label: "Notificaties", href: "/admin/notifications", icon: Bell },
     { label: "Instellingen", href: "/admin/settings", icon: Settings },
     { label: "Mijn Profiel", href: "/admin/profile", icon: User },
   ];

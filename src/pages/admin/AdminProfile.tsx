@@ -8,6 +8,7 @@ import SecurityCard from "@/components/profile/SecurityCard";
 import { useAuth } from "@/components/AuthProvider";
 import { Navigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
+import Header from "@/components/Header";
 
 const AdminProfile = () => {
   const { user, loading } = useAuth();
@@ -26,6 +27,7 @@ const AdminProfile = () => {
 
   return (
     <div>
+      <Header />
       <AdminNavBar />
       <div className="space-y-6">
         <PersonalInfoCard user={user} />

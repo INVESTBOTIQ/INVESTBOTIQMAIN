@@ -4,10 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { withRoleGuard } from "@/utils/withRoleGuard";
 import { AdminNavBar } from "@/components/admin/AdminNavBar";
 import { Settings } from "lucide-react";
+import Header from "@/components/Header";
 
 const AdminSettings = () => {
   return (
     <div>
+      <Header />
       <AdminNavBar />
       <h2 className="text-xl font-semibold mb-2">Instellingen</h2>
       <p className="text-muted-foreground mb-4">

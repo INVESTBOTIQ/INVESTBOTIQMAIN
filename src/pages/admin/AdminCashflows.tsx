@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { withRoleGuard } from "@/utils/withRoleGuard";
@@ -9,6 +8,7 @@ import { CashflowTable } from "@/components/cashflow/CashflowTable";
 import { CashflowHistoryTable } from "@/components/cashflow/CashflowHistoryTable";
 import { AdminNavBar } from "@/components/admin/AdminNavBar";
 import { useCashflowManagement } from "@/hooks/useCashflowManagement";
+import Header from "@/components/Header";
 
 const users = [
   {
@@ -71,6 +71,7 @@ const AdminCashflows = () => {
 
   return (
     <div>
+      <Header />
       <AdminNavBar />
       <h2 className="text-xl font-semibold mb-4">Cashflowbeheer</h2>
       
