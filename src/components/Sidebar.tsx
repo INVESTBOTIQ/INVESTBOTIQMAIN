@@ -1,36 +1,25 @@
+
 import React from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useAuth } from './AuthProvider';
 import {
   BarChart4,
   FileText,
   Home,
-  LogOut,
-  Menu,
-  PieChart,
-  Settings,
+  UserCircle,
   CheckSquare,
   Users,
-  UserCircle,
   Sparkles,
   Bell,
   CircleDollarSign,
   Share2
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { Button } from '@/components/ui/button';
 
 const Sidebar = () => {
   const [expanded, setExpanded] = React.useState(true);
   const { userRole } = useAuth();
-  const location = useLocation();
-  const isMobile = useIsMobile();
   
-  React.useEffect(() => {
-    setExpanded(!isMobile);
-  }, [isMobile]);
-
   const memberLinks = [
     { to: '/member/dashboard', icon: <Home className="h-4 w-4" />, label: 'Dashboard' },
     { to: '/member/progress', icon: <BarChart4 className="h-4 w-4" />, label: 'Voortgang' },
@@ -53,19 +42,11 @@ const Sidebar = () => {
   const profileLink = userRole === 'admin' ? '/admin/profile' : '/member/profile';
 
   return (
-    <div className="relative">
-      <Button
-        variant="ghost"
-        size="icon"
-        className="absolute right-0 top-0 -mr-10 mt-4 lg:hidden"
-        onClick={() => setExpanded((prev) => !prev)}
-      >
-        <Menu />
-      </Button>
+    <div className="relative hidden md:block">
       <aside
         className={cn(
           'fixed left-0 top-16 z-30 flex h-[calc(100vh-4rem)] flex-col border-r bg-background transition-all duration-300 lg:static lg:z-0',
-          expanded ? 'w-64' : 'w-0 -translate-x-full lg:w-16 lg:translate-x-0 overflow-hidden'
+          expanded ? 'w-64' : 'w-16'
         )}
       >
         <div className="flex h-full flex-col">
