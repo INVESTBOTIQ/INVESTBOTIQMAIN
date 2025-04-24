@@ -5,7 +5,26 @@ import { cn } from "@/lib/utils";
 import { FlowlutaDetailsAccordion } from "./FlowlutaDetailsAccordion";
 import { Button } from "../ui/button";
 
-const tierData = // ... keep existing code (tierData array)
+const tierData = [
+  {
+    tier: "Tier 2",
+    status: "Actief",
+    period: "April 2024 - Juli 2024",
+    cashflow: "€400/mnd"
+  },
+  {
+    tier: "Tier 3",
+    status: "Gepland",
+    period: "Juli 2024 - Oktober 2024",
+    cashflow: "€800/mnd"
+  },
+  {
+    tier: "Tier 4",
+    status: "Gepland",
+    period: "Oktober 2024 - Januari 2025",
+    cashflow: "€1200/mnd"
+  }
+];
 
 export default function TierMobileCards() {
   if (tierData.length === 0) {
