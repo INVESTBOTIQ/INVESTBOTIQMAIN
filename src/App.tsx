@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -22,13 +21,13 @@ import AdminFlowlutas from "@/pages/admin/AdminFlowlutas";
 import AdminNotifications from "@/pages/admin/AdminNotifications";
 import AdminReferrals from "@/pages/admin/AdminReferrals";
 import NotFound from "@/pages/NotFound";
-
-// Import the new information pages
 import WatIsInvestbotIQ from "@/pages/info/WatIsInvestbotIQ";
 import HoeWerktHet from "@/pages/info/HoeWerktHet";
 import MissieVisie from "@/pages/info/MissieVisie";
 import TierPlannen from "@/pages/info/TierPlannen";
 import Veiligheid from "@/pages/info/Veiligheid";
+import AdminSettings from "@/pages/admin/AdminSettings";
+import AdminProfile from "@/pages/admin/AdminProfile";
 
 const queryClient = new QueryClient();
 
@@ -40,19 +39,16 @@ const App = () => (
           <Toaster />
           <Sonner />
           <Routes>
-            {/* PUBLIC */}
             <Route path="/" element={<Home />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/faq" element={<FAQ />} />
 
-            {/* INFO PAGES */}
             <Route path="/alles-over-investbot/wat-is-het" element={<WatIsInvestbotIQ />} />
             <Route path="/alles-over-investbot/hoe-werkt-het" element={<HoeWerktHet />} />
             <Route path="/alles-over-investbot/mission-vision" element={<MissieVisie />} />
             <Route path="/tier-plannen" element={<TierPlannen />} />
             <Route path="/veiligheid" element={<Veiligheid />} />
 
-            {/* MEMBER ROUTES */}
             <Route path="/member/dashboard" element={<MemberDashboard />} />
             <Route path="/member/progress" element={<MemberProgress />} />
             <Route path="/member/tasks" element={<MemberTasks />} />
@@ -60,10 +56,8 @@ const App = () => (
             <Route path="/member/ai-running" element={<MemberAIRunning />} />
             <Route path="/member/referrals" element={<MemberReferrals />} />
 
-            {/* Protect /member/* only for member */}
             <Route path="/member" element={<Navigate to="/member/dashboard" replace />} />
 
-            {/* ADMIN ROUTES */}
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/users" element={<AdminUsers />} />
             <Route path="/admin/tasks" element={<AdminTasks />} /> 
@@ -71,9 +65,10 @@ const App = () => (
             <Route path="/admin/flowlutas" element={<AdminFlowlutas />} />
             <Route path="/admin/notifications" element={<AdminNotifications />} />
             <Route path="/admin/referrals" element={<AdminReferrals />} />
+            <Route path="/admin/settings" element={<AdminSettings />} />
+            <Route path="/admin/profile" element={<AdminProfile />} />
             <Route path="/admin/index" element={<Navigate to="/admin" replace />} />
 
-            {/* 404 */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>

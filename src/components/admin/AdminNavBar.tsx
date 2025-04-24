@@ -2,7 +2,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { Users, CheckSquare, CircleDollarSign } from "lucide-react";
+import { Users, CheckSquare, CircleDollarSign, Settings, UserCog } from "lucide-react";
 
 const navItems = [
   {
@@ -19,6 +19,16 @@ const navItems = [
     title: "Cashflows",
     href: "/admin/cashflows",
     icon: CircleDollarSign
+  },
+  {
+    title: "Instellingen",
+    href: "/admin/settings", 
+    icon: Settings
+  },
+  {
+    title: "Mijn Profiel",
+    href: "/admin/profile",
+    icon: UserCog
   }
 ];
 
@@ -26,7 +36,7 @@ export const AdminNavBar = () => {
   const location = useLocation();
 
   return (
-    <nav className="flex items-center gap-1 mb-6 bg-background border rounded-lg p-1">
+    <nav className="flex flex-wrap items-center gap-1 mb-6 bg-background border rounded-lg p-1">
       {navItems.map((item) => (
         <Link
           key={item.href}
