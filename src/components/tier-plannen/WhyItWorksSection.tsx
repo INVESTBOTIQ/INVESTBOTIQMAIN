@@ -1,7 +1,7 @@
+
 import React from "react";
 import { FadeIn } from "../info/FadeInAnimation";
 import { Timer, Bot, CircleCheck, TrendingUp } from "lucide-react";
-import TierCashflowChart from "./TierCashflowChart";
 
 export default function WhyItWorksSection() {
   return <section className="py-16 px-4">
