@@ -1,3 +1,4 @@
+
 import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { X, Home, BarChart, CheckSquare, User, Sparkles, LogOut, Users, Bell, CircleDollarSign, Settings, Share2 } from "lucide-react";
@@ -39,6 +40,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, onClose }) =
     }
   };
 
+  // Als het menu niet open is, render dan een leeg fragment
   if (!isOpen) return null;
 
   const memberItems = [
@@ -64,13 +66,14 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, onClose }) =
 
   const menuItems = isAdmin ? adminItems : memberItems;
 
+  // Zorg ervoor dat het menu altijd zichtbaar is als isOpen = true
   return (
     <div 
-      className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm transition-all duration-300"
+      className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
       onClick={onClose}
     >
       <div 
-        className="absolute right-0 top-0 h-full w-4/5 max-w-xs bg-white shadow-xl p-0 flex flex-col animate-in slide-in-from-right duration-300"
+        className="absolute right-0 top-0 h-full w-4/5 max-w-xs bg-white shadow-xl p-0 flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {user && (
@@ -106,6 +109,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, onClose }) =
                     ? "bg-primary/10 text-primary"
                     : "text-gray-700 hover:bg-gray-100"
                 )}
+                onClick={onClose}
               >
                 {item.icon && <item.icon className="mr-3 h-4 w-4 shrink-0" />}
                 <span className="truncate">{item.label}</span>

@@ -41,6 +41,8 @@ const Header = () => {
     return user.email.substring(0, 2).toUpperCase();
   };
 
+  console.log("Mobile menu open status:", mobileMenuOpen);
+
   const unreadNotificationsCount = 3;
 
   return (
@@ -52,7 +54,10 @@ const Header = () => {
               variant="ghost" 
               size="icon" 
               className="md:hidden"
-              onClick={() => setMobileMenuOpen(true)}
+              onClick={() => {
+                console.log("Menu button clicked, setting mobileMenuOpen to", !mobileMenuOpen);
+                setMobileMenuOpen(!mobileMenuOpen);
+              }}
               aria-label="Open menu"
             >
               <Menu className="h-6 w-6" />
@@ -151,6 +156,7 @@ const Header = () => {
         </div>
       </div>
       
+      {/* Pass current state and handlers to MobileMenu */}
       <MobileMenu 
         isOpen={mobileMenuOpen} 
         setIsOpen={setMobileMenuOpen} 
