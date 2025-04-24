@@ -25,6 +25,7 @@ const Header = () => {
   const isMobile = useIsMobile();
   
   const handleCloseMobileMenu = () => {
+    console.log("Closing mobile menu");
     setMobileMenuOpen(false);
   };
 

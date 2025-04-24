@@ -14,8 +14,6 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   Sheet,
   SheetContent,
-  SheetHeader,
-  SheetTitle,
   SheetFooter,
 } from "@/components/ui/sheet";
 
@@ -74,9 +72,11 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, onClose }) =
 
   const menuItems = isAdmin ? adminItems : memberItems;
 
+  console.log("MobileMenu rendering, isOpen:", isOpen);
+
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetContent className="w-[80%] max-w-xs p-0 shadow-xl">
+      <SheetContent side="left" className="w-[80%] max-w-xs p-0 shadow-xl">
         {user && (
           <div className="flex items-center gap-3 p-4 border-b bg-primary/5">
             <Avatar className="h-10 w-10">
