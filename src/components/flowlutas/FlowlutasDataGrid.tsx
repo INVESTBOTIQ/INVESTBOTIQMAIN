@@ -11,14 +11,36 @@ import {
 } from "@/components/ui/table";
 import { format } from "date-fns";
 
-export const FlowlutasDataGrid = () => {
+interface FlowlutasDataGridProps {
+  tier: string;
+  status: string;
+  search: string;
+}
+
+export const FlowlutasDataGrid = ({ tier, status, search }: FlowlutasDataGridProps) => {
   const { data: flowlutas } = useQuery({
-    queryKey: ["flowlutas"],
+    queryKey: ["flowlutas", tier, status, search],
     queryFn: async () => {
-      const { data, error } = await supabase
+      let query = supabase
         .from("flowlutas")
         .select("*")
         .order("created_at", { ascending: false });
+
+      if (tier !== "all") {
+        query = query.eq("tier", parseInt(tier));
+      }
+
+      if (status !== "all") {
+        query = query.eq("status", status);
+      }
+
+      if (search) {
+        // Search in relevant fields - since flowlutas don't have a name/title,
+        // we'll search in the id which might be useful for admins
+        query = query.or(`id.ilike.%${search}%`);
+      }
+
+      const { data, error } = await query;
 
       if (error) throw error;
       return data;

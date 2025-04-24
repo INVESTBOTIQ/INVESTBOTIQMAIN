@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { withRoleGuard } from "@/utils/withRoleGuard";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
@@ -9,16 +9,20 @@ import { FlowlutasFilters } from "@/components/flowlutas/FlowlutasFilters";
 import { Separator } from "@/components/ui/separator";
 
 const AdminFlowlutas = () => {
+  const [selectedTier, setSelectedTier] = useState("all");
+  const [selectedStatus, setSelectedStatus] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+
   const handleTierFilter = (tier: string) => {
-    console.log("Filter by tier:", tier);
+    setSelectedTier(tier);
   };
 
   const handleStatusFilter = (status: string) => {
-    console.log("Filter by status:", status);
+    setSelectedStatus(status);
   };
 
   const handleSearch = (search: string) => {
-    console.log("Search:", search);
+    setSearchQuery(search);
   };
 
   return (
@@ -45,7 +49,11 @@ const AdminFlowlutas = () => {
             
             <div className="space-y-4">
               <h2 className="text-lg font-semibold">Flowlutas Overzicht</h2>
-              <FlowlutasDataGrid />
+              <FlowlutasDataGrid
+                tier={selectedTier}
+                status={selectedStatus}
+                search={searchQuery}
+              />
             </div>
 
             <Separator />
