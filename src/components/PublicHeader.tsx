@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import PublicHeaderDesktopMenu from "./PublicHeaderDesktopMenu";
 import PublicHeaderMobileMenu from "./PublicHeaderMobileMenu";
+import { Button } from "@/components/ui/button";
 import { useAuth } from "@/components/AuthProvider";
 
 const NAV_ITEMS = [{
@@ -61,31 +62,27 @@ const PublicHeader: React.FC = () => {
     </Link>
   );
 
-  const handleNav = (to: string) => {
-    setMenuOpen(false);
-    if (to.startsWith("#")) {
-      const section = document.querySelector(to);
-      if (section) {
-        section.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
-      }
-      return;
-    }
-    navigate(to);
-  };
-
-  return <header className="fixed top-0 left-0 w-full z-40 bg-white shadow">
+  return (
+    <header className="fixed top-0 left-0 w-full z-40 bg-white shadow">
       <div className="container flex items-center justify-between h-16 md:h-20 px-2">
         {Logo}
-        <PublicHeaderDesktopMenu handleNav={handleNav} />
-        <button className="md:hidden p-2 rounded-full hover:bg-indigo-50 transition-colors" aria-label={menuOpen ? "Sluit menu" : "Open menu"} onClick={() => setMenuOpen(v => !v)}>
-          {menuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
-        </button>
+        <div className="flex items-center space-x-4">
+          <Button 
+            variant="default" 
+            onClick={() => navigate("/register")}
+            className="transition-all hover:bg-indigo-600 hover:scale-105"
+          >
+            Registreren
+          </Button>
+          <PublicHeaderDesktopMenu handleNav={handleNav} />
+          <button className="md:hidden p-2 rounded-full hover:bg-indigo-50 transition-colors" aria-label={menuOpen ? "Sluit menu" : "Open menu"} onClick={() => setMenuOpen(v => !v)}>
+            {menuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
+          </button>
+        </div>
       </div>
       <PublicHeaderMobileMenu menuOpen={menuOpen} setMenuOpen={setMenuOpen} Logo={Logo} />
-    </header>;
+    </header>
+  );
 };
 
 export default PublicHeader;
