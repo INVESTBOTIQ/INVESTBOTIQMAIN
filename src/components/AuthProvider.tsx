@@ -27,28 +27,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [userRole, setUserRole] = useState<"admin" | "member" | "guest" | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Helper function to get user role with error handling
-  const getUserRole = async (userId: string): Promise<"admin" | "member" | "guest"> => {
+  const fetchUserRole = async (userId: string) => {
     try {
-      const { data: role, error } = await supabase
+      const { data: roleData, error: roleError } = await supabase
         .rpc('get_user_role', { user_id: userId });
-      
-      if (error) {
-        console.error("Error getting user role:", error);
-        
-        // Display an error message only once for database configuration issues
-        if (error.message.includes("role \"member\" does not exist")) {
-          toast.error("Er is een probleem met uw gebruikersrol. Neem contact op met de beheerder.");
-        }
-        
-        // Default to "guest" for any error
-        return "guest";
+
+      if (roleError) {
+        console.error("Error fetching user role:", roleError);
+        return null;
       }
-      
-      return (role as "admin" | "member" | "guest") || "guest";
+
+      return roleData as "admin" | "member" | "guest";
     } catch (error) {
-      console.error("Exception in getUserRole:", error);
-      return "guest";
+      console.error("Exception in fetchUserRole:", error);
+      return null;
     }
   };
 
@@ -60,21 +52,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUser(session?.user ?? null);
         
         if (session?.user) {
-          try {
-            // Try to get the role from the session jwt claim first
-            if (session.user?.app_metadata?.role) {
-              setUserRole(session.user.app_metadata.role as "admin" | "member" | "guest");
-            } else {
-              // Fallback to RPC call
-              const role = await getUserRole(session.user.id);
-              setUserRole(role);
-            }
-          } catch (error) {
-            console.error("Error in auth state change:", error);
-            setUserRole("guest");
-          }
+          // Defer role fetching to avoid auth deadlock
+          setTimeout(async () => {
+            const role = await fetchUserRole(session.user.id);
+            setUserRole(role);
+            setLoading(false);
+          }, 0);
         } else {
           setUserRole(null);
+          setLoading(false);
         }
       }
     );
@@ -85,19 +71,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(session?.user ?? null);
       
       if (session?.user) {
-        try {
-          // Try to get the role from the session jwt claim first
-          if (session.user?.app_metadata?.role) {
-            setUserRole(session.user.app_metadata.role as "admin" | "member" | "guest");
-          } else {
-            // Fallback to RPC call
-            const role = await getUserRole(session.user.id);
-            setUserRole(role);
-          }
-        } catch (error) {
-          console.error("Error getting initial user role:", error);
-          setUserRole("guest");
-        }
+        const role = await fetchUserRole(session.user.id);
+        setUserRole(role);
       }
       setLoading(false);
     });
