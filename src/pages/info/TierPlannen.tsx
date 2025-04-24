@@ -8,16 +8,25 @@ import FAQSection from "@/components/tier-plannen/FAQSection";
 import CTASection from "@/components/tier-plannen/CTASection";
 
 export default function TierPlannen() {
-  // Force scroll to top when component mounts to ensure charts are in viewport
+  // Force scroll to top and ensure charts render properly
   useEffect(() => {
+    // Force scroll to top
     window.scrollTo(0, 0);
     
     // Force charts to re-render after a delay
-    const timer = setTimeout(() => {
+    const timer1 = setTimeout(() => {
       window.dispatchEvent(new Event('resize'));
-    }, 500);
+    }, 300);
     
-    return () => clearTimeout(timer);
+    // Additional resize event to ensure charts render properly
+    const timer2 = setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 1000);
+    
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
   }, []);
   
   return (

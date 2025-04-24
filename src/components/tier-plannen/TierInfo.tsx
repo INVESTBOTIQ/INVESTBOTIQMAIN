@@ -11,8 +11,10 @@ export default function TierInfo() {
           Dit interactieve overzicht toont hoe je kaspositie, leningen en investeringen in flowlutas zich ontwikkelen van maand tot maand.
           <span className="block mt-2 text-sm text-indigo-500">Beweeg je muis over de grafiek voor meer details per tier!</span>
         </p>
-        <div className="w-full min-h-[400px] bg-white rounded-lg shadow-md p-4">
-          <TierProgressChart />
+        <div className="w-full bg-white rounded-lg shadow-md p-4">
+          <div className="h-[400px]">
+            <TierProgressChart />
+          </div>
         </div>
       </div>
     </FadeIn>

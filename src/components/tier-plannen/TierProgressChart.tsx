@@ -9,23 +9,22 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
-import { FadeIn } from "../info/FadeInAnimation";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChartYAxis } from "./components/ChartYAxis";
 import { ChartBars } from "./components/ChartBars";
 import { useTierChartData } from "./hooks/useTierChartData";
 
 const leftAxisConfig = {
-  yAxisId: "left" as const,
-  orientation: "left" as const,
-  label: { value: "Investering (€)", angle: -90, position: "insideLeft" as const }
+  yAxisId: "left",
+  orientation: "left",
+  label: { value: "Investering (€)", angle: -90, position: "insideLeft" }
 };
 
 const rightAxisConfig = {
-  yAxisId: "right" as const,
-  orientation: "right" as const,
-  label: { value: "Cashflow (€)", angle: 90, position: "insideRight" as const }
+  yAxisId: "right",
+  orientation: "right",
+  label: { value: "Cashflow (€)", angle: 90, position: "insideRight" }
 };
 
 export default function TierProgressChart() {
@@ -34,13 +33,12 @@ export default function TierProgressChart() {
   const [mounted, setMounted] = useState(false);
   
   useEffect(() => {
-    // Ensure component is mounted before rendering chart
     setMounted(true);
     
-    // Force reflow on mobile devices
+    // Force reflow by triggering a resize event
     const timer = setTimeout(() => {
       window.dispatchEvent(new Event('resize'));
-    }, 200);
+    }, 100);
     
     return () => clearTimeout(timer);
   }, []);
@@ -84,7 +82,7 @@ export default function TierProgressChart() {
   );
 
   return (
-    <div className="w-full h-[400px]">
+    <div className="w-full h-full">
       {isMobile ? (
         <ScrollArea className="w-full h-[400px]">
           <div className="min-w-[600px] h-[400px]">

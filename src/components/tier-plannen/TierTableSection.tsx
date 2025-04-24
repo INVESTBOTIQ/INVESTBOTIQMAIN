@@ -5,7 +5,6 @@ import TierSelector from "./TierSelector";
 import TierInfo from "./TierInfo";
 import TierTable from "./TierTable";
 import TierMobileCards from "./TierMobileCards";
-import TierGrowthVisualizer from "./TierGrowthVisualizer";
 import { FadeIn } from "../info/FadeInAnimation";
 
 export default function TierTableSection() {
@@ -22,11 +21,8 @@ export default function TierTableSection() {
         
         {selectedTier === "inbotiq2" && (
           <FadeIn delay={0.1}>
+            {/* Only include TierInfo which has the single chart */}
             <TierInfo />
-            
-            <div className="mb-10 w-full">
-              <TierGrowthVisualizer className="mb-8 w-full" />
-            </div>
             
             <TierTable />
             <TierMobileCards />
