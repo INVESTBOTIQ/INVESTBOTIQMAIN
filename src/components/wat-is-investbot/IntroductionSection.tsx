@@ -1,3 +1,4 @@
+
 import React from "react";
 import { motion } from "framer-motion";
 export default function IntroductionSection() {
@@ -15,10 +16,10 @@ export default function IntroductionSection() {
         }} transition={{
           duration: 0.6
         }} className="flex-1">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Jouw persoonlijke IQ BOT</h2>
-            <p className="text-lg text-gray-700 mb-6 text-justify">De IQ Bot is jouw persoonlijke Invest Agent. Wij zijn er om je de toegang te geven tot deze krachtige tool!
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Jouw persoonlijke CashFlow Intelligence</h2>
+            <p className="text-lg text-gray-700 mb-6 text-justify">CashFlow Intelligence is jouw persoonlijke Invest Agent. Wij zijn er om je de toegang te geven tot deze krachtige tool!
 Ontvang maandelijkse cashflow via ons unieke Tier-systeem.
-Vandaag nog weg met al die moeilijke investeringskeuzes! De IQ Bot regelt het voor je.</p>
+Vandaag nog weg met al die moeilijke investeringskeuzes! CashFlow Intelligence regelt het voor je.</p>
           </motion.div>
           
           <motion.div initial={{

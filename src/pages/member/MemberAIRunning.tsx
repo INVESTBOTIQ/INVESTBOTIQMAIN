@@ -30,7 +30,7 @@ const MemberAIRunning = () => {
         <Sidebar />
         <main className="flex-1 p-4 md:p-6">
           <div className="max-w-3xl mx-auto">
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight mb-6">AI Running</h1>
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight mb-6">CashFlow Intelligence</h1>
             
             <Card className="bg-gradient-to-r from-slate-900 to-slate-800 text-white overflow-hidden">
               <CardContent className="flex flex-col items-center justify-center py-16 relative">
@@ -46,14 +46,14 @@ const MemberAIRunning = () => {
                 </div>
                 
                 <p className="text-center mt-8 text-white/80 slide-up">
-                  De IQ Bot is bezig jouw cashflow automatisch op te bouwen.<br />
-                  Geen actie vereist.
+                  CashFlow Intelligence beheert automatisch jouw financiële groei.<br />
+                  Geen handmatige acties vereist.
                 </p>
 
                 <div className="mt-8 text-center text-sm text-white/70 space-y-3 slide-up">
                   <div className="flex items-center justify-center gap-2">
                     <CheckCircle className="h-4 w-4 text-green-400" />
-                    <p>De IQ Bot verwerkt jouw huidige tier</p>
+                    <p>Verwerkt jouw huidige tier</p>
                   </div>
                   <div className="flex items-center justify-center gap-2">
                     <Sparkles className="h-4 w-4 text-purple-400" />
@@ -68,7 +68,7 @@ const MemberAIRunning = () => {
                 {/* Status bar */}
                 <div className="mt-8 w-full max-w-sm">
                   <div className="text-xs text-white/60 mb-1 flex justify-between">
-                    <span>IQ Bot Status</span>
+                    <span>Intelligence Status</span>
                     <span>Actief</span>
                   </div>
                   <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
