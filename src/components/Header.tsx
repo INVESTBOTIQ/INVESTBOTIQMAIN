@@ -46,7 +46,8 @@ const Header = () => {
 
   const toggleMobileMenu = () => {
     console.log("Toggling mobile menu from", mobileMenuOpen, "to", !mobileMenuOpen);
-    setMobileMenuOpen(!mobileMenuOpen);
+    // Force the mobile menu to open when toggle button is clicked
+    setMobileMenuOpen(true);
   };
 
   const unreadNotificationsCount = 3;

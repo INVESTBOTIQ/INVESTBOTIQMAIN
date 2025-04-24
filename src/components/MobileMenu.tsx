@@ -44,11 +44,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, onClose }) =
     }
   };
 
-  // Auto-close the menu when route changes
-  React.useEffect(() => {
-    onClose();
-  }, [location.pathname, onClose]);
-
+  // Define menu items for different roles
   const memberItems = [
     { label: "Dashboard", href: "/member/dashboard", icon: Home },
     { label: "Voortgang", href: "/member/progress", icon: BarChart },
@@ -75,7 +71,16 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, onClose }) =
   console.log("MobileMenu rendering, isOpen:", isOpen);
 
   return (
-    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+    <Sheet open={isOpen} onOpenChange={(open) => {
+      console.log("Sheet onOpenChange triggered with:", open);
+      // Only allow the Sheet component to update the isOpen state when opening, not when closing
+      if (open) {
+        setIsOpen(open);
+      } else {
+        // If trying to close, we'll handle this ourselves via the onClose function
+        onClose();
+      }
+    }}>
       <SheetContent side="left" className="w-[80%] max-w-xs p-0 shadow-xl">
         {user && (
           <div className="flex items-center gap-3 p-4 border-b bg-primary/5">
@@ -85,8 +90,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, onClose }) =
               </AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0">
-              <p className="font-medium truncate">{userRole}</p>
-              <p className="text-sm text-muted-foreground truncate">{user.email}</p>
+              <p className="font-medium truncate">{user.email}</p>
+              <p className="text-sm text-muted-foreground truncate capitalize">{userRole}</p>
             </div>
           </div>
         )}
