@@ -1,9 +1,7 @@
 
 import React, { useState } from "react";
 import Header from "@/components/Header";
-import CollapsibleSidebar from "@/components/CollapsibleSidebar";
-import { FadeIn } from "@/components/info/FadeInAnimation";
-import { motion } from "framer-motion";
+import Sidebar from "@/components/Sidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -43,28 +41,18 @@ const MemberReferrals = () => {
   const totalRewards = summary?.total_bonus || 0;
   
   return (
-    <div className="relative flex min-h-screen flex-col bg-gradient-to-br from-white via-blue-50 to-indigo-50 overflow-hidden">
-      <motion.div
-        className="absolute -top-32 -left-32 w-96 h-96 bg-indigo-200 opacity-30 rounded-full blur-3xl z-0"
-        animate={{ scale: [1, 1.15, 1], rotate: [0, 30, 0] }}
-        transition={{ duration: 10, repeat: Infinity, repeatType: "mirror" }}
-      />
-      <motion.div
-        className="absolute bottom-0 right-0 w-80 h-80 bg-primary/20 rounded-full blur-2xl z-0"
-        animate={{ scale: [1, 1.07, 1], x: [0, 20, 0] }}
-        transition={{ duration: 12, repeat: Infinity, repeatType: "mirror" }}
-      />
+    <div className="flex min-h-screen flex-col">
       <Header />
-      <div className="flex flex-1 relative z-10">
-        <CollapsibleSidebar />
-        <main className="flex-1 p-4 md:p-8">
-          <div className="flex flex-col gap-8">
-            <FadeIn delay={0.08} className="mb-2">
-              <div>
-                <h1 className="text-3xl font-bold tracking-tight text-primary drop-shadow-sm mb-2">Mijn Referrals</h1>
-                <p className="text-muted-foreground text-lg">Verdien €100 extra maandelijkse cashflow voor elke vriend die zich aanmeldt via jouw referral link.</p>
-              </div>
-            </FadeIn>
+      <div className="flex flex-1">
+        <Sidebar />
+        <main className="flex-1 p-4 md:p-6">
+          <div className="flex flex-col gap-6">
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">Mijn Referrals</h1>
+              <p className="text-muted-foreground">
+                Verdien €100 extra maandelijkse cashflow voor elke vriend die zich aanmeldt via jouw referral link.
+              </p>
+            </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Card>

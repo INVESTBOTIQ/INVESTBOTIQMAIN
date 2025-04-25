@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "@/components/Header";
-import { AdminNavBar } from "@/components/admin/AdminNavBar";
+import Sidebar from "@/components/Sidebar";
 import { withRoleGuard } from "@/utils/withRoleGuard";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -127,9 +127,9 @@ const AdminDashboard = () => {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <div className="container mx-auto px-4 md:px-6 py-6">
-        <AdminNavBar />
-        <main className="p-0 overflow-auto">
+      <div className="flex flex-1">
+        <Sidebar />
+        <main className="flex-1 p-4 md:p-6 overflow-auto">
           <div className="flex flex-col gap-6">
             <div>
               <h1 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">Admin Dashboard</h1>

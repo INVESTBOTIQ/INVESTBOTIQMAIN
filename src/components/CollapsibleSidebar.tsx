@@ -45,13 +45,11 @@ const CollapsibleSidebar = () => {
   const adminLinks = [
     { to: "/admin", icon: <Home className="h-4 w-4" />, label: "Dashboard" },
     { to: "/admin/users", icon: <Users className="h-4 w-4" />, label: "Gebruikers" },
-    { to: "/admin/leads", icon: <UserCircle className="h-4 w-4" />, label: "Leads" },
     { to: "/admin/tasks", icon: <CheckSquare className="h-4 w-4" />, label: "Taken" },
     { to: "/admin/cashflows", icon: <CircleDollarSign className="h-4 w-4" />, label: "Cashflows" },
     { to: "/admin/flowlutas", icon: <Sparkles className="h-4 w-4" />, label: "Flowlutas" },
     { to: "/admin/referrals", icon: <Share2 className="h-4 w-4" />, label: "Referrals" },
     { to: "/admin/notifications", icon: <Bell className="h-4 w-4" />, label: "Notificaties" },
-    { to: "/admin/aanmelden", icon: <Users className="h-4 w-4" />, label: "Aanmelden" },
   ];
 
   const links = userRole === "admin" ? adminLinks : memberLinks;

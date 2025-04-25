@@ -1,9 +1,7 @@
 
 import React from "react";
 import Header from "@/components/Header";
-import CollapsibleSidebar from "@/components/CollapsibleSidebar";
-import { FadeIn } from "@/components/info/FadeInAnimation";
-import { motion } from "framer-motion";
+import Sidebar from "@/components/Sidebar";
 import { useAuth } from "@/components/AuthProvider";
 import { Navigate } from "react-router-dom";
 import { Loader2, Sparkles, CheckCircle, Clock } from "lucide-react";
@@ -26,25 +24,13 @@ const MemberAIRunning = () => {
   }
 
   return (
-    <div className="relative flex min-h-screen flex-col bg-gradient-to-br from-white via-blue-50 to-indigo-50 overflow-hidden">
-      <motion.div
-        className="absolute -top-32 -left-32 w-96 h-96 bg-indigo-200 opacity-30 rounded-full blur-3xl z-0"
-        animate={{ scale: [1, 1.15, 1], rotate: [0, 30, 0] }}
-        transition={{ duration: 10, repeat: Infinity, repeatType: "mirror" }}
-      />
-      <motion.div
-        className="absolute bottom-0 right-0 w-80 h-80 bg-primary/20 rounded-full blur-2xl z-0"
-        animate={{ scale: [1, 1.07, 1], x: [0, 20, 0] }}
-        transition={{ duration: 12, repeat: Infinity, repeatType: "mirror" }}
-      />
+    <div className="flex min-h-screen flex-col">
       <Header />
-      <div className="flex flex-1 relative z-10">
-        <CollapsibleSidebar />
-        <main className="flex-1 p-4 md:p-8">
+      <div className="flex flex-1">
+        <Sidebar />
+        <main className="flex-1 p-4 md:p-6">
           <div className="max-w-3xl mx-auto">
-            <FadeIn delay={0.08} className="mb-2">
-              <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-primary drop-shadow-sm mb-6">CashFlow Intelligence</h1>
-            </FadeIn>
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight mb-6">CashFlow Intelligence</h1>
             
             <Card className="bg-gradient-to-r from-slate-900 to-slate-800 text-white overflow-hidden">
               <CardContent className="flex flex-col items-center justify-center py-16 relative">
