@@ -15,6 +15,8 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { withRoleGuard } from "@/utils/withRoleGuard";
 
+type UserRole = "admin" | "member" | "guest";
+
 const AdminAanmelden = () => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -24,7 +26,7 @@ const AdminAanmelden = () => {
     woonplaats: "",
     geboortedatum: "",
     telefoon: "",
-    role: "member",
+    role: "member" as UserRole,
     referral: ""
   });
   
@@ -39,7 +41,7 @@ const AdminAanmelden = () => {
   const handleRoleChange = (value: string) => {
     setFormData(prev => ({
       ...prev,
-      role: value
+      role: value as UserRole
     }));
   };
   
@@ -81,7 +83,7 @@ const AdminAanmelden = () => {
           
         if (profileError) throw profileError;
         
-        // Set user role
+        // Set user role with properly typed role value
         const { error: roleError } = await supabase
           .from('user_roles')
           .insert({
@@ -108,7 +110,7 @@ const AdminAanmelden = () => {
           woonplaats: "",
           geboortedatum: "",
           telefoon: "",
-          role: "member",
+          role: "member" as UserRole,
           referral: ""
         });
       }

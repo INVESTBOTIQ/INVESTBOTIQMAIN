@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { withRoleGuard } from "@/utils/withRoleGuard";
@@ -13,30 +14,30 @@ import Header from "@/components/Header";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
-const { data: users = [], isLoading, error } = useQuery({
-  queryKey: ["admin-cashflow-users"],
-  queryFn: async () => {
-    // Fetch users and their cashflow data from Supabase
-    const { data, error } = await supabase
-      .from("cashflows")
-      .select("user_id, cashflow_bedrag, previous_cashflow, last_updated, profiles:profiles!cashflows_user_id_fkey(id, email, voornaam, achternaam)");
-    if (error) throw error;
-    return (data || []).map((row: any) => ({
-      id: row.user_id,
-      email: row.profiles?.email || "",
-      name: `${row.profiles?.voornaam || ''} ${row.profiles?.achternaam || ''}`.trim() || row.profiles?.email || row.user_id,
-      currentCashflow: row.cashflow_bedrag || 0,
-      previousCashflow: row.previous_cashflow || 0,
-      changePercentage: row.previous_cashflow ? ((row.cashflow_bedrag - row.previous_cashflow) / row.previous_cashflow) * 100 : 0,
-      lastUpdated: row.last_updated || ""
-    }));
-  }
-});
-
 const AdminCashflows = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedUserId, setSelectedUserId] = useState<string | null>("1"); // Default to the first user to show history
   
+  const { data: users = [], isLoading, error } = useQuery({
+    queryKey: ["admin-cashflow-users"],
+    queryFn: async () => {
+      // Fetch users and their cashflow data from Supabase
+      const { data, error } = await supabase
+        .from("cashflows")
+        .select("user_id, cashflow_bedrag, previous_cashflow, last_updated, profiles:profiles!cashflows_user_id_fkey(id, email, voornaam, achternaam)");
+      if (error) throw error;
+      return (data || []).map((row: any) => ({
+        id: row.user_id,
+        email: row.profiles?.email || "",
+        name: `${row.profiles?.voornaam || ''} ${row.profiles?.achternaam || ''}`.trim() || row.profiles?.email || row.user_id,
+        currentCashflow: row.cashflow_bedrag || 0,
+        previousCashflow: row.previous_cashflow || 0,
+        changePercentage: row.previous_cashflow ? ((row.cashflow_bedrag - row.previous_cashflow) / row.previous_cashflow) * 100 : 0,
+        lastUpdated: row.last_updated || ""
+      }));
+    }
+  });
+
   const filteredUsers = users.filter(user => 
     user.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
     user.email.toLowerCase().includes(searchTerm.toLowerCase())
