@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -31,6 +32,7 @@ import Veiligheid from "@/pages/info/Veiligheid";
 import AdminSettings from "@/pages/admin/AdminSettings";
 import AdminProfile from "@/pages/admin/AdminProfile";
 import AdminLeads from "@/pages/admin/AdminLeads";
+import AdminAanmelden from "@/pages/admin/AdminAanmelden";
 
 const queryClient = new QueryClient();
 
@@ -73,6 +75,7 @@ const App = () => (
             <Route path="/admin/referrals" element={<AdminReferrals />} />
             <Route path="/admin/settings" element={<AdminSettings />} />
             <Route path="/admin/profile" element={<AdminProfile />} />
+            <Route path="/admin/aanmelden" element={<AdminAanmelden />} />
             <Route path="/admin/index" element={<Navigate to="/admin" replace />} />
 
             <Route path="*" element={<NotFound />} />
