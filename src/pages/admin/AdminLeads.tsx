@@ -10,6 +10,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AdminNavBar } from "@/components/admin/AdminNavBar";
 import Header from "@/components/Header";
 import { Json } from "@/integrations/supabase/types";
+import { withRoleGuard } from "@/utils/withRoleGuard";
 
 type Lead = {
   id: string;
@@ -40,7 +41,7 @@ const AdminLeads = () => {
   const [roleFilter, setRoleFilter] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState("");
 
-  const { data: leads, isLoading, error } = useQuery({
+  const { data: leads = [], isLoading, error } = useQuery({
     queryKey: ["leads"],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -57,7 +58,10 @@ const AdminLeads = () => {
           ? JSON.parse(lead.general) 
           : lead.general as Lead['general']
       })) as Lead[];
-    }
+    },
+    // Ensure error handling is done properly for React Query v5+
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: 1
   });
 
   const filteredLeads = leads?.filter(lead => {
@@ -186,4 +190,4 @@ const AdminLeads = () => {
   );
 };
 
-export default AdminLeads;
+export default withRoleGuard(AdminLeads, ["admin"]);
