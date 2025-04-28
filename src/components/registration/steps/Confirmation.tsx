@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Role } from "../MultiStepForm";
+import { motion } from "framer-motion";
 
 interface ConfirmationProps {
   formData: {
