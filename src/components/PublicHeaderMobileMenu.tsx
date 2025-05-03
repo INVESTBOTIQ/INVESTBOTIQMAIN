@@ -135,20 +135,20 @@ const PublicHeaderMobileMenu: React.FC<Props> = ({ menuOpen, setMenuOpen, Logo }
             <div className="border-t mt-0 pt-3 pb-5 px-6 flex flex-col gap-2">
               {!user && (
                 <>
-                  <button
-                    type="button"
+                  <a
+                    href="https://leadsinvestbotiq.netlify.app"
                     className="block w-full py-2 px-3 rounded bg-indigo-500 text-white font-semibold text-center hover:bg-indigo-700 transition"
                     onClick={() => setMenuOpen(false)}
                   >
                     Aanmelden
-                  </button>
-                  <button
-                    type="button"
+                  </a>
+                  <a
+                    href="https://loginvestbotiq.netlify.app/"
                     className="block w-full py-2 px-3 rounded bg-gray-100 text-indigo-700 font-semibold text-center hover:bg-indigo-200 transition"
                     onClick={() => setMenuOpen(false)}
                   >
                     Log-in
-                  </button>
+                  </a>
                 </>
               )}
               {isMember && (
