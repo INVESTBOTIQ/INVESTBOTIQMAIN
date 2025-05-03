@@ -66,6 +66,11 @@ const PublicHeader: React.FC = () => {
         alt="Invest Bot IQ Logo" 
         className="h-8 w-auto hidden md:block"
       />
+      <img
+        src="/lovable-uploads/4befc6ee-1b19-4552-af1f-062bf7191a8a.png"
+        alt="Extra Logo"
+        className="h-8 w-auto block md:hidden"
+      />
     </Link>
   );
 

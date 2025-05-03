@@ -121,15 +121,7 @@ const PublicHeaderMobileMenu: React.FC<Props> = ({ menuOpen, setMenuOpen, Logo }
                   {item.title}
                 </button>
               ))}
-              <button
-                className="font-semibold py-2 px-2 rounded hover:bg-indigo-50 text-left transition flex items-center"
-                onClick={() => {
-                  setMenuOpen(false);
-                  navigate("/auth");
-                }}
-              >
-                <LogIn className="mr-2 h-4 w-4" /> Log-in
-              </button>
+              
               <div className="flex-1" />
             </nav>
             <div className="border-t mt-0 pt-3 pb-5 px-6 flex flex-col gap-2">
