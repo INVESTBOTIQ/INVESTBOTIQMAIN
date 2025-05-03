@@ -91,19 +91,15 @@ const PublicHeaderDesktopMenu: React.FC<Props> = ({ handleNav }) => {
         </button>
       ))}
       {/* Inloggen knop + Registreren knop */}
-      <Link
-        to="/auth"
-        className="flex items-center px-4 py-2 rounded-md bg-indigo-500 text-white hover:bg-indigo-600 font-semibold transition-all ml-2"
-      >
+      <a href="https://loginvestbotiq.netlify.app/" className="flex items-center px-4 py-2 rounded-md bg-indigo-500 text-white hover:bg-indigo-600 font-semibold transition-all ml-2">
         <LogIn className="mr-2 h-4 w-4" /> Log-in
-      </Link>
-      <Button
-        variant="default"
-        onClick={() => navigate("/register")}
-        className="transition-all hover:bg-indigo-600 hover:scale-105 ml-2"
+      </a>
+      <a
+        href="https://leadsinvestbotiq.netlify.app"
+        className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground h-10 px-4 py-2 transition-all hover:bg-indigo-600 hover:scale-105 ml-2"
       >
-        Registreren
-      </Button>
+        Aanmelden
+      </a>
       {/* Register / Member */}
 
       {isMember && (

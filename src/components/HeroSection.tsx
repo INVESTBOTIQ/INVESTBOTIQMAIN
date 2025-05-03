@@ -3,23 +3,19 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import OrbCanvas from "@/components/Shared/OrbCanvas";
 function OrbVisual() {
-  return <motion.div initial={{
-    scale: 0.95,
-    opacity: 0.62
-  }} animate={{
-    scale: [0.95, 1.12, 0.96, 1],
-    opacity: [0.62, 1, 0.67, 1]
-  }} transition={{
-    repeat: Infinity,
-    repeatType: "reverse",
-    duration: 3.2,
-    ease: "easeInOut"
-  }} className="relative z-10">
-      <div className="w-36 h-36 sm:w-48 sm:h-48 md:w-64 md:h-64 rounded-full bg-gradient-to-br from-indigo-400 via-pink-300 to-sky-300 shadow-2xl blur-[1.5px] flex items-center justify-center">
-        <div className="w-20 h-20 sm:w-32 sm:h-32 rounded-full bg-white/25 backdrop-blur-sm shadow-inner border-4 border-white/40" />
-      </div>
-    </motion.div>;
+  return (
+    <motion.div
+      initial={{ scale: 0.95, opacity: 0.62 }}
+      animate={{ scale: [0.95, 1.12, 0.96, 1], opacity: [0.62, 1, 0.67, 1] }}
+      transition={{ repeat: Infinity, repeatType: "reverse", duration: 3.2, ease: "easeInOut" }}
+      className="relative z-10 flex items-center justify-center"
+      style={{ minHeight: 120 }}
+    >
+      <OrbCanvas />
+    </motion.div>
+  );
 }
 type Props = {
   onScrollToInfo: () => void;
@@ -64,7 +60,7 @@ const HeroSection: React.FC<Props> = ({
         <div className="flex flex-col md:flex-row items-center gap-5 mt-2 mb-7 w-full md:w-auto">
           <FadeIn delay={0.22}>
             <Button asChild className="w-72 max-w-full md:w-56 text-lg py-6 px-6 font-semibold shadow-lg bg-indigo-500 hover:bg-indigo-600/90 focus:ring-4 focus:ring-indigo-300 transition-all duration-300 rounded-xl">
-              <Link to="/auth">🔵 Inloggen</Link>
+              <a href="https://loginvestbotiq.netlify.app" target="_self">🔵 Inloggen</a>
             </Button>
           </FadeIn>
           <FadeIn delay={0.32}>
@@ -97,7 +93,16 @@ AI Agent</div>
             <DialogTitle>Bekijk hoe InvestbotIQ werkt</DialogTitle>
           </DialogHeader>
           <div className="aspect-video w-full bg-gray-100 rounded-lg flex items-center justify-center">
-            <p className="text-gray-500">Demo video komt binnenkort beschikbaar</p>
+            <iframe
+              width="100%"
+              height="100%"
+              src="https://www.youtube.com/embed/1uMoBy76oQs"
+              title="InvestbotIQ Demo Video"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              style={{ borderRadius: '0.75rem', width: '100%', height: '100%' }}
+            />
           </div>
         </DialogContent>
       </Dialog>
